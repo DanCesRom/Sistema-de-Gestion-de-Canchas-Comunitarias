@@ -1,0 +1,22 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/reservations/reservation_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/base/sidebar.css' %}">
+
+<div class="reservation-detail">
+    <h2>Detalle de Reserva</h2>
+
+    <p><strong>Lugar:</strong> {{ reservation.place.name }}</p>
+    <p><strong>Fecha:</strong> {{ reservation.date|date:"l, d F Y" }}</p>
+
+    <p><strong>Horario:</strong> {{ reservation.start_time|time:"H:i" }} a {{ reservation.end_time|time:"H:i" }}</p>
+    <h3>Codigo QR</h3>
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="QR Code" width="200">
+
+    <p><strong>Codigo de 6 digitos:</strong> <span style="font-size: 20px;">{{ reservation.code }}</span></p>
+    <a href="{% url 'reservations_list' %}">Volver a mis reservas</a>
+</div>
+
+{% endblock %}

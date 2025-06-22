@@ -1,0 +1,62 @@
+﻿{% extends "main/base.html" %}
+
+
+
+{% block extra_head %}
+<head>
+    <!-- LeafletJS for the map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/css/home/map_related.css">
+    <link rel="stylesheet" href="/static/css/home/side_panel.css">
+    <link rel="stylesheet" href="/static/css/home/search_bar.css">
+    <link rel="stylesheet" href="/static/css/home/html.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Reserva">
+    <link rel="apple-touch-icon" href="/static/icons/reserva_logo.jpeg">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    
+
+</head>
+
+{% endblock %}
+
+{% block content %}
+<title></title>
+<body>
+
+    <!-- TOP SEARCH BAR (desktop and mobile) -->
+    <div class="top-bar">
+        <!-- <input type="text" id="searchBox" placeholder="Search for a place..."> -->
+        <input type="text" id="searchBox" placeholder="Search places..." autocomplete="off" />
+        <div id="searchResults"></div>
+    </div>
+
+    <!-- LOCATION BUTTON (right top-middle) -->
+    <button class="location-btn" onclick="goToMyLocation()"></button>
+
+
+    <div id="map"></div>
+
+    <!-- <div id="placeModal" class="modal" style="display:none;"></div>-->
+    <!-- Side Panel for place info -->
+    <div id="placeSidePanel" class="side-panel">
+        <img id="placeImage" src="" alt="Place Image">
+        <h3 id="placeName"></h3>
+        <p><strong>Sport type:</strong> <span id="placeSportType"></span></p>
+        <p><strong>Schedule:</strong> <span id="placeSchedule"></span></p>
+        <p id="placeDescription"></p>
+        <button id="makeReservationBtn" class="reserve-btn">Make Reservation</button>
+    </div>
+
+    <script> const places = {{ places | safe }};</script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="/static/js/home/home.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+</body>
+
+
+{% endblock %}

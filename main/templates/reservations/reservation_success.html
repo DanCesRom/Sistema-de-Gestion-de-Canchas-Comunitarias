@@ -1,0 +1,16 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+<h2>Reserva confirmada!</h2>
+
+<p><strong>Lugar:</strong> {{ reservation.place.name }}</p>
+<p><strong>Fecha:</strong> {{ reservation.date }}</p>
+<p><strong>Horario:</strong> {{ reservation.start_time }} - {{ reservation.end_time }}</p>
+
+<h3>Codigo QR:</h3>
+<img src="data:image/png;base64,{{ qr_base64 }}" alt="QR Code" width="200">
+
+<p><strong>Codigo de 6 digitos:</strong> {{ reservation.code }}</p>
+
+<a href="{% url 'home' %}">Volver al inicio</a>
+{% endblock %}

@@ -1,0 +1,10 @@
+Hello,
+
+We received a request to delete your account.
+
+Click the link below to confirm this action:
+{{ protocol }}://{{ domain }}/confirm-delete/{{ uid }}/{{ token }}
+
+If you didn't request this, ignore this email.
+
+- Reservation App Team

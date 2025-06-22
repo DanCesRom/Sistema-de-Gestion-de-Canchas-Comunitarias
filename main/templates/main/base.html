@@ -1,0 +1,39 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reserva</title>
+    <link rel="icon" type="image/x-icon" href="/static/icons/reserva_logo.jpeg">
+    <link rel="stylesheet" href="/static/css/base/menu_buttons.css">
+    <!-- Viewport and mobile behavior -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Reserva">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- SIDEBAR (desktop only) -->
+    <div class="sidebar">
+        <a href="/"><img src="/static/images/home/map_icon.png" title="Map"></a>
+        <a href="/reservas"><img src="/static/images/home/reservation_icon.png" title="Reservations"></a>
+        <a href="/settings/"><img src="/static/images/home/settings_icon.png" title="Settings"></a>
+        <a href="/help/"><img src="/static/images/home/help_icon.png" title="Help"></a>
+    </div>
+
+    <!-- BOTTOM NAV (mobile only) -->
+    <div class="bottom-nav">
+        <a href="/"><img src="/static/images/home/map_icon.png" title="Map"></a>
+        <a href="/reservas/"><img src="/static/images/home/reservation_icon.png" title="Reservations"></a>
+        <a href="/settings/"><img src="/static/images/home/settings_icon.png" title="Settings"></a>
+        <a href="/help/"><img src="/static/images/home/help_icon.png" title="Help"></a>
+    </div>
+    {% block content %}
+
+    {% endblock %}
+</body>
+</html>

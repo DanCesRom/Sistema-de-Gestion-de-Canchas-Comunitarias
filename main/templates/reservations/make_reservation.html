@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/reservations/calendar.css' %}">
+<script src="{% static 'js/reservations/calendar.js' %}"></script>
+<script src="{% static 'js/reservations/prevent_past.js' %}"></script>
+<h1>{{ place.name }}</h1>
+
+{% if error_message %}
+<div class="error" style="color: red; margin-bottom: 10px;">
+    {{ error_message }}
+</div>
+{% endif %}
+
+<div id="day-selector">
+    <button onclick="changeDay(-1)">Anterior</button>
+    <span id="selected-day">{{ date }}</span>
+    <button onclick="changeDay(1)">Siguiente</button>
+</div>
+
+<div id="time-blocks"
+     data-open-time="{{ open_time }}"
+     data-close-time="{{ close_time }}"
+     data-reserved="{{ reserved_blocks_json }}"
+     data-place-id="{{ place.id }}">
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="date" value="{{ date }}">
+    <input type="hidden" name="start_time" id="start_time">
+    <input type="hidden" name="end_time" id="end_time">
+    <button type="submit" id="submit-button" disabled>Confirmar</button>
+</form>
+{% endblock %}

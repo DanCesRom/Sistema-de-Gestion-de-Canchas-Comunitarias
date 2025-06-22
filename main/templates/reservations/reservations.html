@@ -1,0 +1,42 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/reservations/reservations.css' %}">
+<link rel="stylesheet" href="{% static 'css/base/sidebar.css' %}">
+<h2>Mis Reservas</h2>
+
+<h3>Reservas Activas</h3>
+{% if active_reservations %}
+<ul>
+    {% for r in active_reservations %}
+    <li>
+        <a href="{% url 'reservation_detail' r.id %}">
+            {{ r.place.name }} -
+            {{ r.date|date:"l, d M Y" }} -
+            {{ r.start_time|time:"H:i" }} a {{ r.end_time|time:"H:i" }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No tienes reservas activas.</p>
+{% endif %}
+
+<hr>
+
+<h3>Reservas Expiradas</h3>
+{% if expired_reservations %}
+<ul>
+    {% for r in expired_reservations %}
+    <li>
+        {{ r.place.name }} -
+        {{ r.date|date:"l, d M Y" }} -
+        {{ r.start_time|time:"H:i" }} a {{ r.end_time|time:"H:i" }}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No tienes reservas expiradas recientes.</p>
+{% endif %}
+
+{% endblock %}

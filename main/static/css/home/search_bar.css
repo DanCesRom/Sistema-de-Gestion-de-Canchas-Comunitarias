@@ -1,0 +1,37 @@
+
+/* ----------------- TOP SEARCH BAR ------------------- */
+.top-bar {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: transparent; /*  no background */
+    padding: 0;
+    margin: 0;
+}
+
+.top-bar input {
+    width: 60%;
+    max-width: 600px;
+    padding: 8px 15px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    
+}
+
+#searchBox{
+    width:300px;
+}
+
+#searchResults {
+    position: absolute;
+    background: white;
+    border: 1px;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 300px;
+    display: none;
+    z-index: 1001;
+}
