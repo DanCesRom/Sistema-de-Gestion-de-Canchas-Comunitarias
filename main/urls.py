@@ -5,9 +5,7 @@ from . import views
 from django.contrib.auth import views as auth_views
 from django.views.static import serve
 from django.conf import settings
-from django.conf import settings
 from django.conf.urls.static import static
-
 from .views import auths_views, reservations_views, settings_views, help_views, home_views
 
 urlpatterns = [
@@ -60,8 +58,8 @@ urlpatterns = [
 
     
 
-    path('manifest.webmanifest', serve, {'path': 'manifest.webmanifest', 'document_root': settings.STATIC_ROOT[0]}),
-    path('service-worker.js', serve, {'path': 'service-worker.js', 'document_root': settings.STATIC_ROOT[0]}),
+    path('manifest.webmanifest', serve, {'path': 'manifest.webmanifest', 'document_root': settings.STATIC_ROOT}),
+    path('service-worker.js', serve, {'path': 'service-worker.js', 'document_root': settings.STATIC_ROOT}),
  
 
 ]
