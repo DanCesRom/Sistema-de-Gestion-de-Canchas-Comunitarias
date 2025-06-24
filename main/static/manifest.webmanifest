@@ -5,6 +5,7 @@
   "start_url": "/",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
+  "description": "Aplicación para gestionar reservas de canchas deportivas.", 
   "icons": [
     {
       "src": "/static/icons/reserva_logo.jpeg",

@@ -1,22 +1,23 @@
-const CACHE_NAME = 'your-app-cache-v1';
+const CACHE_NAME = 'reservas-cache-v1';
 const urlsToCache = [
-    '/',
-    '/static/manifest.webmanifest',
-    '/static/icons/reserva_logo.jpeg',
-    // Add other routes or assets to cache here
+    "/",
+    "/static/css/reservation.css",
+    "/static/js/calendar.js",
+    "/static/icons/icon-192.png",
+    "/static/icons/icon-512.png"
 ];
 
-self.addEventListener('install', (event) => {
+self.addEventListener("install", event => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
+        caches.open(CACHE_NAME).then(cache => {
             return cache.addAll(urlsToCache);
         })
     );
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", event => {
     event.respondWith(
-        caches.match(event.request).then((response) => {
+        caches.match(event.request).then(response => {
             return response || fetch(event.request);
         })
     );
