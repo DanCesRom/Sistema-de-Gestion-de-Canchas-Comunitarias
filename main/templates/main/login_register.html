@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>Login / Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +11,9 @@
     <div class="w-full max-w-md p-8 bg-white border border-gray-200 rounded-2xl shadow-xl">
 
         {% if messages %}
-            {% for message in messages %}
-                <div class="mb-4 text-[#de2932] text-sm">{{ message }}</div>
-            {% endfor %}
+        {% for message in messages %}
+        <div class="mb-4 text-[#de2932] text-sm">{{ message }}</div>
+        {% endfor %}
         {% endif %}
 
         <!-- Login Form -->
@@ -35,7 +36,9 @@
                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#013573]">
             </div>
             <button type="submit" name="login"
-                    class="w-full bg-[#013573] hover:bg-[#011f47] text-white py-2 rounded-lg transition duration-200">Log In</button>
+                    class="w-full bg-[#013573] hover:bg-[#011f47] text-white py-2 rounded-lg transition duration-200">
+                Log In
+            </button>
             <div class="text-sm mt-4 text-center">
                 <a href="{% url 'forgot_password' %}" class="text-[#de2932] hover:underline">Forgot Password?</a><br>
                 <a href="#" onclick="toggleForm()" class="text-gray-600 hover:underline">Don't have an account? <span class="text-[#013573] font-semibold">Register</span></a>
@@ -86,7 +89,9 @@
             </div>
 
             <button type="submit" name="register"
-                    class="w-full bg-[#de2932] hover:bg-[#b81f29] text-white py-2 rounded-lg transition duration-200">Register</button>
+                    class="w-full bg-[#de2932] hover:bg-[#b81f29] text-white py-2 rounded-lg transition duration-200">
+                Register
+            </button>
             <div class="text-sm mt-4 text-center">
                 <a href="#" onclick="toggleForm()" class="text-gray-600 hover:underline">Already have an account? <span class="text-[#013573] font-semibold">Login</span></a>
             </div>
