@@ -4,8 +4,8 @@ const urlsToCache = [
     '/static/manifest.webmanifest',
     "/static/css/reservation.css",
     "/static/js/calendar.js",
-    "/static/favico.ico",
-    "static/icons/apple-touch-icon.png",
+    "/static/favicon.ico",
+    "/static/icons/apple-touch-icon.png",
 ];
 
 self.addEventListener("install", event => {
