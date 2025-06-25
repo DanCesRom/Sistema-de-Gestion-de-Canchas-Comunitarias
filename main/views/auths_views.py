@@ -66,7 +66,8 @@ def login_register_view(request):
                         first_name=request.POST['first_name'],
                         last_name=request.POST['last_name'],
                         date_of_birth=request.POST['dob'],
-                        gender=request.POST['gender']
+                        gender=request.POST['gender'],
+                        id_document=request.POST['identification_id'],
                     )
                     messages.success(request, "Creacion Exitosa! Favor Iniciar Sesion.")
             except Exception as e:
