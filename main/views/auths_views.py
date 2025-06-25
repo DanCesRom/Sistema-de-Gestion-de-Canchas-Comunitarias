@@ -43,11 +43,21 @@ def login_register_view(request):
             try:
                 email = request.POST['email']
                 password = request.POST['password']
+                identification_id = request.POST.get('identification_id')
                 confirm_password = request.POST['confirm_password']
                 if password != confirm_password:
-                    messages.error(request, "Passwords do not match")
+                    messages.error(request, "Las claves no coinciden")
                 elif User.objects.filter(email=email).exists():
-                    messages.error(request, "Email already registered")
+                    messages.error(request, "Correo ya registrado")
+
+
+                elif any(
+                    profile.id_document == identification_id
+                    for profile in UserProfile.objects.all()
+                ):
+                    messages.error(request, "Cedula o Pasaporte ya registrado")
+
+
                 else:
                     username = email.split('@')[0]
                     user = User.objects.create_user(username=username, email=email, password=password)
@@ -58,7 +68,7 @@ def login_register_view(request):
                         date_of_birth=request.POST['dob'],
                         gender=request.POST['gender']
                     )
-                    messages.success(request, "Registered successfully! Please log in.")
+                    messages.success(request, "Creacion Exitosa! Favor Iniciar Sesion.")
             except Exception as e:
                 messages.error(request, f"Error: {str(e)}")
 

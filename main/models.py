@@ -4,6 +4,9 @@ import uuid
 import random
 import string
 from django.utils.timezone import now
+from utils.encryption import encrypt_data, decrypt_data 
+
+
 
 class UserProfile(models.Model):
     GENDER_CHOICES = [
@@ -19,6 +22,19 @@ class UserProfile(models.Model):
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     biometric_enabled = models.BooleanField(default=False)
+
+    _id_document = models.TextField(db_column='id_document')
+
+    @property
+    def id_document(self):
+        try:
+            return decrypt_data(self._id_document)
+        except Exception:
+            return None
+
+    @id_document.setter
+    def id_document(self, value):
+        self._id_document = encrypt_data(value)
 
     def __str__(self):
         return self.user.email

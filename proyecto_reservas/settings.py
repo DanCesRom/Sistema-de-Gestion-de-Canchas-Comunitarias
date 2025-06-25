@@ -145,3 +145,4 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # Make the session expire after 2 weeks (in seconds)
 SESSION_COOKIE_AGE = 600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+ENCRYPTION_KEY = '3fpLbeHvqiOdNv_S9Q10swoyGTsCBuCC70dBbsqXBc4='
