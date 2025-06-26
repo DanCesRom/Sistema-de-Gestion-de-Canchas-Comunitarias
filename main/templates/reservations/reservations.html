@@ -2,41 +2,84 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/reservations/reservations.css' %}">
-<link rel="stylesheet" href="{% static 'css/base/sidebar.css' %}">
-<h2>Mis Reservas</h2>
 
-<h3>Reservas Activas</h3>
-{% if active_reservations %}
-<ul>
-    {% for r in active_reservations %}
-    <li>
-        <a href="{% url 'reservation_detail' r.id %}">
-            {{ r.place.name }} -
-            {{ r.date|date:"l, d M Y" }} -
-            {{ r.start_time|time:"H:i" }} a {{ r.end_time|time:"H:i" }}
-        </a>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No tienes reservas activas.</p>
-{% endif %}
+<body class="bg-[#f9fafb] relative min-h-screen">
 
-<hr>
+    <!-- Encabezado con logo y título -->
+    <div class="flex flex-col items-center pt-6 bg-white shadow-sm">
+        <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}" alt="Ministerio de Deportes"
+             class="h-20 object-contain mb-1" />
+        <h1 class="text-3xl font-semibold text-[#013573] mt-2 mb-4">Mis Reservas</h1>
+    </div>
 
-<h3>Reservas Expiradas</h3>
-{% if expired_reservations %}
-<ul>
-    {% for r in expired_reservations %}
-    <li>
-        {{ r.place.name }} -
-        {{ r.date|date:"l, d M Y" }} -
-        {{ r.start_time|time:"H:i" }} a {{ r.end_time|time:"H:i" }}
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No tienes reservas expiradas recientes.</p>
-{% endif %}
+    <!-- Contenedor principal -->
+    <div class="max-w-4xl mx-auto px-6 py-10 space-y-12">
 
+        <!-- Reservas Activas -->
+        <section class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold text-[#013573] mb-4">Reservas Activas</h2>
+            {% if active_reservations %}
+                <ul class="space-y-4">
+                    {% for r in active_reservations %}
+                    <li class="border border-gray-200 rounded-lg p-4 bg-white hover:shadow-sm transition">
+                        <a href="{% url 'reservation_detail' r.id %}" class="text-[#013573] font-medium hover:underline">
+                            {{ r.place.name }}<br>
+                            <span class="text-sm text-gray-600">
+                                {{ r.date|date:"l, d M Y" }}<br>
+                                {{ r.start_time|time:"H:i" }} a {{ r.end_time|time:"H:i" }}
+                            </span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-500">No tienes reservas activas.</p>
+            {% endif %}
+        </section>
+
+        <!-- Reservas Expiradas -->
+        <section class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold text-[#013573] mb-4">Reservas Expiradas</h2>
+            {% if expired_reservations %}
+                <ul class="space-y-4">
+                    {% for r in expired_reservations %}
+                    <li class="border border-gray-100 rounded-lg p-4 bg-gray-50">
+                        <p class="text-gray-700 font-medium">{{ r.place.name }}</p>
+                        <p class="text-sm text-gray-500">
+                            {{ r.date|date:"l, d M Y" }}<br>
+                            {{ r.start_time|time:"H:i" }} a {{ r.end_time|time:"H:i" }}
+                        </p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-500">No tienes reservas expiradas recientes.</p>
+            {% endif %}
+        </section>
+
+        <!-- Historial -->
+        <section class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold text-[#013573] mb-4">Historial de Reservas</h2>
+            {% if past_reservations %}
+                <ul class="space-y-3 text-sm text-gray-700">
+                    {% for r in past_reservations %}
+                    <li class="bg-gray-100 rounded-md p-3">
+                        {{ r.place.name }} — {{ r.date|date:"d/m/Y" }} de {{ r.start_time|time:"H:i" }} a {{ r.end_time|time:"H:i" }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-400">No hay historial disponible.</p>
+            {% endif %}
+        </section>
+    </div>
+
+    <!-- Botón flotante (+) -->
+    <a href="/reservas/nueva/"
+       class="fixed bottom-6 right-6 bg-[#de2932] hover:bg-red-700 text-white rounded-full shadow-lg w-14 h-14 flex items-center justify-center text-2xl font-bold transition z-50"
+       title="Nueva Reserva">
+        +
+    </a>
+
+</body>
 {% endblock %}
