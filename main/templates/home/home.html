@@ -1,59 +1,74 @@
 ﻿{% extends "base/base.html" %}
+{% load static %}
+
 {% block extra_head %}
-<head>
-    <!-- LeafletJS for the map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="/static/css/home/map_related.css">
-    <link rel="stylesheet" href="/static/css/home/side_panel.css">
-    <link rel="stylesheet" href="/static/css/home/search_bar.css">
-    <link rel="stylesheet" href="/static/css/home/html.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Reserva">
-    <link rel="apple-touch-icon" href="/static/icons/reserva_logo.jpeg">
+    <link rel="stylesheet" href="{% static 'css/home/map_related.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home/side_panel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home/search_bar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home/html.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
-
-
-</head>
-
 {% endblock %}
 
 {% block content %}
-<title></title>
-<body>
+<body class="bg-white">
 
-    <!-- TOP SEARCH BAR (desktop and mobile) -->
-    <div class="top-bar">
-        <!-- <input type="text" id="searchBox" placeholder="Search for a place..."> -->
-        <input type="text" id="searchBox" placeholder="Search places..." autocomplete="off" />
-        <div id="searchResults"></div>
+    <!-- Logo y Título -->
+    <div class="flex flex-col items-center pt-6 bg-white">
+        <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}" alt="Ministerio de Deportes"
+             class="h-20 object-contain mb-1" />
+        <h1 class="text-3xl font-semibold text-[#013573] mt-2">¡Ubica nuestras Canchas!</h1>
     </div>
 
-    <!-- LOCATION BUTTON (right top-middle) -->
-    <button class="location-btn" onclick="goToMyLocation()"></button>
+    <!-- Contenedor del mapa -->
+    <div class="flex flex-col items-center px-6 pt-4 pb-10 bg-white">
 
+        <div class="w-full max-w-5xl h-[600px] rounded-xl shadow-lg overflow-hidden border border-gray-300 relative bg-white">
 
-    <div id="map"></div>
+            <!-- Barra de búsqueda -->
+            <div class="absolute top-4 left-1/2 transform -translate-x-1/2 z-40 w-11/12 max-w-lg">
+                <input type="text" id="searchBox" placeholder="Buscar canchas o lugares..."
+                       class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#013573] text-sm bg-white">
+                <div id="searchResults" class="absolute bg-white shadow-lg rounded-lg mt-1 w-full z-50 max-h-60 overflow-auto"></div>
+            </div>
 
-    <!-- <div id="placeModal" class="modal" style="display:none;"></div>-->
-    <!-- Side Panel for place info -->
-    <div id="placeSidePanel" class="side-panel">
-        <img id="placeImage" src="" alt="Place Image">
-        <h3 id="placeName"></h3>
-        <p><strong>Sport type:</strong> <span id="placeSportType"></span></p>
-        <p><strong>Schedule:</strong> <span id="placeSchedule"></span></p>
-        <p id="placeDescription"></p>
-        <button id="makeReservationBtn" class="reserve-btn">Make Reservation</button>
+            <!-- Mapa -->
+            <div id="map" class="w-full h-full"></div>
+
+            <!-- Botón ubicación -->
+            <button class="absolute bottom-4 right-4 bg-[#013573] text-white rounded-full p-3 shadow-lg hover:bg-[#01224e] transition z-40"
+                    onclick="goToMyLocation()" title="Mi ubicación">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 3v2m0 14v2m9-9h-2M5 12H3m16.95-6.95l-1.414 1.414M6.464 17.536l-1.414 1.414M6.464 6.464L5.05 5.05m13.436 13.436l-1.414-1.414" />
+                </svg>
+            </button>
+
+        </div>
+
+        <!-- Panel lateral -->
+        <div id="placeSidePanel"
+             class="side-panel fixed right-0 top-0 h-full w-80 max-w-full bg-white shadow-xl z-50 p-4 overflow-y-auto transform translate-x-full transition-transform duration-300 ease-in-out">
+            <img id="placeImage" src="" alt="Imagen del lugar" class="w-full h-40 object-cover rounded-lg mb-3">
+            <h3 id="placeName" class="text-xl font-bold text-[#013573] mb-2"></h3>
+            <p class="text-sm text-gray-600 mb-1"><strong>Deporte:</strong> <span id="placeSportType"></span></p>
+            <p class="text-sm text-gray-600 mb-1"><strong>Horario:</strong> <span id="placeSchedule"></span></p>
+            <p id="placeDescription" class="text-sm text-gray-700 mb-4"></p>
+            <button id="makeReservationBtn"
+                    class="w-full bg-[#de2932] text-white py-2 rounded-lg hover:bg-red-700 transition">
+                Reservar Cancha
+            </button>
+        </div>
+
     </div>
-
-    <script> const places = {{ places | safe }};</script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="/static/js/home/home.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 
 </body>
-
-
+<script>
+    const places = JSON.parse('{{ places|escapejs }}');
+</script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+<script src="{% static 'js/home/home.js' %}"></script>
 {% endblock %}
