@@ -1,14 +1,12 @@
-<!-- templates/base.html -->
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    {% load static %}
     <meta charset="UTF-8">
     <title>Reserva</title>
-    <link rel="icon" type="image/x-icon" href="/static/icons/favicon.ico">
-    <link rel="stylesheet" href="/static/css/base/menu_buttons.css">
-    <!-- Viewport and mobile behavior -->
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/base/menu_buttons.css' %}">
     <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,35 +15,55 @@
     <meta name="apple-mobile-web-app-title" content="Reserva">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="{% static 'icons/apple-touch-icon.png' %}">
-    <script src="/static/service-worker.js"></script>
+    <script src="{% static 'service-worker.js' %}"></script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tipografía formal -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 
     {% block extra_head %}{% endblock %}
 </head>
-<body>
-    <!-- SIDEBAR (desktop only) -->
-    <div class="sidebar">
-        <a href="/"><img src="/static/images/base/map_icon.png" title="Map"></a>
-        <a href="/reservas"><img src="/static/images/base/reservation_icon.png" title="Reservations"></a>
-        <a href="/settings/"><img src="/static/images/base/settings_icon.png" title="Settings"></a>
-        <a href="/help/"><img src="/static/images/base/help_icon.png" title="Help"></a>
+
+<body class="bg-white text-gray-800 min-h-screen flex flex-col">
+
+    <!-- SIDEBAR (solo escritorio) -->
+    <div class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center bg-[#013573] py-6 shadow-lg z-50 rounded-r-2xl">
+        <a href="/" class="mb-6"><img src="{% static 'images/base/map_icon.png' %}" title="Mapa" class="w-7 h-7 hover:scale-110 transition-transform"></a>
+        <a href="/reservas" class="mb-6"><img src="{% static 'images/base/reservation_icon.png' %}" title="Reservas" class="w-7 h-7 hover:scale-110 transition-transform"></a>
+        <a href="/settings/" class="mb-6"><img src="{% static 'images/base/settings_icon.png' %}" title="Configuración" class="w-7 h-7 hover:scale-110 transition-transform"></a>
+        <a href="/help/" class="mb-6"><img src="{% static 'images/base/help_icon.png' %}" title="Ayuda" class="w-7 h-7 hover:scale-110 transition-transform"></a>
     </div>
 
-    <!-- BOTTOM NAV (mobile only) -->
-    <div class="bottom-nav">
-        <a href="/"><img src="/static/images/base/map_icon.png" title="Map"></a>
-        <a href="/reservas/"><img src="/static/images/base/reservation_icon.png" title="Reservations"></a>
-        <a href="/settings/"><img src="/static/images/base/settings_icon.png" title="Settings"></a>
-        <a href="/help/"><img src="/static/images/base/help_icon.png" title="Help"></a>
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="flex-1 md:ml-20 transition-all ease-in-out duration-300">
+        {% block content %}
+        {% endblock %}
     </div>
-    {% block content %}
 
-    {% endblock %}
+    <!-- NAV INFERIOR (solo móvil) -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#013573] flex justify-around items-center h-16 shadow-inner z-50 rounded-t-2xl">
+        <a href="/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/map_icon.png' %}" title="Mapa" class="w-6 h-6 mb-1"></a>
+        <a href="/reservas/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/reservation_icon.png' %}" title="Reservas" class="w-6 h-6 mb-1"></a>
+        <a href="/settings/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/settings_icon.png' %}" title="Configuración" class="w-6 h-6 mb-1"></a>
+        <a href="/help/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/help_icon.png' %}" title="Ayuda" class="w-6 h-6 mb-1"></a>
+    </div>
+
 </body>
-</html>
+
 <script>
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register("{% static 'service-worker.js' %}")
-            .then(reg => console.log("Service Worker registered:", reg))
-            .catch(err => console.error("Service Worker failed:", err));
+            .then(reg => console.log("Service Worker registrado:", reg))
+            .catch(err => console.error("Fallo al registrar Service Worker:", err));
     }
 </script>
+
+</html>
