@@ -1,11 +1,11 @@
 @media (min-width: 769px) {
     .side-panel {
         position: fixed;
-        top: 50%;
+        top: 80%;
         right: -95%; /* hidden off screen */
         transform: translateY(-50%);
         width: 300px; /* fixed width */
-        max-height: 90vh; /* almost full viewport height, leave small margin */
+        max-height: 50vh; /* almost full viewport height, leave small margin */
         background: white;
         border-radius: 16px 0 0 16px;
         box-shadow: -3px 0 15px rgba(0,0,0,0.3);
@@ -15,10 +15,11 @@
         pointer-events: none;
         transition: right 0.4s ease, opacity 0.5s ease;
         z-index: 9999;
+        height: 50%;
     }
 
         .side-panel.show {
-            right: 5%;
+            right: 18%;
             opacity: 1;
             pointer-events: auto;
         }
