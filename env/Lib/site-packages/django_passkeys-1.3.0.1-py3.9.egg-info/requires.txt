@@ -1,0 +1,4 @@
+django>=2.0
+ua-parser
+user-agents
+fido2<2.1.0,>=1.1.1

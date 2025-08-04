@@ -1,0 +1,78 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>User Detail</h2>
+    <hr>
+
+    <!-- User Information -->
+    <div class="mb-4">
+        <h4>{{ user.get_full_name }} ({{ user.username }})</h4>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Joined:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+    </div>
+
+    <!-- User Stats -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5>Total Reservations</h5>
+                    <p class="display-6">{{ total_reservations }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5>Confirmed</h5>
+                    <p class="display-6">{{ confirmed_reservations }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5>Upcoming</h5>
+                    <p class="display-6">{{ upcoming_reservations }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation History -->
+    <h5>Latest Reservations</h5>
+    {% if reservations %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Place</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Confirmed</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.place.name }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.start_time }} - {{ reservation.end_time }}</td>
+                <td>
+                    {% if reservation.confirmed %}
+                    <span class="badge bg-success">Yes</span>
+                    {% else %}
+                    <span class="badge bg-secondary">No</span>
+                    {% endif %}
+                </td>
+                <td>{{ reservation.created_at|date:"M d, Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted">No reservations found for this user.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -9,9 +9,7 @@ from django.conf.urls.static import static
 from .views import auths_views, reservations_views, settings_views, help_views, home_views
 
 
-
 urlpatterns = [
-
 
     #login and registration views
     path('login/', views.auths_views.login_register_view, name='login'),

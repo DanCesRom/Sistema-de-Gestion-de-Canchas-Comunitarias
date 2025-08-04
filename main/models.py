@@ -47,7 +47,7 @@ class Place(models.Model):
     close_time = models.TimeField()
     open_days = models.CharField(max_length=50)
     description = models.TextField()
-    image_url = models.URLField(blank=True)
+    image_url = models.CharField(blank=True, max_length=255)
     sport_type = models.TextField(blank=True, null=False, default='')
 
     def __str__(self):

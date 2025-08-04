@@ -1,0 +1,402 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block page_title %}Admin Settings{% endblock %}
+
+{% block page_actions %}
+<button type="button" class="btn btn-outline-secondary" onclick="resetSettings()">
+    <i class="fas fa-undo me-1"></i>
+    Reset to Defaults
+</button>
+{% endblock %}
+
+{% block content %}
+<form method="post" id="settingsForm">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- General Settings -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cog me-2"></i>
+                        General Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">System Name</label>
+                            <input type="text" name="system_name" class="form-control"
+                                   value="{{ settings.system_name|default:'Sports Reservation System' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Admin Email</label>
+                            <input type="email" name="admin_email" class="form-control"
+                                   value="{{ settings.admin_email|default:user.email }}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">System Description</label>
+                        <textarea name="system_description" class="form-control" rows="3">{{ settings.system_description|default:'Community sports field reservation system for managing bookings and facilities.' }}</textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Time Zone</label>
+                            <select name="timezone" class="form-select">
+                                <option value="UTC">UTC</option>
+                                <option value="America/New_York" {% if settings.timezone == 'America/New_York' %}selected{% endif %}>Eastern Time</option>
+                                <option value="America/Chicago" {% if settings.timezone == 'America/Chicago' %}selected{% endif %}>Central Time</option>
+                                <option value="America/Denver" {% if settings.timezone == 'America/Denver' %}selected{% endif %}>Mountain Time</option>
+                                <option value="America/Los_Angeles" {% if settings.timezone == 'America/Los_Angeles' %}selected{% endif %}>Pacific Time</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Default Language</label>
+                            <select name="default_language" class="form-select">
+                                <option value="en">English</option>
+                                <option value="es" {% if settings.default_language == 'es' %}selected{% endif %}>Spanish</option>
+                                <option value="fr" {% if settings.default_language == 'fr' %}selected{% endif %}>French</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reservation Settings -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-calendar-check me-2"></i>
+                        Reservation Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Max Bookings per User per Week</label>
+                            <input type="number" name="max_bookings_per_week" class="form-control"
+                                   value="{{ settings.max_bookings_per_week|default:5 }}" min="1" max="20">
+                            <small class="form-text text-muted">Limit to prevent abuse</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Time Slot Duration (minutes)</label>
+                            <select name="time_slot_duration" class="form-select">
+                                <option value="30" {% if settings.time_slot_duration == 30 %}selected{% endif %}>30 minutes</option>
+                                <option value="60" {% if settings.time_slot_duration == 60 or not settings.time_slot_duration %}selected{% endif %}>1 hour</option>
+                                <option value="90" {% if settings.time_slot_duration == 90 %}selected{% endif %}>1.5 hours</option>
+                                <option value="120" {% if settings.time_slot_duration == 120 %}selected{% endif %}>2 hours</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Advance Booking Days</label>
+                            <input type="number" name="advance_booking_days" class="form-control"
+                                   value="{{ settings.advance_booking_days|default:30 }}" min="1" max="365">
+                            <small class="form-text text-muted">How far ahead users can book</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Cancellation Hours</label>
+                            <input type="number" name="cancellation_hours" class="form-control"
+                                   value="{{ settings.cancellation_hours|default:24 }}" min="1" max="168">
+                            <small class="form-text text-muted">Minimum hours before cancellation</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="auto_confirm_reservations" class="form-check-input"
+                                       {% if settings.auto_confirm_reservations %}checked{% endif %}>
+                                <label class="form-check-label">Auto-confirm reservations</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="allow_overlapping_bookings" class="form-check-input"
+                                       {% if settings.allow_overlapping_bookings %}checked{% endif %}>
+                                <label class="form-check-label">Allow overlapping bookings</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bell me-2"></i>
+                        Notification Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="notifications_enabled" class="form-check-input"
+                                       {% if settings.notifications_enabled != False %}checked{% endif %}>
+                                <label class="form-check-label">Enable email notifications</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="send_confirmation_emails" class="form-check-input"
+                                       {% if settings.send_confirmation_emails != False %}checked{% endif %}>
+                                <label class="form-check-label">Send confirmation emails</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="send_reminder_emails" class="form-check-input"
+                                       {% if settings.send_reminder_emails != False %}checked{% endif %}>
+                                <label class="form-check-label">Send reminder emails</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Reminder Hours Before</label>
+                            <input type="number" name="reminder_hours" class="form-control"
+                                   value="{{ settings.reminder_hours|default:24 }}" min="1" max="168">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">SMTP Server (for email notifications)</label>
+                        <input type="text" name="smtp_server" class="form-control"
+                               value="{{ settings.smtp_server|default:'' }}" placeholder="smtp.gmail.com">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">SMTP Port</label>
+                            <input type="number" name="smtp_port" class="form-control"
+                                   value="{{ settings.smtp_port|default:587 }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">From Email</label>
+                            <input type="email" name="from_email" class="form-control"
+                                   value="{{ settings.from_email|default:'' }}" placeholder="noreply@yourdomain.com">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Security Settings
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="require_email_verification" class="form-check-input"
+                                       {% if settings.require_email_verification %}checked{% endif %}>
+                                <label class="form-check-label">Require email verification</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="enable_two_factor" class="form-check-input"
+                                       {% if settings.enable_two_factor %}checked{% endif %}>
+                                <label class="form-check-label">Enable two-factor authentication</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Session Timeout (minutes)</label>
+                            <input type="number" name="session_timeout" class="form-control"
+                                   value="{{ settings.session_timeout|default:30 }}" min="5" max="480">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Password Min Length</label>
+                            <input type="number" name="password_min_length" class="form-control"
+                                   value="{{ settings.password_min_length|default:8 }}" min="6" max="20">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Save Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-save me-2"></i>
+                        Save Settings
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>
+                            Save All Settings
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="testEmailSettings()">
+                            <i class="fas fa-envelope me-1"></i>
+                            Test Email Settings
+                        </button>
+                        <button type="button" class="btn btn-outline-warning" onclick="exportSettings()">
+                            <i class="fas fa-download me-1"></i>
+                            Export Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Info -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        System Information
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <td>Django Version</td>
+                            <td><code>{{ django_version }}</code></td>
+                        </tr>
+                        <tr>
+                            <td>Database</td>
+                            <td><code>{{ database_name }}</code></td>
+                        </tr>
+                        <tr>
+                            <td>Debug Mode</td>
+                            <td>
+                                {% if debug_mode %}
+                                <span class="badge bg-warning">Enabled</span>
+                                {% else %}
+                                <span class="badge bg-success">Disabled</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Last Backup</td>
+                            <td>{{ last_backup|default:"Never" }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Maintenance -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-tools me-2"></i>
+                        Maintenance
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="maintenance_mode" class="form-check-input"
+                               {% if settings.maintenance_mode %}checked{% endif %}>
+                        <label class="form-check-label">Maintenance Mode</label>
+                        <small class="form-text text-muted d-block">Prevents new reservations</small>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-outline-info btn-sm" onclick="clearCache()">
+                            <i class="fas fa-broom me-1"></i>
+                            Clear Cache
+                        </button>
+                        <button type="button" class="btn btn-outline-success btn-sm" onclick="backupDatabase()">
+                            <i class="fas fa-database me-1"></i>
+                            Backup Database
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="viewLogs()">
+                            <i class="fas fa-file-alt me-1"></i>
+                            View System Logs
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function resetSettings() {
+        if (confirm('Are you sure you want to reset all settings to defaults? This action cannot be undone.')) {
+            // Reset form to default values
+            document.getElementById('settingsForm').reset();
+
+            // Set specific default values
+            document.querySelector('input[name="max_bookings_per_week"]').value = 5;
+            document.querySelector('select[name="time_slot_duration"]').value = 60;
+            document.querySelector('input[name="advance_booking_days"]').value = 30;
+            document.querySelector('input[name="cancellation_hours"]').value = 24;
+            document.querySelector('input[name="reminder_hours"]').value = 24;
+            document.querySelector('input[name="session_timeout"]').value = 30;
+            document.querySelector('input[name="password_min_length"]').value = 8;
+            document.querySelector('input[name="smtp_port"]').value = 587;
+
+            // Check default checkboxes
+            document.querySelector('input[name="notifications_enabled"]').checked = true;
+            document.querySelector('input[name="send_confirmation_emails"]').checked = true;
+            document.querySelector('input[name="send_reminder_emails"]').checked = true;
+        }
+    }
+
+
+    function testEmailSettings() {
+        const formData = new FormData(document.getElementById('settingsForm'));
+
+        fetch('{% url "admin_dashboard:test_email_settings" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Test email sent successfully!');
+                } else {
+                    alert('Failed to send test email: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Error testing email settings: ' + error);
+            });
+    }
+
+
+
+
+
+
+    // Form validation
+    document.getElementById('settingsForm').addEventListener('submit', function (e) {
+        const maxBookings = parseInt(document.querySelector('input[name="max_bookings_per_week"]').value);
+        const advanceBookingDays = parseInt(document.querySelector('input[name="advance_booking_days"]').value);
+        const cancellationHours = parseInt(document.querySelector('input[name="cancellation_hours"]').value);
+
+        if (maxBookings < 1 || maxBookings > 20) {
+            alert('Max bookings per week must be between 1 and 20');
+            e.preventDefault();
+            return;
+        }
+
+        if (advanceBookingDays < 1 || advanceBookingDays > 365) {
+            alert('Advance booking days must be between 1 and 365');
+            e.preventDefault();
+            return;
+        }
+
+        if (cancellationHours < 1 || cancellationHours > 168) {
+            alert('Cancellation hours must be between 1 and 168');
+            e.preventDefault();
+            return;
+        }
+    });</script>
+
+{% endblock %}

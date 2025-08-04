@@ -17,27 +17,37 @@ from django.core.mail import send_mail
 from django.utils.encoding import force_bytes
 
 
+from django.shortcuts import redirect
+
+def custom_404_view(request, exception):
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            return redirect('/dashboard/')
+        else:
+            return redirect('/')
+    else:
+        return redirect('/login/')
+
+
+
 def login_register_view(request):
     if request.method == 'POST':
         if 'login' in request.POST:
             email = request.POST['email']
             password = request.POST['password']
-            try:
-                user = User.objects.get(email=email)
-                user = authenticate(request, username=user.username, password=password)
-                if user:
-                    login(request, user)
-
-                    # Get profile and check biometric
-                    profile = user.userprofile
-                    #if not profile.biometric_enabled:
-                        #return redirect('biometric_consent')
-                    #else:
-                    return redirect('home')
-                else:
-                    messages.error(request, 'Invalid credentials')
-            except User.DoesNotExist:
-                messages.error(request, 'User not found')
+            users = User.objects.filter(email=email)
+            user = None
+            for u in users:
+                authenticated_user = authenticate(request, username=u.username, password=password)
+                if authenticated_user:
+                    user = authenticated_user
+                    break
+            if user:
+                login(request, user)
+                profile = user.userprofile
+                return redirect('home')
+            else:
+                messages.error(request, 'Invalid credentials or user not found')
 
         elif 'register' in request.POST:
             try:

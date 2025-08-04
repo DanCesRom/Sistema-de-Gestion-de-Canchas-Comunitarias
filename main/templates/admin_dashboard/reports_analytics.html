@@ -1,0 +1,297 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block page_title %}Reports & Analytics{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'admin_dashboard:admin_export_reservations' %}" class="btn btn-success">
+    <i class="fas fa-download me-1"></i>
+    Export CSV
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <!-- Most Used Places -->
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-trophy me-2"></i>
+                    Most Popular Fields
+                </h5>
+            </div>
+            <div class="card-body">
+                <canvas id="mostUsedPlacesChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservations by Weekday -->
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-calendar-week me-2"></i>
+                    Bookings by Day of Week
+                </h5>
+            </div>
+            <div class="card-body">
+                <canvas id="weekdayChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <!-- Monthly Trend -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Monthly Reservations Trend
+                </h5>
+            </div>
+            <div class="card-body">
+                <canvas id="monthlyTrendChart" width="400" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Top Fields Table -->
+    <div class="col-lg-8 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>
+                    Field Performance
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Field Name</th>
+                                <th>Sport Type</th>
+                                <th>Total Bookings</th>
+                                <th>Utilization</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for place in most_used_places %}
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary">#{{ forloop.counter }}</span>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">{{ place.name }}</div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark">{{ place.sport_type|default:"General" }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">{{ place.reservation_count }}</span>
+                                </td>
+                                <td>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {% widthratio place.reservation_count 100 100 %}%">
+                                            {% widthratio place.reservation_count 100 100 %}%
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">No data available</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="col-lg-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-pie me-2"></i>
+                    Quick Stats
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-12 mb-3">
+                        <h4 class="text-primary">{{ most_used_places.0.reservation_count|default:0 }}</h4>
+                        <small class="text-muted">Highest Field Usage</small>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <h4 class="text-success">
+                            {% with total=reservations_by_weekday|length %}{{ total }}{% endwith %}
+                        </h4>
+                        <small class="text-muted">Active Days This Month</small>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <h4 class="text-info">
+                            {% with total=monthly_reservations|length %}{{ total }}{% endwith %}
+                        </h4>
+                        <small class="text-muted">Months with Data</small>
+                    </div>
+                    <div class="col-12">
+                        <h4 class="text-warning">85%</h4>
+                        <small class="text-muted">Avg. Confirmation Rate</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Options -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-download me-2"></i>
+                    Export Options
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'admin_dashboard:admin_export_reservations' %}" class="btn btn-outline-success btn-sm">
+                        <i class="fas fa-file-csv me-1"></i>
+                        Reservations CSV
+                    </a>
+                    <button class="btn btn-outline-info btn-sm" onclick="exportChart('mostUsedPlacesChart')">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        Fields Chart
+                    </button>
+                    <button class="btn btn-outline-warning btn-sm" onclick="exportChart('monthlyTrendChart')">
+                        <i class="fas fa-chart-line me-1"></i>
+                        Trend Chart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Most Used Places Chart
+const mostUsedPlacesData = {
+    labels: [{% for place in most_used_places %}'{{ place.name }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+    datasets: [{
+        label: 'Reservations',
+        data: [{% for place in most_used_places %}{{ place.reservation_count }}{% if not forloop.last %},{% endif %}{% endfor %}],
+        backgroundColor: [
+            '#667eea',
+            '#764ba2',
+            '#f093fb',
+            '#f5576c',
+            '#4facfe'
+        ],
+        borderWidth: 0
+    }]
+};
+
+const mostUsedPlacesChart = new Chart(document.getElementById('mostUsedPlacesChart'), {
+    type: 'doughnut',
+    data: mostUsedPlacesData,
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Weekday Chart
+const weekdayLabels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const weekdayData = {{ reservations_by_weekday|safe }};
+const weekdayValues = new Array(7).fill(0);
+
+weekdayData.forEach(item => {
+    weekdayValues[item.weekday] = item.count;
+});
+
+const weekdayChart = new Chart(document.getElementById('weekdayChart'), {
+    type: 'bar',
+    data: {
+        labels: weekdayLabels,
+        datasets: [{
+            label: 'Reservations',
+            data: weekdayValues,
+            backgroundColor: 'rgba(102, 126, 234, 0.8)',
+            borderColor: 'rgba(102, 126, 234, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Monthly Trend Chart
+const monthlyData = {{ monthly_reservations|safe }};
+const monthlyLabels = monthlyData.map(item => {
+    const date = new Date(item.month);
+    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+});
+const monthlyValues = monthlyData.map(item => item.count);
+
+const monthlyTrendChart = new Chart(document.getElementById('monthlyTrendChart'), {
+    type: 'line',
+    data: {
+        labels: monthlyLabels,
+        datasets: [{
+            label: 'Monthly Reservations',
+            data: monthlyValues,
+            borderColor: 'rgba(102, 126, 234, 1)',
+            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+
+// Export chart function
+function exportChart(chartId) {
+    const canvas = document.getElementById(chartId);
+    const url = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = chartId + '.png';
+    link.href = url;
+    link.click();
+}
+</script>
+{% endblock %}

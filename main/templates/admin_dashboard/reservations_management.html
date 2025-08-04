@@ -1,0 +1,227 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block page_title %}Reservations Management{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'admin_dashboard:admin_export_reservations' %}" class="btn btn-outline-success">
+    <i class="fas fa-download me-1"></i>
+    Export CSV
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <label for="place" class="form-label">Field</label>
+                <select name="place" id="place" class="form-select">
+                    <option value="">All Fields</option>
+                    {% for place in places %}
+                    <option value="{{ place.id }}" {% if current_filters.place == place.id %}selected{% endif %}>
+                        {{ place.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" name="date" id="date" class="form-control" value="{{ current_filters.date }}">
+            </div>
+            <div class="col-md-3">
+                <label for="user" class="form-label">User</label>
+                <input type="text" name="user" id="user" class="form-control" placeholder="Username" value="{{ current_filters.user }}">
+            </div>
+            <div class="col-md-3">
+                <label for="status" class="form-label">Status</label>
+                <select name="status" id="status" class="form-select">
+                    <option value="">All Status</option>
+                    <option value="confirmed" {% if current_filters.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                    <option value="pending" {% if current_filters.status == 'pending' %}selected{% endif %}>Pending</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search me-1"></i>
+                    Filter
+                </button>
+                <a href="{% url 'admin_dashboard:admin_reservations_management' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times me-1"></i>
+                    Clear
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Reservations Table -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+            <i class="fas fa-list me-2"></i>
+            All Reservations
+        </h5>
+        <span class="badge bg-primary">{{ page_obj.paginator.count }} total</span>
+    </div>
+    <div class="card-body">
+        {% if page_obj %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Field</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in page_obj %}
+                    <tr>
+                        <td>
+                            <span class="badge bg-light text-dark">#{{ reservation.id }}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center me-2">
+                                    <span class="text-white small">{{ reservation.user.first_name|first }}{{ reservation.user.last_name|first }}</span>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">{{ reservation.user.username }}</div>
+                                    <small class="text-muted">{{ reservation.user.email }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <div class="fw-bold">{{ reservation.place.name }}</div>
+                                <small class="text-muted">{{ reservation.place.sport_type }}</small>
+                            </div>
+                        </td>
+                        <td>{{ reservation.date|date:"M d, Y" }}</td>
+                        <td>
+                            <span class="badge bg-info">
+                                {{ reservation.start_time }} - {{ reservation.end_time }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if reservation.confirmed %}
+                            <span class="badge bg-success">
+                                <i class="fas fa-check me-1"></i>
+                                Confirmed
+                            </span>
+                            {% else %}
+                            <span class="badge bg-warning">
+                                <i class="fas fa-clock me-1"></i>
+                                Pending
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <small class="text-muted">{{ reservation.created_at|date:"M d, H:i" }}</small>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'admin_dashboard:admin_reservation_detail' reservation.id %}"
+                                   class="btn btn-outline-primary" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button"
+                                        class="btn btn-outline-danger"
+                                        onclick="deleteReservation({{ reservation.id }})"
+                                        title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <nav aria-label="Reservations pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Previous</a>
+                </li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Last</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+            <h5 class="text-muted">No reservations found</h5>
+            <p class="text-muted">Try adjusting your filters or check back later.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this reservation? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function deleteReservation(reservationId) {
+        const modalEl = document.getElementById('deleteModal');
+        if (!modalEl) return alert('Delete modal not found');
+
+        const form = document.getElementById('deleteForm');
+        if (!form) return alert('Delete form not found');
+
+        form.action = `/dashboard/reservations/${reservationId}/delete/`;
+
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+    }
+</script>
+
+{% endblock %}

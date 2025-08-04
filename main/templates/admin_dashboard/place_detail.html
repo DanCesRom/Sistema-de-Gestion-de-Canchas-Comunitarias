@@ -1,0 +1,259 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block page_title %}
+    {% if is_edit %}Edit Field: {{ place.name }}{% else %}Add New Field{% endif %}
+{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'admin_dashboard:admin_place_new'%}" class="btn btn-outline-secondary">
+    <i class="fas fa-arrow-left me-1"></i>
+    Back to Fields
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-{% if is_edit %}edit{% else %}plus{% endif %} me-2"></i>
+                    {% if is_edit %}Edit Field{% else %}Add New Field{% endif %}
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">Field Name *</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                            <div class="text-danger small">{{ form.name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.sport_type.id_for_label }}" class="form-label">Sport Type</label>
+                            {{ form.sport_type }}
+                            {% if form.sport_type.errors %}
+                            <div class="text-danger small">{{ form.sport_type.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                        <div class="text-danger small">{{ form.description.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.latitude.id_for_label }}" class="form-label">Latitude *</label>
+                            {{ form.latitude }}
+                            {% if form.latitude.errors %}
+                            <div class="text-danger small">{{ form.latitude.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.longitude.id_for_label }}" class="form-label">Longitude *</label>
+                            {{ form.longitude }}
+                            {% if form.longitude.errors %}
+                            <div class="text-danger small">{{ form.longitude.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="{{ form.open_time.id_for_label }}" class="form-label">Opening Time *</label>
+                            {{ form.open_time }}
+                            {% if form.open_time.errors %}
+                            <div class="text-danger small">{{ form.open_time.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.close_time.id_for_label }}" class="form-label">Closing Time *</label>
+                            {{ form.close_time }}
+                            {% if form.close_time.errors %}
+                            <div class="text-danger small">{{ form.close_time.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.open_days.id_for_label }}" class="form-label">Open Days</label>
+                            {{ form.open_days }}
+                            {% if form.open_days.errors %}
+                            <div class="text-danger small">{{ form.open_days.errors.0 }}</div>
+                            {% endif %}
+                            <small class="form-text text-muted">e.g., Monday-Friday, Weekends, Daily</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="{{ form.image_url.id_for_label }}" class="form-label">Image URL</label>
+                        {{ form.image_url }}
+                        {% if form.image_url.errors %}
+                        <div class="text-danger small">{{ form.image_url.errors.0 }}</div>
+                        {% endif %}
+                        <small class="form-text text-muted">Optional: URL to an image of the field</small>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>
+                                {% if is_edit %}Update Field{% else %}Create Field{% endif %}
+                            </button>
+                            <a href="{% url 'admin_dashboard:admin_places_management' %}" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                        {% if is_edit %}
+                        <button type="button" class="btn btn-outline-danger" onclick="confirmDelete()">
+                            <i class="fas fa-trash me-1"></i>
+                            Delete Field
+                        </button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Preview Card -->
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-eye me-2"></i>
+                    Preview
+                </h6>
+            </div>
+            <div class="card-body">
+                {% if place.image_url %}
+                <img src="{{ place.image_url }}" class="img-fluid rounded mb-3" alt="Field preview">
+                {% else %}
+                <div class="bg-light rounded d-flex align-items-center justify-content-center mb-3" style="height: 150px;">
+                    <i class="fas fa-image fa-2x text-muted"></i>
+                </div>
+                {% endif %}
+
+                <h6>{{ place.name|default:"Field Name" }}</h6>
+                <p class="text-muted small mb-2">
+                    <i class="fas fa-map-marker-alt me-1"></i>
+                    {% if place.latitude and place.longitude %}
+                    {{ place.latitude }}, {{ place.longitude }}
+                    {% else %}
+                    Location coordinates
+                    {% endif %}
+                </p>
+
+                {% if place.sport_type %}
+                <span class="badge bg-primary mb-2">{{ place.sport_type }}</span>
+                {% endif %}
+
+                <p class="small">{{ place.description|default:"Field description will appear here..." }}</p>
+
+                <div class="row text-center mt-3">
+                    <div class="col-6">
+                        <small class="text-muted d-block">Opens</small>
+                        <strong>{{ place.open_time|default:"--:--" }}</strong>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted d-block">Closes</small>
+                        <strong>{{ place.close_time|default:"--:--" }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Card -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    Tips
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Use descriptive names for easy identification
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Include accurate coordinates for mapping
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Add high-quality images to attract users
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-check text-success me-2"></i>
+                        Specify sport types for better filtering
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if is_edit %}
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Warning!</strong> This will permanently delete the field "{{ place.name }}" and all associated reservations.
+                </div>
+                <p>This action cannot be undone. Are you sure you want to continue?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="{% url 'admin_dashboard:admin_place_delete' place.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>
+                        Delete Field
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>{% if is_edit %}
+function confirmDelete() {
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+}
+{% endif %}
+
+// Live preview updates
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const inputs = form.querySelectorAll('input, textarea, select');
+
+    inputs.forEach(input => {
+        input.addEventListener('input', updatePreview);
+    });
+
+    function updatePreview() {
+        // This would update the preview card in real-time
+        // Implementation depends on your specific needs
+    }
+});</script>
+{% endblock %}
