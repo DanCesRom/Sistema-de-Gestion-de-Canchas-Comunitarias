@@ -41,8 +41,6 @@ def test_email_settings(request):
 
 
 
-def admin_login():
-    return render('admin_dashboard/admin_login.html')
 
 @user_passes_test(is_admin)
 def admin_dashboard(request):
