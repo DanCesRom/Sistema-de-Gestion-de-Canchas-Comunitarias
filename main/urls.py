@@ -14,8 +14,6 @@ urlpatterns = [
     #login and registration views
     path('login/', views.auths_views.login_register_view, name='login'),
 
-    path('logout/', views.auths_views.logout_view, name='logout'),
-
     #Password reset user views
     path('user/account-recovery/', views.auths_views.account_recovery, name='account-recovery'),
 
