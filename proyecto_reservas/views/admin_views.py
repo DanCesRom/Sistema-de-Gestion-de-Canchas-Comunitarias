@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test
@@ -249,9 +251,11 @@ def place_detail(request, place_id=None):
 def users_management(request):
     """Manage all users"""
     users = User.objects.select_related('userprofile').order_by('-date_joined')
-    
-    # Search functionality
+
+    # Filters
     search = request.GET.get('search')
+    role_filter = request.GET.get('role')
+
     if search:
         users = users.filter(
             Q(username__icontains=search) |
@@ -262,16 +266,22 @@ def users_management(request):
     else:
         search = ''
 
+    if role_filter == 'staff':
+        users = users.filter(is_staff=True)
+    elif role_filter == 'user':
+        users = users.filter(is_staff=False)
+
     # Pagination
     paginator = Paginator(users, 20)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
+
     context = {
         'page_obj': page_obj,
-        'search': search,
+        'search': search or '',
+        'role': role_filter or '',
     }
-    
+
     return render(request, 'admin_dashboard/users_management.html', context)
 
 @user_passes_test(is_admin)
@@ -297,44 +307,75 @@ def user_detail(request, user_id):
     
     return render(request, 'admin_dashboard/user_detail.html', context)
 
+from calendar import Calendar, monthrange
+from datetime import datetime, timedelta, date
+import calendar
+
 @user_passes_test(is_admin)
 def calendar_view(request):
-    """Calendar view of all reservations"""
-    # Get current month or requested month
     year = int(request.GET.get('year', timezone.now().year))
     month_str = request.GET.get('month')
-    if month_str and month_str.isdigit():
-        month = int(month_str)
-    else:
-        month = timezone.now().month
-    
-    # Get reservations for the month
+    month = int(month_str) if month_str and month_str.isdigit() else timezone.now().month
+    place_id = request.GET.get('place')
+
     start_date = date(year, month, 1)
-    if month == 12:
-        end_date = date(year + 1, 1, 1) - timedelta(days=1)
-    else:
-        end_date = date(year, month + 1, 1) - timedelta(days=1)
-    
+    end_date = date(year, month, monthrange(year, month)[1])
+    prev_month = (start_date - timedelta(days=1)).replace(day=1)
+    next_month = (end_date + timedelta(days=1)).replace(day=1)
+
     reservations = Reservation.objects.filter(
         date__gte=start_date,
         date__lte=end_date
-    ).select_related('place', 'user')
-    
-    # Group reservations by date
+    )
+
+    if place_id:
+        reservations = reservations.filter(place_id=place_id)
+
+    reservations = reservations.select_related('place', 'user')
+
     reservations_by_date = {}
-    for reservation in reservations:
-        date_key = reservation.date.strftime('%Y-%m-%d')
-        if date_key not in reservations_by_date:
-            reservations_by_date[date_key] = []
-        reservations_by_date[date_key].append(reservation)
-    
+    for r in reservations:
+        date_key = r.date
+        reservations_by_date.setdefault(date_key, []).append(r)
+
+    cal = calendar.Calendar(firstweekday=0)
+    month_days = cal.monthdatescalendar(year, month)
+
+    calendar_data = []
+    for week in month_days:
+        week_data = []
+        for day in week:
+            day_data = {
+                'date': day,
+                'in_current_month': day.month == month,
+                'is_today': day == date.today(),
+                'reservations': reservations_by_date.get(day, []),
+            }
+            week_data.append(day_data)
+        calendar_data.append(week_data)
+
+    total = reservations.count()
+    confirmed = reservations.filter(confirmed=True).count()
+    pending = total - confirmed
+    active_places = reservations.values('place').distinct().count()
+
     context = {
         'year': year,
-        'month': month,
-        'reservations_by_date': json.dumps(reservations_by_date, default=str),
+        'month_name': calendar.month_name[month],
+        'prev_month': prev_month,
+        'next_month': next_month,
+        'calendar_data': calendar_data,
         'places': Place.objects.all(),
+        'selected_place': place_id,
+        'month_stats': {
+            'total_reservations': total,
+            'confirmed_reservations': confirmed,
+            'pending_reservations': pending,
+            'active_places': active_places,
+        },
+        'users': User.objects.all(),
     }
-    
+
     return render(request, 'admin_dashboard/calendar_view.html', context)
 
 @user_passes_test(is_admin)

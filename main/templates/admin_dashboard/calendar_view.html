@@ -101,72 +101,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <div class="month-nav">
-                    <div>
-                        <a href="?year={{ year }}&month={{ prev_month.month }}" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                        <span class="mx-3 h5 mb-0">{{ month_name }} {{ year }}</span>
-                        <a href="?year={{ year }}&month={{ next_month.month }}" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </div>
-                    <div class="d-flex">
-                        <div class="legend-item">
-                            <div class="legend-color bg-success"></div>
-                            <small>Confirmed</small>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color bg-warning"></div>
-                            <small>Pending</small>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background-color: #e3f2fd; border: 1px solid #2196f3;"></div>
-                            <small>Today</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="calendar-grid">
-                    <!-- Day headers -->
-                    <div class="calendar-header">Sun</div>
-                    <div class="calendar-header">Mon</div>
-                    <div class="calendar-header">Tue</div>
-                    <div class="calendar-header">Wed</div>
-                    <div class="calendar-header">Thu</div>
-                    <div class="calendar-header">Fri</div>
-                    <div class="calendar-header">Sat</div>
 
-                    <!-- Calendar days -->
-                    {% for week in calendar_data %}
-                    {% for day in week %}
-                    <div class="calendar-cell {% if not day.in_current_month %}other-month{% endif %} {% if day.is_today %}today{% endif %}"
-                         data-date="{{ day.date|date:'Y-m-d' }}"
-                         onclick="showDayDetails('{{ day.date|date:'Y-m-d' }}')">
-                        <div class="day-number">{{ day.date.day }}</div>
-                        {% for reservation in day.reservations %}
-                        <div class="reservation-item {% if reservation.confirmed %}reservation-confirmed{% else %}reservation-pending{% endif %}"
-                             title="{{ reservation.user.username }} - {{ reservation.place.name }} ({{ reservation.start_time }}-{{ reservation.end_time }})"
-                             onclick="event.stopPropagation(); showReservationDetails({{ reservation.id }})">
-                            {{ reservation.start_time|time:'H:i' }} {{ reservation.place.name|truncatechars:10 }}
-                        </div>
-                        {% endfor %}
-                        {% if day.reservations|length > 3 %}
-                        <div class="text-muted small">+{{ day.reservations|length|add:'-3' }} more</div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Summary Cards -->
 <div class="row">
@@ -203,6 +138,93 @@
                 <i class="fas fa-map-marker-alt fa-2x mb-2"></i>
                 <h4>{{ month_stats.active_places }}</h4>
                 <small>Active Fields</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="month-nav mb-3">
+                    <div class="d-flex align-items-center justify-content-center gap-4">
+                        <a href="?year={{ prev_month.year }}&month={{ prev_month.month }}{% if selected_place %}&place={{ selected_place }}{% endif %}"
+                           class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+
+                        <span class="h4 mb-0">{{ month_name }} {{ year }}</span>
+
+                        <a href="?year={{ next_month.year }}&month={{ next_month.month }}{% if selected_place %}&place={{ selected_place }}{% endif %}"
+                           class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <form method="get" class="d-flex align-items-center mb-3">
+                    <select name="place" class="form-select me-2" onchange="this.form.submit()">
+                        <option value="">All Fields</option>
+                        {% for place in places %}
+                        <option value="{{ place.id }}" {% if place.id|stringformat:"s" == request.GET.place %}selected{% endif %}>
+                            {{ place.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" name="year" value="{{ year }}">
+                    <input type="hidden" name="month" value="{{ month }}">
+                </form>
+
+
+                <div class="d-flex">
+                    <div class="legend-item">
+                        <div class="legend-color bg-success"></div>
+                        <small>Confirmed</small>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color bg-warning"></div>
+                        <small>Pending</small>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #e3f2fd; border: 1px solid #2196f3;"></div>
+                        <small>Today</small>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="calendar-grid">
+                    <!-- Day headers -->
+                    <div class="calendar-header">Sun</div>
+                    <div class="calendar-header">Mon</div>
+                    <div class="calendar-header">Tue</div>
+                    <div class="calendar-header">Wed</div>
+                    <div class="calendar-header">Thu</div>
+                    <div class="calendar-header">Fri</div>
+                    <div class="calendar-header">Sat</div>
+
+                    <!-- Calendar days -->
+                    {% for week in calendar_data %}
+                    {% for day in week %}
+                    <div class="calendar-cell {% if not day.in_current_month %}other-month{% endif %} {% if day.is_today %}today{% endif %}"
+                         data-date="{{ day.date|date:'Y-m-d' }}"
+                         onclick="showDayDetails('{{ day.date|date:'Y-m-d' }}')">
+                        <div class="day-number">{{ day.date.day }}</div>
+                        {% for reservation in day.reservations %}
+                        <div class="reservation-item {% if reservation.confirmed %}reservation-confirmed{% else %}reservation-pending{% endif %}"
+                             title="{{ reservation.user.username }} - {{ reservation.place.name }} ({{ reservation.start_time }}-{{ reservation.end_time }})">
+                            {{ reservation.start_time|time:'H:i' }} {{ reservation.place.name|truncatechars:10 }}
+                        </div>
+                        {% endfor %}
+                        {% if day.reservations|length > 3 %}
+                        <div class="text-muted small">+{{ day.reservations|length|add:'-3' }} more</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
@@ -285,49 +307,6 @@
 
 {% block extra_js %}
 <script>
-    function showDayDetails(date) {
-        document.getElementById('selectedDate').textContent = new Date(date).toLocaleDateString();
-
-        fetch(`/admin/calendar/day-details/?date=${date}`)
-            .then(response => response.json())
-            .then(data => {
-                let content = '';
-                if (data.reservations.length === 0) {
-                    content = '<p class="text-muted">No reservations for this day.</p>';
-                } else {
-                    content = '<div class="list-group">';
-                    data.reservations.forEach(reservation => {
-                        const statusClass = reservation.confirmed ? 'success' : 'warning';
-                        const statusText = reservation.confirmed ? 'Confirmed' : 'Pending';
-
-                        content += `
-                        <div class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">${reservation.user__username}</h6>
-                                    <p class="mb-1">${reservation.place__name}</p>
-                                    <small>${reservation.start_time} - ${reservation.end_time}</small>
-                                </div>
-                                <div>
-                                    <span class="badge bg-${statusClass}">${statusText}</span>
-                                    <div class="btn-group btn-group-sm">
-                                        <a href="/admin/reservations/${reservation.id}/" class="btn btn-outline-primary">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    });
-                    content += '</div>';
-                }
-
-                document.getElementById('dayDetailsContent').innerHTML = content;
-                new bootstrap.Modal(document.getElementById('dayDetailsModal')).show();
-            });
-    }
-
     function showReservationDetails(reservationId) {
         window.location.href = `/admin/reservations/${reservationId}/`;
     }
