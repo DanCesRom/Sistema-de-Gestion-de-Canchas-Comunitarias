@@ -313,6 +313,38 @@ import calendar
 
 @user_passes_test(is_admin)
 def calendar_view(request):
+    # Manejar creación de reserva POST
+    if request.method == 'POST':
+        user_id = request.POST.get('user')
+        place_id = request.POST.get('place')
+        date_str = request.POST.get('date')
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+        confirmed = bool(request.POST.get('confirmed'))
+
+        # Validaciones básicas (puedes extenderlas)
+        if user_id and place_id and date_str and start_time and end_time:
+            try:
+                user = User.objects.get(id=user_id)
+                place = Place.objects.get(id=place_id)
+                reservation_date = date.fromisoformat(date_str)
+
+                # Crear reserva
+                Reservation.objects.create(
+                    user=user,
+                    place=place,
+                    date=reservation_date,
+                    start_time=start_time,
+                    end_time=end_time,
+                    confirmed=confirmed,
+                )
+                # Redirigir a la misma página para evitar repost y limpiar POST
+                return redirect('admin_dashboard:calendar_view')
+            except Exception as e:
+                # Opcional: log o manejar error
+                pass
+
+    # Manejo GET para mostrar calendario y filtros
     year = int(request.GET.get('year', timezone.now().year))
     month_str = request.GET.get('month')
     month = int(month_str) if month_str and month_str.isdigit() else timezone.now().month
@@ -320,6 +352,7 @@ def calendar_view(request):
 
     start_date = date(year, month, 1)
     end_date = date(year, month, monthrange(year, month)[1])
+
     prev_month = (start_date - timedelta(days=1)).replace(day=1)
     next_month = (end_date + timedelta(days=1)).replace(day=1)
 
@@ -327,29 +360,31 @@ def calendar_view(request):
         date__gte=start_date,
         date__lte=end_date
     )
-
     if place_id:
         reservations = reservations.filter(place_id=place_id)
-
     reservations = reservations.select_related('place', 'user')
 
+    # Agrupar reservas por fecha
     reservations_by_date = {}
     for r in reservations:
-        date_key = r.date
-        reservations_by_date.setdefault(date_key, []).append(r)
+        reservations_by_date.setdefault(r.date, []).append(r)
 
-    cal = calendar.Calendar(firstweekday=0)
+    # Generar calendario (lunes primer día)
+    cal = Calendar(firstweekday=0)
     month_days = cal.monthdatescalendar(year, month)
 
     calendar_data = []
     for week in month_days:
         week_data = []
         for day in week:
+            day_reservations = reservations_by_date.get(day, [])
+            # Ordenar reservas por start_time
+            day_reservations_sorted = sorted(day_reservations, key=lambda r: r.start_time)
             day_data = {
                 'date': day,
                 'in_current_month': day.month == month,
                 'is_today': day == date.today(),
-                'reservations': reservations_by_date.get(day, []),
+                'reservations': day_reservations_sorted,
             }
             week_data.append(day_data)
         calendar_data.append(week_data)
@@ -361,6 +396,7 @@ def calendar_view(request):
 
     context = {
         'year': year,
+        'month': month,
         'month_name': calendar.month_name[month],
         'prev_month': prev_month,
         'next_month': next_month,
