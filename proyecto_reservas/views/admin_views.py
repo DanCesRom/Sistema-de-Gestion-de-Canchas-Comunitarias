@@ -213,6 +213,8 @@ def places_management(request):
             Q(description__icontains=search) |
             Q(sport_type__icontains=search)
         )
+    else:
+        search = ''
     
     context = {
         'places': places,
