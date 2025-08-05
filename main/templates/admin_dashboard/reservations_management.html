@@ -31,7 +31,7 @@
             </div>
             <div class="col-md-3">
                 <label for="user" class="form-label">User</label>
-                <input type="text" name="user" id="user" class="form-control" placeholder="Username" value="{{ current_filters.user }}">
+                <input type="text" name="user" id="user" class="form-control" placeholder="Username" value="{{ current_filters.user|default_if_none:'' }}">
             </div>
             <div class="col-md-3">
                 <label for="status" class="form-label">Status</label>

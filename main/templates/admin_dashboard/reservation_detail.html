@@ -1,0 +1,352 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block page_title %}
+    Reservation Details - #{{ reservation.id }}
+{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'admin_dashboard:admin_reservations_management' %}" class="btn btn-outline-secondary">
+    <i class="fas fa-arrow-left me-1"></i>
+    Back to Reservations
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-edit me-2"></i>
+                    Edit Reservation
+                </h5>
+                <div>
+                    {% if reservation.confirmed %}
+                    <span class="badge bg-success">Confirmed</span>
+                    {% else %}
+                    <span class="badge bg-warning">Pending</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.user.id_for_label }}" class="form-label">User *</label>
+                            {{ form.user }}
+                            {% if form.user.errors %}
+                            <div class="text-danger small">{{ form.user.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.place.id_for_label }}" class="form-label">Field *</label>
+                            {{ form.place }}
+                            {% if form.place.errors %}
+                            <div class="text-danger small">{{ form.place.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="{{ form.date.id_for_label }}" class="form-label">Date *</label>
+                            {{ form.date }}
+                            {% if form.date.errors %}
+                            <div class="text-danger small">{{ form.date.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.start_time.id_for_label }}" class="form-label">Start Time *</label>
+                            {{ form.start_time }}
+                            {% if form.start_time.errors %}
+                            <div class="text-danger small">{{ form.start_time.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.end_time.id_for_label }}" class="form-label">End Time *</label>
+                            {{ form.end_time }}
+                            {% if form.end_time.errors %}
+                            <div class="text-danger small">{{ form.end_time.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check">
+                            {{ form.confirmed }}
+                            <label class="form-check-label" for="{{ form.confirmed.id_for_label }}">
+                                Confirmed Reservation
+                            </label>
+                        </div>
+                        {% if form.confirmed.errors %}
+                        <div class="text-danger small">{{ form.confirmed.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>
+                                Update Reservation
+                            </button>
+                            <a href="{% url 'admin_dashboard:admin_reservations_management' %}" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                        <button type="button" class="btn btn-outline-danger" onclick="confirmDelete()">
+                            <i class="fas fa-trash me-1"></i>
+                            Delete Reservation
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Reservation Info -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Reservation Information
+                </h6>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <td><strong>ID:</strong></td>
+                        <td>#{{ reservation.id }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Code:</strong></td>
+                        <td>
+                            {% if reservation.code %}
+                            <code>{{ reservation.code }}</code>
+                            {% else %}
+                            <span class="text-muted">Not assigned</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Created:</strong></td>
+                        <td>{{ reservation.created_at|date:"M d, Y H:i" }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duration:</strong></td>
+                        <td>
+                            {% with start=reservation.start_time end=reservation.end_time %}
+                            {{ duration }}
+                            {{ hours|slice:"-4" }}
+                            {% endwith %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>QR UUID:</strong></td>
+                        <td><small class="text-muted">{{ reservation.qr_uuid }}</small></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- User Info -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-user me-2"></i>
+                    User Information
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center me-3">
+                        <span class="text-white">{{ reservation.user.first_name|first|default:reservation.user.username|first }}</span>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">{{ reservation.user.username }}</h6>
+                        <small class="text-muted">{{ reservation.user.email }}</small>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <div class="border-end">
+                            <h5 class="text-primary mb-0">{{ reservation.user.reservation_set.count }}</h5>
+                            <small class="text-muted">Total Bookings</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h5 class="text-success mb-0">{{ confirmed_count }}</h5>
+                        <small class="text-muted">Confirmed</small>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <a href="{% url 'admin_dashboard:admin_user_detail' reservation.user.id %}" class="btn btn-outline-primary btn-sm w-100">
+                        <i class="fas fa-eye me-1"></i>
+                        View User Details
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Field Info -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    Field Information
+                </h6>
+            </div>
+            <div class="card-body">
+                {% if reservation.place.image_url %}
+                <img src="{{ reservation.place.image_url }}" class="img-fluid rounded mb-3" alt="{{ reservation.place.name }}">
+                {% endif %}
+                <h6>{{ reservation.place.name }}</h6>
+                <p class="text-muted small mb-2">{{ reservation.place.description|truncatewords:15 }}</p>
+                <div class="mb-2">
+                    <small class="text-muted">Sport Type:</small>
+                    <span class="badge bg-primary ms-1">{{ reservation.place.sport_type|default:"General" }}</span>
+                </div>
+                <div class="mb-2">
+                    <small class="text-muted">Operating Hours:</small><br>
+                    <small>{{ reservation.place.open_time }} - {{ reservation.place.close_time }}</small>
+                </div>
+                <div class="mb-3">
+                    <small class="text-muted">Open Days:</small><br>
+                    <small>{{ reservation.place.open_days }}</small>
+                </div>
+                <a href="{% url 'admin_dashboard:admin_place_detail' reservation.place.id %}" class="btn btn-outline-info btn-sm w-100">
+                    <i class="fas fa-edit me-1"></i>
+                    Edit Field Details
+                </a>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="fas fa-cogs me-2"></i>
+                    Quick Actions
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    {% if not reservation.confirmed %}
+                    <form method="post" action="{% url 'admin_dashboard:admin_confirm_reservation' reservation.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm w-100">
+                            <i class="fas fa-check me-1"></i>
+                            Confirm Reservation
+                        </button>
+                    </form>
+                    {% endif %}
+
+                    <button class="btn btn-outline-info btn-sm" onclick="generateQRCode()">
+                        <i class="fas fa-qrcode me-1"></i>
+                        Generate QR Code
+                    </button>
+
+                    <button class="btn btn-outline-warning btn-sm" onclick="sendNotification()">
+                        <i class="fas fa-envelope me-1"></i>
+                        Send Notification
+                    </button>
+
+                    <a href="{% url 'admin_dashboard:admin_reservations_management' %}?place={{ reservation.place.id }}&date={{ reservation.date }}"
+                       class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-calendar me-1"></i>
+                        View Same Day/Field
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Warning!</strong> This will permanently delete this reservation.
+                </div>
+                <p>Are you sure you want to delete reservation #{{ reservation.id }}?</p>
+                <ul class="list-unstyled">
+                    <li><strong>User:</strong> {{ reservation.user.username }}</li>
+                    <li><strong>Field:</strong> {{ reservation.place.name }}</li>
+                    <li><strong>Date:</strong> {{ reservation.date }}</li>
+                    <li><strong>Time:</strong> {{ reservation.start_time }} - {{ reservation.end_time }}</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="{% url 'admin_dashboard:admin_delete_reservation' reservation.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>
+                        Delete Reservation
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function confirmDelete() {
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+}
+
+function generateQRCode() {
+    // Implementation for QR code generation
+    alert('QR Code generation functionality would be implemented here');
+}
+
+function sendNotification() {
+    if (confirm('Send notification email to {{ reservation.user.username }}?')) {
+        fetch('{% url "admin_dashboard:send_reservation_notification" reservation.id %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Notification sent successfully!');
+            } else {
+                alert('Failed to send notification: ' + data.error);
+            }
+        });
+    }
+}
+
+// Auto-save draft changes
+let autoSaveTimer;
+document.querySelectorAll('input, select, textarea').forEach(element => {
+    element.addEventListener('input', function() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(function() {
+            // Auto-save logic here
+            console.log('Auto-saving changes...');
+        }, 2000);
+    });
+});
+</script>
+{% endblock %}

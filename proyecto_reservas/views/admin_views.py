@@ -96,9 +96,21 @@ def reservations_management(request):
     
     # Filtering
     place_filter = request.GET.get('place')
+    try:
+        place_filter_int = int(place_filter) if place_filter else None
+    except ValueError:
+        place_filter_int = None
+
+    if place_filter_int:
+        reservations = reservations.filter(place_id=place_filter_int)
+
     date_filter = request.GET.get('date')
     user_filter = request.GET.get('user')
+    if user_filter and user_filter.lower() != 'none':
+        reservations = reservations.filter(user__username__icontains=user_filter)
     status_filter = request.GET.get('status')
+
+    print("Filters:", place_filter, date_filter, user_filter, status_filter)  # <-- Agrega esto
     
     if place_filter:
         reservations = reservations.filter(place_id=place_filter)
@@ -122,7 +134,7 @@ def reservations_management(request):
         'page_obj': page_obj,
         'places': places,
         'current_filters': {
-            'place': place_filter,
+            'place': place_filter_int,  # use the int value
             'date': date_filter,
             'user': user_filter,
             'status': status_filter,
@@ -131,27 +143,48 @@ def reservations_management(request):
     
     return render(request, 'admin_dashboard/reservations_management.html', context)
 
+from datetime import datetime, timedelta
+
 @user_passes_test(is_admin)
 def reservation_detail(request, reservation_id):
-    """View and edit specific reservation"""
     reservation = get_object_or_404(Reservation, id=reservation_id)
-    
+
     if request.method == 'POST':
         form = ReservationForm(request.POST, instance=reservation)
         if form.is_valid():
             form.save()
             messages.success(request, 'Reservation updated successfully!')
-            return redirect('admin_reservations_management')
+            return redirect('admin_dashboard:admin_reservations_management')
     else:
         form = ReservationForm(instance=reservation)
-    
+
+    # Compute confirmed count
+    user_reservations = reservation.user.reservation_set.all()
+    confirmed_count = user_reservations.filter(confirmed=True).count()
+
+    # Calculate duration between start_time and end_time
+    start = datetime.combine(datetime.today(), reservation.start_time)
+    end = datetime.combine(datetime.today(), reservation.end_time)
+    duration = end - start  # returns timedelta
+
     context = {
         'reservation': reservation,
         'form': form,
+        'confirmed_count': confirmed_count,
+        'duration': duration,  # send to template
     }
-    
+
     return render(request, 'admin_dashboard/reservation_detail.html', context)
 
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+
+@require_POST
+def send_reservation_notification(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+    # Your logic to send email here
+    return JsonResponse({'message': 'Notification sent'})
 
 
 @user_passes_test(is_admin)

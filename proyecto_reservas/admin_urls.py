@@ -18,6 +18,8 @@ urlpatterns = [
     path('reservations/', admin_views.reservations_management, name='admin_reservations_management'),
     path('reservations/<int:reservation_id>/', admin_views.reservation_detail, name='admin_reservation_detail'),
     path('reservations/<int:reservation_id>/delete/', admin_views.delete_reservation, name='admin_delete_reservation'),
+    path('reservations/<int:reservation_id>/notify/', admin_views.send_reservation_notification, name='send_reservation_notification'),
+
 
     # Places
     path('places/', admin_views.places_management, name='admin_places_management'),
