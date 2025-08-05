@@ -259,7 +259,9 @@ def users_management(request):
             Q(first_name__icontains=search) |
             Q(last_name__icontains=search)
         )
-    
+    else:
+        search = ''
+
     # Pagination
     paginator = Paginator(users, 20)
     page_number = request.GET.get('page')
