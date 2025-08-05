@@ -10,6 +10,54 @@
 {% endblock %}
 
 {% block content %}
+
+<!-- Statistics -->
+{% if places %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Quick Stats
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="border-end">
+                            <h4 class="text-primary">{{ places.count }}</h4>
+                            <small class="text-muted">Total Fields</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border-end">
+                            <h4 class="text-success">{{ places|length }}</h4>
+                            <small class="text-muted">Active Fields</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border-end">
+                            <h4 class="text-info">
+                                {% regroup places by sport_type as sport_groups %}
+                                {{ sport_groups|length }}
+                            </h4>
+                            <small class="text-muted">Sport Types</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="text-warning">24/7</h4>
+                        <small class="text-muted">Avg. Availability</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+
 <!-- Search -->
 <div class="card mb-4">
     <div class="card-body">
@@ -23,7 +71,7 @@
                     Search
                 </button>
                 {% if search %}
-                <a href="{% url 'admin_places_management' %}" class="btn btn-outline-secondary">
+                <a href="{% url 'admin_dashboard:admin_places_management' %}" class="btn btn-outline-secondary">
                     <i class="fas fa-times me-1"></i>
                     Clear
                 </a>
@@ -119,50 +167,6 @@
         </div>
     </div>
     {% endfor %}
-</div>
-
-<!-- Statistics -->
-{% if places %}
-<div class="row mt-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="fas fa-chart-bar me-2"></i>
-                    Quick Stats
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row text-center">
-                    <div class="col-md-3">
-                        <div class="border-end">
-                            <h4 class="text-primary">{{ places.count }}</h4>
-                            <small class="text-muted">Total Fields</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="border-end">
-                            <h4 class="text-success">{{ places|length }}</h4>
-                            <small class="text-muted">Active Fields</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="border-end">
-                            <h4 class="text-info">
-                                {% regroup places by sport_type as sport_groups %}
-                                {{ sport_groups|length }}
-                            </h4>
-                            <small class="text-muted">Sport Types</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <h4 class="text-warning">24/7</h4>
-                        <small class="text-muted">Avg. Availability</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 {% endif %}
 {% endblock %}
