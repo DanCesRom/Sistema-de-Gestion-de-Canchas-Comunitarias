@@ -2,13 +2,14 @@
 {% load static %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="{% static 'css/home/map_related.css' %}">
-    <link rel="stylesheet" href="{% static 'css/home/side_panel.css' %}">
-    <link rel="stylesheet" href="{% static 'css/home/search_bar.css' %}">
-    <link rel="stylesheet" href="{% static 'css/home/html.css' %}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="{% static 'css/home/map_related.css' %}">
+<link rel="stylesheet" href="{% static 'css/home/side_panel.css' %}">
+<link rel="stylesheet" href="{% static 'css/home/search_bar.css' %}">
+<link rel="stylesheet" href="{% static 'css/home/html.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
 {% endblock %}
 
 {% block content %}
@@ -51,7 +52,7 @@
         <!-- Panel lateral -->
         <div id="placeSidePanel"
              class="side-panel fixed right-0 top-0 h-full w-80 max-w-full bg-white shadow-xl z-50 p-4 overflow-y-auto transform translate-x-full transition-transform duration-300 ease-in-out">
-            <img id="placeImage" src="" alt="Imagen del lugar" class="w-full h-40 object-cover rounded-lg mb-3">
+            <img id="placeImage" alt="Imagen del lugar" class="w-full h-40 object-cover rounded-lg mb-3" loading="lazy">
             <h3 id="placeName" class="text-xl font-bold text-[#013573] mb-2"></h3>
             <p class="text-sm text-gray-600 mb-1"><strong>Deporte:</strong> <span id="placeSportType"></span></p>
             <p class="text-sm text-gray-600 mb-1"><strong>Horario:</strong> <span id="placeSchedule"></span></p>

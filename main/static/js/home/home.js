@@ -9,12 +9,15 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Add markers and click event to open side panel
 const maxSmoothDistance = 40000; // 40 km in meters
 
+// Crear el grupo de clusters
+let markers = L.markerClusterGroup();
+
+// Añadir marcadores al grupo en vez de directamente al mapa
 places.forEach(place => {
-    let marker = L.marker([place.latitude, place.longitude]).addTo(map);
+    let marker = L.marker([place.latitude, place.longitude]);
     marker.on('click', () => {
         const targetLatLng = L.latLng(place.latitude, place.longitude);
         const currentLatLng = map.getCenter();
-
         const distance = currentLatLng.distanceTo(targetLatLng);
 
         if (distance < maxSmoothDistance) {
@@ -25,8 +28,12 @@ places.forEach(place => {
 
         openSidePanel(place);
     });
+
+    markers.addLayer(marker);
 });
 
+// Añadir el grupo al mapa
+map.addLayer(markers);
 
 // Side panel elements
 const sidePanel = document.getElementById("placeSidePanel");
