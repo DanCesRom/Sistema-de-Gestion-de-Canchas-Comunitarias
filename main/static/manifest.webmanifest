@@ -1,6 +1,6 @@
 {
-  "name": "Reservas de Canchas", // Full app name
-  "short_name": "Reserve", // Name shown under the icon
+  "name": "Reservas de Canchas",
+  "short_name": "Reserve",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

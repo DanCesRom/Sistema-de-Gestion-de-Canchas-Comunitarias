@@ -1,9 +1,6 @@
 const CACHE_NAME = 'reservas-cache-v1';
 const urlsToCache = [
-    "/",
     '/static/manifest.webmanifest',
-    "/static/css/reservation.css",
-    "/static/js/calendar.js",
     "/static/favicon.ico",
     "/static/icons/apple-touch-icon.png",
 ];
