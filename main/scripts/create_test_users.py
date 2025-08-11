@@ -15,7 +15,7 @@ def create_users():
     users_data = [
         {
             "email": "jane@example.com",
-            "username": "jane",
+            "username": "jane@example.com",
             "password": "Test1234!",
             "first_name": "Jane",
             "last_name": "Doe",
@@ -24,7 +24,7 @@ def create_users():
         },
         {
             "email": "john@example.com",
-            "username": "john",
+            "username": "john@example.com",
             "password": "Test1234!",
             "first_name": "John",
             "last_name": "Smith",

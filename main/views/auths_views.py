@@ -35,6 +35,7 @@ def login_register_view(request):
         if 'login' in request.POST:
             email = request.POST['email']
             password = request.POST['password']
+            print(email, password)
             users = User.objects.filter(email=email)
             user = None
             for u in users:
@@ -69,7 +70,7 @@ def login_register_view(request):
 
 
                 else:
-                    username = email.split('@')[0]
+                    username = email
                     user = User.objects.create_user(username=username, email=email, password=password)
                     UserProfile.objects.create(
                         user=user,
