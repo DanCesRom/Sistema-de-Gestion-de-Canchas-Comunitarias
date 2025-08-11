@@ -1,7 +1,7 @@
 let map = L.map('map').setView([18.4861, -69.9312], 13); // default location
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
+    attribution: 'OpenStreetMap contributors'
 }).addTo(map);
 
 
@@ -12,7 +12,7 @@ const maxSmoothDistance = 40000; // 40 km in meters
 // Crear el grupo de clusters
 let markers = L.markerClusterGroup();
 
-// Añadir marcadores al grupo en vez de directamente al mapa
+// Agregar marcadores al grupo en vez de directamente al mapa
 places.forEach(place => {
     let marker = L.marker([place.latitude, place.longitude]);
     marker.on('click', () => {
@@ -32,7 +32,7 @@ places.forEach(place => {
     markers.addLayer(marker);
 });
 
-// Añadir el grupo al mapa
+// Agregar el grupo al mapa
 map.addLayer(markers);
 
 // Side panel elements

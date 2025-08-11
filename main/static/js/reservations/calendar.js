@@ -59,7 +59,7 @@ function handleSelect(div, time) {
             return;
         }
 
-        // Todo ok, actualizar selección
+        // Todo ok, actualizar seleccion
         selectedBlocks = tempSelection;
         div.classList.add('selected');
     }
@@ -98,7 +98,7 @@ function updateForm() {
     if (selectedBlocks.length > 0) {
         selectedBlocks.sort();
 
-        // VALIDACIÓN FINAL ANTES DE ENVIAR
+        // VALIDACION FINAL ANTES DE ENVIAR
         if (!areConsecutive(selectedBlocks)) {
             btn.disabled = true;
             //alert("Las horas seleccionadas deben ser consecutivas.");

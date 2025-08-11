@@ -10,10 +10,10 @@ from utils.encryption import encrypt_data, decrypt_data
 
 class UserProfile(models.Model):
     GENDER_CHOICES = [
-        ('M', 'Masculine'),
-        ('F', 'Feminine'),
-        ('O', 'Other'),
-        ('N', 'Prefer not to say'),
+        ('M', 'Masculino'),
+        ('F', 'Femenino'),
+        ('O', 'Otro'),
+        ('N', 'Prefiero no Decirlo'),
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)

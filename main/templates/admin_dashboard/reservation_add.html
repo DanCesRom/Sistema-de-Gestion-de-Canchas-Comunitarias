@@ -1,0 +1,216 @@
+{% extends 'admin_dashboard/base.html' %}
+
+{% block page_title %}
+    Add New Reservation
+{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'admin_dashboard:admin_reservations_management' %}" class="btn btn-outline-secondary">
+    <i class="fas fa-arrow-left me-1"></i>
+    Back to Reservations
+</a>
+{% endblock %}
+
+{% block extra_head %}
+
+<!-- Select2 CSS ya incluido por ti -->
+<style>
+/* Alinear la caja de Select2 con inputs de Bootstrap */
+.select2-container .select2-selection--single {
+  height: calc(1.5em + .75rem + 2px); /* altura similar a form-control */
+  padding: .375rem .75rem;
+  border: 1px solid #ced4da;
+  border-radius: .375rem;
+  box-sizing: border-box;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 100%;
+  right: .5rem;
+}
+
+/* Forzar que la caja de búsqueda dentro del dropdown ocupe todo */
+.select2-dropdown .select2-search--dropdown .select2-search__field {
+  width: 100%;
+  box-sizing: border-box;
+  padding: .375rem .5rem;
+}
+
+/* Mejor z-index para dropdowns sobre otros elementos (modales, etc.) */
+.select2-container--open .select2-dropdown {
+  z-index: 9999;
+}
+
+/* Small tweaks para integrarse con Bootstrap */
+.select2-container--default .select2-selection--single .select2-selection__clear {
+  margin-right: .25rem;
+  cursor: pointer;
+}
+</style>
+
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-6">
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="id_user" class="form-label">User *</label>
+                <select id="id_user" name="user" class="form-select"></select>
+                {% if form.user.errors %}
+                    <div class="text-danger small">{{ form.user.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_place" class="form-label">Field *</label>
+                <select id="id_place" name="place" class="form-select"></select>
+                {% if form.place.errors %}
+                    <div class="text-danger small">{{ form.place.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.date.id_for_label }}" class="form-label">Date *</label>
+                {{ form.date }}
+                {% if form.date.errors %}
+                    <div class="text-danger small">{{ form.date.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ form.start_time.id_for_label }}" class="form-label">Start Time *</label>
+                    {{ form.start_time }}
+                    {% if form.start_time.errors %}
+                        <div class="text-danger small">{{ form.start_time.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.end_time.id_for_label }}" class="form-label">End Time *</label>
+                    {{ form.end_time }}
+                    {% if form.end_time.errors %}
+                        <div class="text-danger small">{{ form.end_time.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-check mb-3">
+                {{ form.confirmed }}
+                <label for="{{ form.confirmed.id_for_label }}" class="form-check-label">Confirmed Reservation</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i> Create Reservation
+            </button>
+            <a href="{% url 'admin_dashboard:admin_reservations_management' %}" class="btn btn-outline-secondary">
+                Cancel
+            </a>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+<script>
+$(document).ready(function() {
+    $('#id_user').select2({
+        placeholder: 'Buscar usuario...',
+        ajax: {
+            url: '{% url "admin_dashboard:search_users" %}',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return { term: params.term };
+            },
+            processResults: function (data) {
+                return { results: data.results };
+            },
+            cache: true
+        }
+    });
+
+    $('#id_place').select2({
+        placeholder: 'Buscar cancha...',
+        ajax: {
+            url: '{% url "admin_dashboard:search_places" %}',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return { term: params.term };
+            },
+            processResults: function (data) {
+                return { results: data.results };
+            },
+            cache: true
+        }
+    });
+});
+
+
+$(function() {
+    function baseSelect2Options(url) {
+        return {
+            placeholder: 'Escribe para buscar...',
+            width: '100%',
+            allowClear: true,
+            minimumInputLength: 1, // obliga a escribir 1 caracter antes de buscar
+            ajax: {
+                url: url,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return { term: params.term };
+                },
+                processResults: function (data) {
+                    return { results: data.results || [] };
+                },
+                cache: true
+            },
+            escapeMarkup: function (m) { return m; },
+            templateResult: function (item) { return item.text; },
+            templateSelection: function (item) { return item.text || item.id; },
+            // si estás dentro de un contenedor con overflow o modal, prueba a forzar el parent:
+            dropdownParent: $('body')
+        };
+    }
+
+    $('#id_user').select2(baseSelect2Options('{% url "admin_dashboard:search_users" %}'));
+
+    $('#id_place').select2(baseSelect2Options('{% url "admin_dashboard:search_places" %}'));
+
+    // Si estás en modo edición y quieres precargar la opción seleccionada:
+    // (ejecuta esto solo cuando tengas variables con id/text)
+    // const preselectedUserId = "{{ form.data.user|default:'' }}";
+    // const preselectedUserText = "{{ user_display|default:'' }}";
+    // if (preselectedUserId && preselectedUserText) {
+    //     const option = new Option(preselectedUserText, preselectedUserId, true, true);
+    //     $('#id_user').append(option).trigger('change');
+    // }
+});
+
+
+
+</script>
+
+{% endblock %}

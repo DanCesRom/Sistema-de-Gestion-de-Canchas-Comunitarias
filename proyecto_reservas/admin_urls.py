@@ -11,7 +11,7 @@ app_name = 'admin_dashboard'
 urlpatterns = [
     path('', admin_views.admin_dashboard, name='dashboard'),
 
-    #Prueba de Correo Electrónico
+    #Prueba de Correo Electronico
     path('settings/test-email/', admin_views.test_email_settings, name='test_email_settings'),
 
     # Reservations
@@ -19,6 +19,10 @@ urlpatterns = [
     path('reservations/<int:reservation_id>/', admin_views.reservation_detail, name='admin_reservation_detail'),
     path('reservations/<int:reservation_id>/delete/', admin_views.delete_reservation, name='admin_delete_reservation'),
     path('reservations/<int:reservation_id>/notify/', admin_views.send_reservation_notification, name='send_reservation_notification'),
+    
+    path('reservations/add/', admin_views.add_reservation, name='admin_reservation_add'),
+    path('reservations/search-users/', admin_views.search_users, name='search_users'),
+    path('reservations/search-places/', admin_views.search_places, name='search_places'),
 
 
     # Places
@@ -41,6 +45,8 @@ urlpatterns = [
 
     # Settings
     path('settings/', admin_views.admin_settings, name='admin_settings'),
+
+
 
 ]
 

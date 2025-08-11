@@ -18,5 +18,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 
-# Handle 404 error based on user role
-handler404 = 'main.views.auths_views.custom_404_view'
+# Handle 404 and 500 errors
+handler404 = 'main.views.error.custom_404'
+handler500 = 'main.views.error.custom_500'

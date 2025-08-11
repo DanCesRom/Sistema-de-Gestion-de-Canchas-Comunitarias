@@ -13,6 +13,17 @@ import qrcode
 from io import BytesIO
 import base64
 
+# Mapping English day names to Spanish
+weekday_map = {
+    'Monday': 'lunes',
+    'Tuesday': 'martes',
+    'Wednesday': 'mi√©rcoles',
+    'Thursday': 'jueves',
+    'Friday': 'viernes',
+    'Saturday': 's√°bado',
+    'Sunday': 'domingo'
+}
+
 
 @login_required(login_url='/login/')
 def make_reservation(request, place_id):
@@ -41,7 +52,7 @@ def make_reservation(request, place_id):
         }
         return render(request, 'reservations/make_reservation.html', context)
 
-    # Buscar reservas existentes para ese lugar y dÌa
+    # Buscar reservas existentes para ese lugar y dia
     reservations = Reservation.objects.filter(place=place, date=date)
     reserved_blocks = []
 
@@ -70,8 +81,8 @@ def make_reservation(request, place_id):
                 error_message = "No puedes reservar mas de 2 horas."
 
             # Dia de la semana valido
-            open_days_list = [d.strip() for d in place.open_days.lower().split(',')]
-            weekday = date.strftime('%A').lower()
+            open_days_list = [d.strip() for d in place.open_days.lower().replace(' ','').split(',')]
+            weekday = weekday_map[date.strftime('%A')].lower()
             if weekday not in open_days_list:
                 error_message = f"Este lugar no abre los dias {weekday.capitalize()}."
 
@@ -88,7 +99,7 @@ def make_reservation(request, place_id):
             ).exists():
                 error_message = "Este horario ya esta reservado."
 
-            # Si todo est· bien, crear reserva
+            # Si todo esta bien, crear reserva
             else:
                 reservation=Reservation.objects.create(
                     user=request.user,
@@ -132,7 +143,7 @@ def reservations_list(request):
         date__gte=today
     ).order_by('date', 'start_time')
 
-    # Reservas expiradas recientes: fecha menor a hoy pero no m·s viejas que un mes
+    # Reservas expiradas recientes: fecha menor a hoy pero no mas viejas que un mes
     expired_reservations = Reservation.objects.filter(
         user=user,
         date__lt=today,

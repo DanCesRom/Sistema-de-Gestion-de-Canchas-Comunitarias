@@ -3,3 +3,4 @@ python-dotenv
 django-passkeys
 qrcode[pil]
 django-standalone-setup
+whitenoise>=5.3.0

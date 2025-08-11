@@ -35,7 +35,7 @@ def create_users():
 
     for user_data in users_data:
         if User.objects.filter(username=user_data["username"]).exists():
-            print(f"User {user_data['username']} already exists.")
+            print(f"User {user_data['username']} Este usuario ya Existe.")
             continue
 
         user = User.objects.create_user(
@@ -50,7 +50,7 @@ def create_users():
             date_of_birth=user_data["dob"],
             gender=user_data["gender"]
         )
-        print(f"Created user: {user.username} with email {user.email}")
+        print(f"Usuario Creado: {user.username} Con el Correo {user.email}")
 
 if __name__ == "__main__":
     create_users()

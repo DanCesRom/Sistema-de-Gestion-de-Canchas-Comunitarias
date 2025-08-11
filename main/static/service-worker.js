@@ -1,8 +1,9 @@
 const CACHE_NAME = 'reservas-cache-v1';
 const urlsToCache = [
-    '/static/manifest.webmanifest',
-    "/static/favicon.ico",
-    "/static/icons/apple-touch-icon.png",
+    "/",
+    'manifest.webmanifest',
+    "icons/favicon.ico",
+    "icons/apple-touch-icon.png",
 ];
 
 self.addEventListener("install", event => {

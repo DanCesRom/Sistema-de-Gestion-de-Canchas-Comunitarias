@@ -69,16 +69,39 @@ def admin_dashboard(request):
     
     # Field availability today
     places_availability = []
+    now = datetime.now()
+
     for place in Place.objects.all():
-        reservations_count = Reservation.objects.filter(
-            place=place,
-            date=today
-        ).count()
-        places_availability.append({
-            'place': place,
-            'reservations_today': reservations_count,
-            'is_available': reservations_count < 10  # Assuming max 10 slots per day
-        })
+        # Traer todas las reservas de hoy para ese lugar
+        reservations_today = Reservation.objects.filter(place=place, date=date.today())
+
+        reservations_count = reservations_today.count()
+
+        if reservations_count > 0:  # solo lugares con reservas hoy
+            pending_count = 0
+            confirmed_count = 0
+
+            for res in reservations_today:
+                # Si la hora de inicio es mayor que la actual, estÃ¡ pendiente
+                if res.start_time > now.time():
+                    pending_count += 1
+                else:
+                    confirmed_count += 1
+
+            places_availability.append({
+                'place': place,
+                'reservations_today': reservations_count,
+                'pending_count': pending_count,
+                'confirmed_count': confirmed_count,
+                'is_available': reservations_count < 10  # o la regla que tengas
+            })
+
+    # Ordenar por reservas totales descendente y tomar top 10
+    places_availability = sorted(
+        places_availability,
+        key=lambda x: x['reservations_today'],
+        reverse=True
+    )[:10]
     
     context = {
         'total_users': total_users,
@@ -313,7 +336,7 @@ import calendar
 
 @user_passes_test(is_admin)
 def calendar_view(request):
-    # Manejar creación de reserva POST
+    # Manejar creacion de reserva POST
     if request.method == 'POST':
         user_id = request.POST.get('user')
         place_id = request.POST.get('place')
@@ -322,7 +345,7 @@ def calendar_view(request):
         end_time = request.POST.get('end_time')
         confirmed = bool(request.POST.get('confirmed'))
 
-        # Validaciones básicas (puedes extenderlas)
+        # Validaciones basicas (puedes extenderlas)
         if user_id and place_id and date_str and start_time and end_time:
             try:
                 user = User.objects.get(id=user_id)
@@ -338,7 +361,7 @@ def calendar_view(request):
                     end_time=end_time,
                     confirmed=confirmed,
                 )
-                # Redirigir a la misma página para evitar repost y limpiar POST
+                # Redirigir a la misma pagina para evitar repost y limpiar POST
                 return redirect('admin_dashboard:calendar_view')
             except Exception as e:
                 # Opcional: log o manejar error
@@ -369,7 +392,7 @@ def calendar_view(request):
     for r in reservations:
         reservations_by_date.setdefault(r.date, []).append(r)
 
-    # Generar calendario (lunes primer día)
+    # Generar calendario (lunes primer dia)
     cal = Calendar(firstweekday=0)
     month_days = cal.monthdatescalendar(year, month)
 
@@ -518,3 +541,58 @@ def delete_reservation(request, reservation_id):
         messages.success(request, 'Reservation deleted successfully!')
     
     return redirect('admin_dashboard:admin_reservations_management')
+
+
+
+
+@user_passes_test(is_admin)
+def add_reservation(request):
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_dashboard:admin_reservations_management')
+    else:
+        form = ReservationForm()
+
+    return render(request, 'admin_dashboard/reservation_add.html', {
+        'form': form,
+        'is_edit': False
+    })
+
+
+@user_passes_test(is_admin)
+def search_users(request):
+    term = request.GET.get('term', '')
+    users = User.objects.filter(
+        Q(username__icontains=term) |
+        Q(email__icontains=term) |
+        Q(first_name__icontains=term) |
+        Q(last_name__icontains=term)
+    )[:20]  # limitar a 20 resultados
+
+    results = []
+    for u in users:
+        full_name = u.get_full_name().strip()
+        if full_name:
+            text = f"{u.email} ({full_name})"
+        else:
+            text = u.email  # o u.username si prefieres
+        results.append({
+            "id": u.id,
+            "text": text
+        })
+
+    return JsonResponse({"results": results})
+
+
+@user_passes_test(is_admin)
+def search_places(request):
+    term = request.GET.get('term', '')
+    places = Place.objects.filter(name__icontains=term)[:20]
+
+    results = [
+        {"id": p.id, "text": p.name}
+        for p in places
+    ]
+    return JsonResponse({"results": results})

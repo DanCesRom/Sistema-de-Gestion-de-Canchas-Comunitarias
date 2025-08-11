@@ -41,7 +41,7 @@ def create_places():
 
     for place_data in places_data:
         if Place.objects.filter(name=place_data["name"]).exists():
-            print(f"Place '{place_data['name']}' already exists.")
+            print(f"Place '{place_data['name']}' Ya Existe.")
             continue
 
         place = Place.objects.create(

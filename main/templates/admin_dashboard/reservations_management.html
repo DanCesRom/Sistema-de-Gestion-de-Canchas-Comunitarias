@@ -3,10 +3,18 @@
 {% block page_title %}Reservations Management{% endblock %}
 
 {% block page_actions %}
-<a href="{% url 'admin_dashboard:admin_export_reservations' %}" class="btn btn-outline-success">
-    <i class="fas fa-download me-1"></i>
-    Export CSV
-</a>
+
+<div class="d-flex gap-2">
+    <a href="/dashboard/reservations/add/" class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i>
+        Add New Reservation
+    </a>
+
+    <a href="{% url 'admin_dashboard:admin_export_reservations' %}" class="btn btn-outline-success">
+        <i class="fas fa-download me-1"></i>
+        Export CSV
+    </a>
+</div>
 {% endblock %}
 
 {% block content %}

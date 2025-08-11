@@ -82,7 +82,7 @@
         .side-panel.show {
             transform: translate(-50%, 0);
             opacity: 1;
-            pointer-events: auto; /* <- reactiva clics cuando está abierta */
+            pointer-events: auto; /* <- reactiva clics cuando esta abierta */
         }
 
     #placeImage {
