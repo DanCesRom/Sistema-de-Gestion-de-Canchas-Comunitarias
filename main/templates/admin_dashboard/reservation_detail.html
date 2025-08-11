@@ -240,7 +240,7 @@
             <div class="card-body">
                 <div class="d-grid gap-2">
                     {% if not reservation.confirmed %}
-                    <form method="post" action="{% url 'admin_dashboard:admin_confirm_reservation' reservation.id %}">
+                    <form method="post" action="{% url 'admin_dashboard:admin_reservation_detail' reservation.id %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-success btn-sm w-100">
                             <i class="fas fa-check me-1"></i>
