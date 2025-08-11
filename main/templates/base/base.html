@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Reserva</title>
+    <title>{% block title %}Reserva de Canchas{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'icons/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/base/menu_buttons.css' %}">
     <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
@@ -20,50 +20,257 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Tipografía formal -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        :root {
+            --primary-blue: #013573;
+            --primary-red: #de2932;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
+            background-color: var(--gray-50);
+        }
+
+        .sidebar-desktop {
+            background: linear-gradient(180deg, var(--primary-blue) 0%, #014c9e 100%);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            transform: translateX(2px);
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background-color: var(--primary-red);
+            transition: height 0.3s ease;
+        }
+
+        .nav-item:hover::before,
+        .nav-item.active::before {
+            height: 24px;
+        }
+
+        .bottom-nav {
+            background: linear-gradient(180deg, var(--primary-blue) 0%, #014c9e 100%);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-icon {
+            transition: all 0.3s ease;
+        }
+
+        .nav-icon:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        /* Page transitions */
+        .page-content {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading states */
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .page-content {
+                padding-bottom: 5rem;
+            }
         }
     </style>
 
     {% block extra_head %}{% endblock %}
 </head>
 
-<body class="bg-white text-gray-800 min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-800 min-h-screen">
 
-    <!-- SIDEBAR (solo escritorio) -->
-    <div class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center bg-[#013573] py-6 shadow-lg z-50 rounded-r-2xl">
-        <a href="/" class="mb-6"><img src="{% static 'images/base/map_icon.png' %}" title="Mapa" class="w-7 h-7 hover:scale-110 transition-transform"></a>
-        <a href="/reservas" class="mb-6"><img src="{% static 'images/base/reservation_icon.png' %}" title="Reservas" class="w-7 h-7 hover:scale-110 transition-transform"></a>
-        <a href="/settings/" class="mb-6"><img src="{% static 'images/base/settings_icon.png' %}" title="Configuración" class="w-7 h-7 hover:scale-110 transition-transform"></a>
-        <a href="/help/" class="mb-6"><img src="{% static 'images/base/help_icon.png' %}" title="Ayuda" class="w-7 h-7 hover:scale-110 transition-transform"></a>
+    <!-- SIDEBAR (Desktop) -->
+    <div class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center sidebar-desktop py-6 z-50">
+        <div class="mb-8">
+            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                <i class="fas fa-futbol text-white text-lg"></i>
+            </div>
+        </div>
+
+        <nav class="flex flex-col space-y-6 w-full">
+            <a href="/" class="nav-item flex flex-col items-center group" title="Mapa">
+                <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/10 group-hover:bg-white/20 transition-all duration-300">
+                    <i class="fas fa-map text-white nav-icon"></i>
+                </div>
+                <span class="text-xs text-white/80 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Mapa</span>
+            </a>
+
+            <a href="/reservas" class="nav-item flex flex-col items-center group" title="Reservas">
+                <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/10 group-hover:bg-white/20 transition-all duration-300">
+                    <i class="fas fa-calendar-check text-white nav-icon"></i>
+                </div>
+                <span class="text-xs text-white/80 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Reservas</span>
+            </a>
+
+            <a href="/settings/" class="nav-item flex flex-col items-center group" title="Configuración">
+                <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/10 group-hover:bg-white/20 transition-all duration-300">
+                    <i class="fas fa-cog text-white nav-icon"></i>
+                </div>
+                <span class="text-xs text-white/80 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Config</span>
+            </a>
+
+            <a href="/help/" class="nav-item flex flex-col items-center group" title="Ayuda">
+                <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/10 group-hover:bg-white/20 transition-all duration-300">
+                    <i class="fas fa-question-circle text-white nav-icon"></i>
+                </div>
+                <span class="text-xs text-white/80 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Ayuda</span>
+            </a>
+        </nav>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- MAIN CONTENT -->
     <div class="flex-1 md:ml-20 transition-all ease-in-out duration-300">
-        {% block content %}
-        {% endblock %}
+        <main class="page-content">
+            {% block content %}{% endblock %}
+        </main>
     </div>
 
-    <!-- NAV INFERIOR (solo móvil) -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#013573] flex justify-around items-center h-16 shadow-inner z-50 rounded-t-2xl">
-        <a href="/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/map_icon.png' %}" title="Mapa" class="w-6 h-6 mb-1"></a>
-        <a href="/reservas/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/reservation_icon.png' %}" title="Reservas" class="w-6 h-6 mb-1"></a>
-        <a href="/settings/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/settings_icon.png' %}" title="Configuración" class="w-6 h-6 mb-1"></a>
-        <a href="/help/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/help_icon.png' %}" title="Ayuda" class="w-6 h-6 mb-1"></a>
+    <!-- BOTTOM NAVIGATION (Mobile) -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bottom-nav h-16 z-50">
+        <div class="flex justify-around items-center h-full px-4">
+            <a href="/" class="flex flex-col items-center justify-center flex-1 group">
+                <i class="fas fa-map text-white nav-icon text-lg group-active:text-red-300"></i>
+                <span class="text-xs text-white/80 mt-1">Mapa</span>
+            </a>
+
+            <a href="/reservas/" class="flex flex-col items-center justify-center flex-1 group">
+                <i class="fas fa-calendar-check text-white nav-icon text-lg group-active:text-red-300"></i>
+                <span class="text-xs text-white/80 mt-1">Reservas</span>
+            </a>
+
+            <a href="/settings/" class="flex flex-col items-center justify-center flex-1 group">
+                <i class="fas fa-cog text-white nav-icon text-lg group-active:text-red-300"></i>
+                <span class="text-xs text-white/80 mt-1">Config</span>
+            </a>
+
+            <a href="/help/" class="flex flex-col items-center justify-center flex-1 group">
+                <i class="fas fa-question-circle text-white nav-icon text-lg group-active:text-red-300"></i>
+                <span class="text-xs text-white/80 mt-1">Ayuda</span>
+            </a>
+        </div>
     </div>
+
+    <!-- Loading overlay (opcional) -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl p-6 shadow-2xl">
+            <div class="flex items-center space-x-3">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <span class="text-gray-700 font-medium">Cargando...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{% static 'service-worker.js' %}")
+                .then(reg => console.log("Service Worker registrado:", reg))
+                .catch(err => console.error("Fallo al registrar Service Worker:", err));
+        }
+
+        // Loading states
+        function showLoading() {
+            document.getElementById('loading-overlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+
+        // Page navigation with loading
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('a[href^="/"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (!this.href.includes('#')) {
+                        showLoading();
+                        setTimeout(() => hideLoading(), 3000); // Fallback
+                    }
+                });
+            });
+
+            // Active navigation state
+            const currentPath = window.location.pathname;
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Hide loading when page loads
+        window.addEventListener('load', hideLoading);
+    </script>
 
 </body>
-
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register("{% static 'service-worker.js' %}")
-            .then(reg => console.log("Service Worker registrado:", reg))
-            .catch(err => console.error("Fallo al registrar Service Worker:", err));
-    }
-</script>
 
 </html>
