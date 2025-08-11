@@ -1,0 +1,34 @@
+/* ----------------- LOCATION BUTTON ------------------- */
+.location-btn {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    z-index: 1000;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    cursor: pointer;
+    background-image: url("/static/images/home/location_icon.4a30602ec2e5.png"); /* Add this icon */
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+/* ----------------- MAP  ------------------- */
+#map {
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+    flex:1;
+}
+
+.leaflet-control-zoom leaflet-bar leaflet-control {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+}
+
