@@ -1,79 +1,653 @@
 {% extends 'base/base.html' %}
 {% load static %}
+
+{% block title %}Centro de Ayuda | Reserva de Canchas{% endblock %}
+
 {% block content %}
-
-<div class="bg-white px-4 sm:px-6 py-10 max-w-7xl mx-auto">
-
-    <!-- Imagen institucional -->
-    <header class="mb-10 text-center">
-        <div class="flex justify-center mb-4">
-            <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}" class="h-20 w-auto">
+<div class="min-h-screen bg-gray-50 pb-20 md:pb-6">
+    
+    <!-- Header Section -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+            <div class="text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="relative">
+                        <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}" 
+                             alt="Ministerio de Deportes"
+                             class="h-20 sm:h-24 object-contain" />
+                        <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-question-circle text-blue-600 text-sm"></i>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                    Centro de Ayuda
+                </h1>
+                <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
+                    ¿Necesitas ayuda? Encuentra respuestas rápidas o contáctanos directamente
+                </p>
+            </div>
         </div>
-        <h1 class="text-4xl font-bold text-[#013573] mb-2">Centro de Ayuda</h1>
-        <p class="text-gray-600 text-lg">¿Necesitas ayuda? Encuentra respuestas o contáctanos abajo.</p>
-    </header>
+    </div>
 
-    <!-- Contenido -->
-    <main class="flex flex-col md:flex-row gap-8">
-        <!-- Sidebar -->
-        <aside class="md:w-1/3 space-y-6">
-            <div class="bg-white border border-gray-200 rounded-xl shadow p-4">
-                <input type="search" placeholder="Buscar temas de ayuda..."
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#013573]">
+    <!-- Search Section -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center mb-4">
+                <div class="p-2 bg-blue-100 rounded-lg mr-3">
+                    <i class="fas fa-search text-blue-600"></i>
+                </div>
+                <h2 class="text-lg font-bold text-gray-900">Buscar Ayuda</h2>
             </div>
-            <div class="bg-white border border-gray-200 rounded-xl shadow p-4">
-                <h3 class="text-lg font-semibold text-[#013573] mb-2">Enlaces rápidos</h3>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#faq" class="text-[#013573] hover:underline">Preguntas Frecuentes</a></li>
-                    <li><a href="#cuenta" class="text-[#013573] hover:underline">Ayuda con la cuenta</a></li>
-                    <li><a href="#soporte" class="text-[#013573] hover:underline">Soporte técnico</a></li>
-                    <li><a href="#contacto" class="text-[#013573] hover:underline">Contáctanos</a></li>
-                </ul>
+            
+            <div class="relative">
+                <input type="search" 
+                       id="helpSearch"
+                       placeholder="Buscar temas de ayuda, preguntas frecuentes..."
+                       class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
             </div>
-        </aside>
+            
+            <!-- Search Results -->
+            <div id="searchResults" class="mt-4 hidden">
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p class="text-blue-800 text-sm">
+                        <i class="fas fa-lightbulb mr-2"></i>
+                        <strong>Sugerencia:</strong> Usa palabras clave como "reserva", "cancelar", "contraseña", etc.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <!-- Secciones -->
-        <section class="md:w-2/3 space-y-8">
-            <div class="bg-white border border-gray-200 rounded-xl shadow p-6">
-                <h2 id="faq" class="text-2xl font-bold text-[#013573] mb-4">Preguntas Frecuentes</h2>
-                <div class="space-y-4">
-                    <div>
-                        <div class="font-semibold text-[#de2932]">¿Cómo restablezco mi contraseña?</div>
-                        <div class="text-gray-600 mt-1">Ve a la configuración de tu cuenta, haz clic en "Restablecer contraseña" y sigue las instrucciones.</div>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-[#de2932]">¿Dónde puedo ver mis reservas?</div>
-                        <div class="text-gray-600 mt-1">Visita tu panel de usuario y haz clic en "Mis reservas".</div>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-[#de2932]">¿Mis datos están seguros?</div>
-                        <div class="text-gray-600 mt-1">Sí, utilizamos cifrado y verificación en dos pasos para proteger tu información.</div>
-                    </div>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Navegación Rápida</h3>
+                    <nav class="space-y-2">
+                        <a href="#faq" class="flex items-center text-gray-700 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200">
+                            <i class="fas fa-question-circle w-5 mr-3 text-blue-600"></i>
+                            <span>Preguntas Frecuentes</span>
+                        </a>
+                        <a href="#cuenta" class="flex items-center text-gray-700 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200">
+                            <i class="fas fa-user-cog w-5 mr-3 text-green-600"></i>
+                            <span>Ayuda con la Cuenta</span>
+                        </a>
+                        <a href="#reservas" class="flex items-center text-gray-700 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200">
+                            <i class="fas fa-calendar-check w-5 mr-3 text-purple-600"></i>
+                            <span>Reservas</span>
+                        </a>
+                        <a href="#soporte" class="flex items-center text-gray-700 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200">
+                            <i class="fas fa-tools w-5 mr-3 text-orange-600"></i>
+                            <span>Soporte Técnico</span>
+                        </a>
+                        <a href="#contacto" class="flex items-center text-gray-700 hover:text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-all duration-200">
+                            <i class="fas fa-envelope w-5 mr-3 text-red-600"></i>
+                            <span>Contacto</span>
+                        </a>
+                    </nav>
                 </div>
             </div>
 
-            <div id="cuenta" class="bg-white border border-gray-200 rounded-xl shadow p-6">
-                <h2 class="text-2xl font-bold text-[#013573] mb-2">Ayuda con la Cuenta</h2>
-                <p class="text-gray-600">Administra tu perfil, cambia tu correo, contraseña o elimina tu cuenta desde la configuración.</p>
-            </div>
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+                
+                <!-- FAQ Section -->
+                <section id="faq" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-blue-100 rounded-lg mr-3">
+                                <i class="fas fa-question-circle text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-900">Preguntas Frecuentes</h2>
+                                <p class="text-gray-600 text-sm">Respuestas a las consultas más comunes</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            
+                            <!-- FAQ Item 1 -->
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <button class="faq-toggle w-full px-4 py-4 bg-gray-50 hover:bg-gray-100 text-left flex items-center justify-between transition-colors"
+                                        onclick="toggleFAQ(this)">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-key text-red-600 mr-3"></i>
+                                        <span class="font-semibold text-gray-900">¿Cómo restablezco mi contraseña?</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down transform transition-transform"></i>
+                                </button>
+                                <div class="faq-content hidden px-4 py-4 bg-white border-t border-gray-200">
+                                    <p class="text-gray-700 leading-relaxed">
+                                        Para restablecer tu contraseña, ve a la página de configuración de tu cuenta y haz clic en 
+                                        "Cambiar Contraseña". También puedes usar el enlace "¿Olvidaste tu contraseña?" en la página de inicio de sesión.
+                                    </p>
+                                    <div class="mt-3 p-3 bg-blue-50 rounded-lg">
+                                        <p class="text-blue-800 text-sm">
+                                            <i class="fas fa-info-circle mr-2"></i>
+                                            <strong>Tip:</strong> Usa una contraseña segura con al menos 8 caracteres, incluyendo números y símbolos.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-            <div id="soporte" class="bg-white border border-gray-200 rounded-xl shadow p-6">
-                <h2 class="text-2xl font-bold text-[#013573] mb-2">Soporte Técnico</h2>
-                <p class="text-gray-600">¿Tienes problemas? Intenta borrar la caché o reiniciar tu dispositivo. Si no se soluciona, contáctanos.</p>
-            </div>
+                            <!-- FAQ Item 2 -->
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <button class="faq-toggle w-full px-4 py-4 bg-gray-50 hover:bg-gray-100 text-left flex items-center justify-between transition-colors"
+                                        onclick="toggleFAQ(this)">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-calendar-check text-green-600 mr-3"></i>
+                                        <span class="font-semibold text-gray-900">¿Dónde puedo ver mis reservas?</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down transform transition-transform"></i>
+                                </button>
+                                <div class="faq-content hidden px-4 py-4 bg-white border-t border-gray-200">
+                                    <p class="text-gray-700 leading-relaxed">
+                                        Puedes ver todas tus reservas en la sección "Mis Reservas" del menú principal. 
+                                        Allí encontrarás tus reservas activas, expiradas y el historial completo.
+                                    </p>
+                                    <div class="mt-3 flex space-x-2">
+                                        <a href="/reservas/" class="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-lg text-sm hover:bg-green-200 transition-colors">
+                                            <i class="fas fa-calendar-check mr-1"></i>
+                                            Ver mis reservas
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
 
-            <div id="contacto" class="bg-white border border-gray-200 rounded-xl shadow p-6">
-                <h2 class="text-2xl font-bold text-[#013573] mb-2">Contáctanos</h2>
-                <p class="text-gray-600 mb-2">Si necesitas más ayuda:</p>
-                <ul class="space-y-1 text-gray-700 text-sm">
-                    <li>Correo: <a href="mailto:soporte@miderec.gob.do" class="text-[#de2932] hover:underline">soporte@miderec.gob.do</a></li>
-                    <li>Teléfono: <span class="text-[#013573] font-medium">+1 (809) 123-4567</span></li>
-                    <li>Chat en vivo: <span class="text-[#013573] font-medium">Lunes a viernes, 9:00 a.m. - 6:00 p.m.</span></li>
-                </ul>
+                            <!-- FAQ Item 3 -->
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <button class="faq-toggle w-full px-4 py-4 bg-gray-50 hover:bg-gray-100 text-left flex items-center justify-between transition-colors"
+                                        onclick="toggleFAQ(this)">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-shield-alt text-blue-600 mr-3"></i>
+                                        <span class="font-semibold text-gray-900">¿Mis datos están seguros?</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down transform transition-transform"></i>
+                                </button>
+                                <div class="faq-content hidden px-4 py-4 bg-white border-t border-gray-200">
+                                    <p class="text-gray-700 leading-relaxed">
+                                        Sí, utilizamos encriptación de extremo a extremo y verificación en dos pasos para proteger tu información. 
+                                        Tus datos personales nunca se comparten con terceros sin tu consentimiento.
+                                    </p>
+                                    <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        <div class="flex items-center text-green-700 text-sm">
+                                            <i class="fas fa-check-circle mr-2"></i>
+                                            <span>Encriptación SSL</span>
+                                        </div>
+                                        <div class="flex items-center text-green-700 text-sm">
+                                            <i class="fas fa-check-circle mr-2"></i>
+                                            <span>Datos protegidos</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FAQ Item 4 -->
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <button class="faq-toggle w-full px-4 py-4 bg-gray-50 hover:bg-gray-100 text-left flex items-center justify-between transition-colors"
+                                        onclick="toggleFAQ(this)">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-times-circle text-red-600 mr-3"></i>
+                                        <span class="font-semibold text-gray-900">¿Cómo cancelo una reserva?</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down transform transition-transform"></i>
+                                </button>
+                                <div class="faq-content hidden px-4 py-4 bg-white border-t border-gray-200">
+                                    <p class="text-gray-700 leading-relaxed">
+                                        Para cancelar una reserva, ve a "Mis Reservas", selecciona la reserva que deseas cancelar y 
+                                        haz clic en "Cancelar". Recuerda que puedes cancelar hasta 24 horas antes de la fecha programada.
+                                    </p>
+                                    <div class="mt-3 p-3 bg-yellow-50 rounded-lg">
+                                        <p class="text-yellow-800 text-sm">
+                                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                                            <strong>Importante:</strong> Las cancelaciones tardías pueden tener restricciones.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FAQ Item 5 -->
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                <button class="faq-toggle w-full px-4 py-4 bg-gray-50 hover:bg-gray-100 text-left flex items-center justify-between transition-colors"
+                                        onclick="toggleFAQ(this)">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-mobile-alt text-purple-600 mr-3"></i>
+                                        <span class="font-semibold text-gray-900">¿Puedo usar la app en mi teléfono?</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down transform transition-transform"></i>
+                                </button>
+                                <div class="faq-content hidden px-4 py-4 bg-white border-t border-gray-200">
+                                    <p class="text-gray-700 leading-relaxed">
+                                        Sí, nuestra plataforma está optimizada para dispositivos móviles. Puedes acceder desde cualquier 
+                                        navegador web en tu teléfono o tablet con la misma funcionalidad completa.
+                                    </p>
+                                    <div class="mt-3 flex items-center text-purple-700 text-sm">
+                                        <i class="fas fa-check-circle mr-2"></i>
+                                        <span>Compatible con iOS y Android</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Account Help -->
+                <section id="cuenta" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-green-50 to-white">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-green-100 rounded-lg mr-3">
+                                <i class="fas fa-user-cog text-green-600"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-900">Ayuda con la Cuenta</h2>
+                                <p class="text-gray-600 text-sm">Gestiona tu perfil y configuraciones</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="border border-gray-200 rounded-lg p-4 hover:border-green-300 hover:bg-green-50 transition-all duration-200">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-edit text-green-600 mr-3"></i>
+                                    <h4 class="font-semibold text-gray-900">Actualizar Perfil</h4>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">
+                                    Modifica tu información personal, foto de perfil y preferencias desde la configuración.
+                                </p>
+                                <a href="/settings/" class="text-green-600 hover:text-green-700 text-sm font-medium">
+                                    Ir a configuración →
+                                </a>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4 hover:border-green-300 hover:bg-green-50 transition-all duration-200">
+                                <div class="flex items-center mb-3">
+                                    <i class="fas fa-key text-green-600 mr-3"></i>
+                                    <h4 class="font-semibold text-gray-900">Cambiar Contraseña</h4>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">
+                                    Actualiza tu contraseña regularmente para mantener tu cuenta segura.
+                                </p>
+                                <a href="{% url 'password_change_form' %}" class="text-green-600 hover:text-green-700 text-sm font-medium">
+                                    Cambiar contraseña →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reservations Help -->
+                <section id="reservas" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-white">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-purple-100 rounded-lg mr-3">
+                                <i class="fas fa-calendar-check text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-900">Ayuda con Reservas</h2>
+                                <p class="text-gray-600 text-sm">Todo sobre hacer y gestionar reservas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                                <h4 class="font-semibold text-purple-900 mb-2">Cómo hacer una reserva:</h4>
+                                <ol class="text-purple-800 text-sm space-y-1 ml-4">
+                                    <li>1. Explora el mapa y selecciona una cancha</li>
+                                    <li>2. Verifica la disponibilidad en el calendario</li>
+                                    <li>3. Selecciona fecha y horario deseado</li>
+                                    <li>4. Confirma tu reserva</li>
+                                    <li>5. Recibe tu código QR de confirmación</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <h4 class="font-semibold text-gray-900 mb-2 flex items-center">
+                                        <i class="fas fa-clock text-purple-600 mr-2"></i>
+                                        Horarios disponibles
+                                    </h4>
+                                    <p class="text-gray-700 text-sm">
+                                        La mayoría de canchas están disponibles de 6:00 AM a 10:00 PM. 
+                                        Verifica los horarios específicos en cada ubicación.
+                                    </p>
+                                </div>
+                                
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <h4 class="font-semibold text-gray-900 mb-2 flex items-center">
+                                        <i class="fas fa-qrcode text-purple-600 mr-2"></i>
+                                        Código QR
+                                    </h4>
+                                    <p class="text-gray-700 text-sm">
+                                        Después de confirmar tu reserva, recibirás un código QR único 
+                                        que deberás presentar al momento de usar la cancha.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Technical Support -->
+                <section id="soporte" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-orange-50 to-white">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-orange-100 rounded-lg mr-3">
+                                <i class="fas fa-tools text-orange-600"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-900">Soporte Técnico</h2>
+                                <p class="text-gray-600 text-sm">Soluciona problemas técnicos</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="space-y-6">
+                            <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                                <h4 class="font-semibold text-orange-900 mb-3">Problemas comunes y soluciones:</h4>
+                                <div class="space-y-3">
+                                    <div class="flex items-start">
+                                        <i class="fas fa-wifi text-orange-600 mr-3 mt-1"></i>
+                                        <div>
+                                            <p class="font-medium text-orange-900">Problemas de conexión</p>
+                                            <p class="text-orange-800 text-sm">Verifica tu conexión a internet y recarga la página</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <i class="fas fa-mobile-alt text-orange-600 mr-3 mt-1"></i>
+                                        <div>
+                                            <p class="font-medium text-orange-900">Problemas en móvil</p>
+                                            <p class="text-orange-800 text-sm">Limpia la caché del navegador o prueba en modo incógnito</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <i class="fas fa-exclamation-triangle text-orange-600 mr-3 mt-1"></i>
+                                        <div>
+                                            <p class="font-medium text-orange-900">Error al cargar</p>
+                                            <p class="text-orange-800 text-sm">Reinicia la aplicación o intenta más tarde</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <h4 class="font-semibold text-blue-900 mb-2">¿Necesitas más ayuda?</h4>
+                                <p class="text-blue-800 text-sm mb-3">
+                                    Si los problemas persisten, no dudes en contactar a nuestro equipo de soporte técnico.
+                                </p>
+                                <a href="#contacto" class="inline-flex items-center text-blue-600 hover:text-blue-700 text-sm font-medium">
+                                    <i class="fas fa-arrow-down mr-1"></i>
+                                    Ver información de contacto
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact Section -->
+                <section id="contacto" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-red-50 to-white">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-red-100 rounded-lg mr-3">
+                                <i class="fas fa-envelope text-red-600"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-900">Contáctanos</h2>
+                                <p class="text-gray-600 text-sm">Estamos aquí para ayudarte</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- Contact Methods -->
+                            <div class="space-y-4">
+                                <h4 class="font-semibold text-gray-900 mb-4">Métodos de contacto:</h4>
+                                
+                                <div class="flex items-center p-4 bg-red-50 rounded-lg border border-red-200">
+                                    <div class="p-2 bg-red-100 rounded-lg mr-4">
+                                        <i class="fas fa-envelope text-red-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Correo electrónico</p>
+                                        <a href="mailto:soporte@miderec.gob.do" class="text-red-600 hover:text-red-700 text-sm">
+                                            soporte@miderec.gob.do
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center p-4 bg-green-50 rounded-lg border border-green-200">
+                                    <div class="p-2 bg-green-100 rounded-lg mr-4">
+                                        <i class="fas fa-phone text-green-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Teléfono</p>
+                                        <a href="tel:+18091234567" class="text-green-600 hover:text-green-700 text-sm">
+                                            +1 (809) 123-4567
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                    <div class="p-2 bg-blue-100 rounded-lg mr-4">
+                                        <i class="fas fa-comments text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Chat en vivo</p>
+                                        <p class="text-blue-700 text-sm">Lunes a viernes, 9:00 AM - 6:00 PM</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Response Times -->
+                            <div class="space-y-4">
+                                <h4 class="font-semibold text-gray-900 mb-4">Tiempos de respuesta:</h4>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <span class="text-gray-700">Chat en vivo</span>
+                                        <span class="text-green-600 font-medium">Inmediato</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <span class="text-gray-700">Correo electrónico</span>
+                                        <span class="text-blue-600 font-medium">24 horas</span>
+                                    </div>
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <span class="text-gray-700">Teléfono</span>
+                                        <span class="text-purple-600 font-medium">Inmediato</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                    <div class="flex items-start">
+                                        <i class="fas fa-clock text-yellow-600 mr-3 mt-1"></i>
+                                        <div>
+                                            <h5 class="font-medium text-yellow-900">Horario de atención:</h5>
+                                            <p class="text-yellow-800 text-sm">
+                                                Lunes a viernes: 8:00 AM - 6:00 PM<br>
+                                                Sábados: 9:00 AM - 2:00 PM
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div class="text-center">
+            <div class="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm border border-gray-200 mb-4">
+                <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}" 
+                     alt="Logo" 
+                     class="h-8 w-auto mr-3">
+                <div class="text-left">
+                    <p class="text-gray-900 font-semibold text-sm">Ministerio de Deportes</p>
+                    <p class="text-gray-600 text-xs">República Dominicana</p>
+                </div>
+            </div>
+            <p class="text-gray-600 text-sm">
+                Sistema de Reservas Deportivas - Versión 2024.1
+            </p>
+        </div>
+    </div>
 </div>
 
-<script src="{% static 'js/help/faq.js' %}"></script>
+<style>
+    /* Smooth scroll behavior */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* FAQ animations */
+    .faq-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+    
+    .faq-content.open {
+        max-height: 500px;
+        transition: max-height 0.3s ease-in;
+    }
+    
+    /* Search animations */
+    .search-fade-in {
+        animation: fadeInUp 0.3s ease-out;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+// FAQ Toggle functionality
+function toggleFAQ(button) {
+    const content = button.nextElementSibling;
+    const icon = button.querySelector('.fa-chevron-down');
+    
+    // Close all other FAQs
+    document.querySelectorAll('.faq-content').forEach(item => {
+        if (item !== content) {
+            item.classList.remove('open');
+            item.classList.add('hidden');
+        }
+    });
+    
+    document.querySelectorAll('.faq-toggle .fa-chevron-down').forEach(item => {
+        if (item !== icon) {
+            item.style.transform = 'rotate(0deg)';
+        }
+    });
+    
+    // Toggle current FAQ
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        setTimeout(() => content.classList.add('open'), 10);
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        content.classList.remove('open');
+        icon.style.transform = 'rotate(0deg)';
+        setTimeout(() => content.classList.add('hidden'), 300);
+    }
+}
+
+// Search functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('helpSearch');
+    const searchResults = document.getElementById('searchResults');
+    
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim().toLowerCase();
+        
+        if (query.length > 0) {
+            searchResults.classList.remove('hidden');
+            searchResults.classList.add('search-fade-in');
+            
+            // Simple search logic - highlight relevant sections
+            highlightRelevantSections(query);
+        } else {
+            searchResults.classList.add('hidden');
+            clearHighlights();
+        }
+    });
+    
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Add temporary highlight
+                target.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.3)';
+                setTimeout(() => {
+                    target.style.boxShadow = '';
+                }, 2000);
+            }
+        });
+    });
+});
+
+function highlightRelevantSections(query) {
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        const text = section.textContent.toLowerCase();
+        if (text.includes(query)) {
+            section.style.border = '2px solid #3b82f6';
+            section.style.backgroundColor = '#dbeafe';
+        } else {
+            section.style.border = '';
+            section.style.backgroundColor = '';
+        }
+    });
+}
+
+function clearHighlights() {
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.style.border = '';
+        section.style.backgroundColor = '';
+    });
+}
+
+// Add loading states to contact links
+document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach(link => {
+    link.addEventListener('click', function() {
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>' + this.textContent;
+        
+        setTimeout(() => {
+            this.innerHTML = originalText;
+        }, 2000);
+    });
+});
+</script>
 {% endblock %}
