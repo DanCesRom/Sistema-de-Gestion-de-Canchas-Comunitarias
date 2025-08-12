@@ -30,11 +30,9 @@ SECRET_KEY = 'a0465267-83cb-48f6-ad6c-375d67a9feca'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "10.0.19.69",
       "127.0.0.1",
-      "localhost",
       ".pythonanywhere.com",
-      ".tucancha.com.do",
+      "tucancha.com.do",
       ]
 
 # Application references
@@ -153,8 +151,8 @@ SECURE_HSTS_PRELOAD = True
 
 
 # Session security
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
 
