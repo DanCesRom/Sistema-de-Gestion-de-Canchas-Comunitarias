@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
       "127.0.0.1",
       ".pythonanywhere.com",
       "www.tucancha.com.do",
-      ".tucancha.com.do",
+      "tucancha.com.do",
       ]
 
 # Application references
