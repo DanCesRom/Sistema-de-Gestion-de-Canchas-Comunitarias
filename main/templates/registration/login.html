@@ -233,7 +233,7 @@
             <i class="fas fa-exclamation-triangle me-2"></i>
             {% for field, errors in form.errors.items %}
             {% for error in errors %}
-            {% if field == '__all__' %}
+            {% if field == '_all_' %}
             {{ error }}
             {% else %}
             <strong>{{ field|title }}:</strong> {{ error }}
@@ -326,7 +326,8 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>function togglePassword() {
+    <script>
+    function togglePassword() {
             const passwordField = document.getElementById('id_password');
             const passwordIcon = document.getElementById('password-icon');
 
@@ -342,12 +343,12 @@
         }
 
         // Auto-focus on username field
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('id_username').focus();
         });
 
         // Form validation
-        document.querySelector('form').addEventListener('submit', function(e) {
+        document.querySelector('form').addEventListener('submit', function (e) {
             const username = document.getElementById('id_username').value.trim();
             const password = document.getElementById('id_password').value;
 
@@ -365,17 +366,17 @@
         });
 
         // Add loading state to button on submit
-        document.querySelector('form').addEventListener('submit', function() {
+        document.querySelector('form').addEventListener('submit', function () {
             const submitBtn = document.querySelector('button[type="submit"]');
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Signing in...';
             submitBtn.disabled = true;
         });
 
         // Demo credentials click handlers
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const demoCredentials = document.querySelector('.demo-credentials');
             if (demoCredentials) {
-                demoCredentials.addEventListener('click', function(e) {
+                demoCredentials.addEventListener('click', function (e) {
                     if (e.target.textContent.includes('admin')) {
                         document.getElementById('id_username').value = 'admin';
                         document.getElementById('id_password').value = 'admin123';

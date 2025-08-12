@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Reserva</title>
+    <title>{% block title %}Reserva | Sistema de Canchas Deportivas{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'icons/favicon.ico' %}">
     <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -12,47 +12,605 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Reserva">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="apple-touch-icon" href="{% static 'icons/apple-touch-icon.png' %}">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Tipografía formal -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         body {
             font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom Gradients and Colors */
+        .bg-primary-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
+        }
+
+        .bg-nav-gradient {
+            background: linear-gradient(135deg, #013573 0%, #0d47a1 25%, #1565c0 50%, #1976d2 75%, #2196f3 100%);
+        }
+
+        .bg-floating-gradient {
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, rgba(147, 197, 253, 0.05) 50%, transparent 70%);
+        }
+
+        /* Glass Effect */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-nav {
+            background: rgba(1, 53, 115, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Advanced Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            33% {
+                transform: translateY(-10px) rotate(1deg);
+            }
+
+            66% {
+                transform: translateY(5px) rotate(-1deg);
+            }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        .animate-slide-in-left {
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .animate-slide-in-up {
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.4s ease-out;
+        }
+
+        /* Navigation Hover Effects */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+            .nav-item::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0;
+                height: 0;
+                background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+                border-radius: 50%;
+                transition: all 0.4s ease;
+                transform: translate(-50%, -50%);
+                z-index: -1;
+            }
+
+            .nav-item:hover::before {
+                width: 60px;
+                height: 60px;
+            }
+
+            .nav-item:hover {
+                transform: translateY(-2px) scale(1.1);
+            }
+
+            .nav-item.active {
+                background: rgba(255, 255, 255, 0.15);
+                transform: scale(1.05);
+            }
+
+        /* Mobile Navigation */
+        .mobile-nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+            .mobile-nav-item:hover {
+                transform: translateY(-3px);
+            }
+
+            .mobile-nav-item::after {
+                content: '';
+                position: absolute;
+                top: -2px;
+                left: 50%;
+                width: 0;
+                height: 3px;
+                background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+                border-radius: 2px;
+                transition: all 0.3s ease;
+                transform: translateX(-50%);
+            }
+
+            .mobile-nav-item.active::after {
+                width: 30px;
+            }
+
+        /* Loading Animation */
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Floating Background Elements */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+            .floating-shapes::before,
+            .floating-shapes::after {
+                content: '';
+                position: absolute;
+                border-radius: 50%;
+                background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.05));
+                animation: float 8s ease-in-out infinite;
+            }
+
+            .floating-shapes::before {
+                width: 300px;
+                height: 300px;
+                top: 10%;
+                right: 10%;
+                animation-delay: -2s;
+            }
+
+            .floating-shapes::after {
+                width: 200px;
+                height: 200px;
+                bottom: 10%;
+                left: 10%;
+                animation-delay: -4s;
+            }
+
+        /* Sidebar Improvements */
+        .sidebar {
+            background: linear-gradient(145deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Content Area */
+        .content-area {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            min-height: 100vh;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #64748b 0%, #475569 100%);
+            border-radius: 4px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(180deg, #475569 0%, #334155 100%);
+            }
+
+        /* Tooltip Styles */
+        .tooltip {
+            position: relative;
+        }
+
+            .tooltip::after {
+                content: attr(data-tooltip);
+                position: absolute;
+                left: 100%;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-left: 15px;
+                padding: 8px 12px;
+                background: rgba(0, 0, 0, 0.9);
+                color: white;
+                border-radius: 8px;
+                font-size: 12px;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 1000;
+            }
+
+            .tooltip::before {
+                content: '';
+                position: absolute;
+                left: 100%;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-left: 9px;
+                border: 6px solid transparent;
+                border-right-color: rgba(0, 0, 0, 0.9);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .tooltip:hover::after,
+            .tooltip:hover::before {
+                opacity: 1;
+                visibility: visible;
+            }
+
+        /* Responsive Design Improvements */
+        @media (max-width: 768px) {
+            .mobile-nav {
+                background: linear-gradient(135deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
+                box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+            }
         }
     </style>
 
     {% block extra_head %}{% endblock %}
 </head>
 
-<body class="bg-white text-gray-800 min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col overflow-x-hidden">
 
-    <!-- SIDEBAR (solo escritorio) -->
-    <div class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center bg-[#013573] py-6 shadow-lg z-50 rounded-r-2xl">
-        <a href="/" class="mb-6"><img src="{% static 'images/base/map_icon.png' %}" title="Mapa" class="w-7 h-7 hover:scale-110 transition-transform"></a>
-        <a href="/reservas" class="mb-6"><img src="{% static 'images/base/reservation_icon.png' %}" title="Reservas" class="w-7 h-7 hover:scale-110 transition-transform"></a>
-        <a href="/settings/" class="mb-6"><img src="{% static 'images/base/settings_icon.png' %}" title="Configuración" class="w-7 h-7 hover:scale-110 transition-transform"></a>
-        <a href="/help/" class="mb-6"><img src="{% static 'images/base/help_icon.png' %}" title="Ayuda" class="w-7 h-7 hover:scale-110 transition-transform"></a>
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes"></div>
+
+    <!-- Enhanced Sidebar (Desktop) -->
+    <nav class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center sidebar py-8 z-50 rounded-r-3xl animate-slide-in-left" style="position: fixed !important;">
+        <!-- Logo/Brand -->
+        <div class="mb-8 p-3 bg-white rounded-2xl animate-pulse-glow shadow-lg" style="position: relative;">
+            <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}"
+                 alt="Logo"
+                 class="w-8 h-8 object-contain">
+        </div>
+
+        <!-- Navigation Items -->
+        <div class="flex flex-col space-y-6 flex-1 justify-center" style="position: relative;">
+            <a href="/"
+               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
+               data-tooltip="Mapa de Canchas"
+               style="position: relative;">
+                <i class="fas fa-map-marked-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
+            </a>
+
+            <a href="/reservas/"
+               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
+               data-tooltip="Mis Reservas"
+               style="position: relative;">
+                <i class="fas fa-calendar-check text-white text-lg group-hover:scale-110 transition-transform"></i>
+            </a>
+
+            <a href="/settings/"
+               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
+               data-tooltip="Configuración"
+               style="position: relative;">
+                <i class="fas fa-cog text-white text-lg group-hover:scale-110 transition-transform"></i>
+            </a>
+
+            <a href="/help/"
+               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
+               data-tooltip="Centro de Ayuda"
+               style="position: relative;">
+                <i class="fas fa-question-circle text-white text-lg group-hover:scale-110 transition-transform"></i>
+            </a>
+        </div>
+
+        <!-- Logout Section -->
+        <div class="mt-auto" style="position: relative;">
+            <a href="{% url 'logout' %}"
+               class="tooltip p-3 rounded-2xl bg-red-500 bg-opacity-20 hover:bg-red-500 hover:bg-opacity-30 cursor-pointer transition-all duration-300 group"
+               data-tooltip="Cerrar Sesión"
+               onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')"
+               style="position: relative;">
+                <i class="fas fa-sign-out-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 md:ml-20 transition-all duration-500 ease-in-out content-area">
+        <main class="relative z-10">
+            {% block content %}
+            {% endblock %}
+        </main>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <div class="flex-1 md:ml-20 transition-all ease-in-out duration-300">
-        {% block content %}
-        {% endblock %}
+    <!-- Enhanced Mobile Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 mobile-nav flex justify-around items-center h-20 z-50 rounded-t-3xl animate-slide-in-up" style="position: fixed !important;">
+        <!-- Background Glass Effect -->
+        <div class="absolute inset-0 glass-nav rounded-t-3xl"></div>
+
+        <!-- Navigation Items -->
+        <a href="/"
+           class="mobile-nav-item relative flex flex-col items-center justify-center text-white p-3 rounded-2xl transition-all duration-300 group">
+            <i class="fas fa-map-marked-alt text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+            <span class="text-xs font-medium">Mapa</span>
+        </a>
+
+        <a href="/reservas/"
+           class="mobile-nav-item relative flex flex-col items-center justify-center text-white p-3 rounded-2xl transition-all duration-300 group">
+            <i class="fas fa-calendar-check text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+            <span class="text-xs font-medium">Reservas</span>
+        </a>
+
+        <a href="/settings/"
+           class="mobile-nav-item relative flex flex-col items-center justify-center text-white p-3 rounded-2xl transition-all duration-300 group">
+            <i class="fas fa-cog text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+            <span class="text-xs font-medium">Config</span>
+        </a>
+
+        <a href="/help/"
+           class="mobile-nav-item relative flex flex-col items-center justify-center text-white p-3 rounded-2xl transition-all duration-300 group">
+            <i class="fas fa-question-circle text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+            <span class="text-xs font-medium">Ayuda</span>
+        </a>
+    </nav>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm hidden items-center justify-center z-[100]">
+        <div class="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 animate-scale-in">
+            <div class="loading-spinner"></div>
+            <p class="text-gray-700 font-medium">Cargando...</p>
+        </div>
     </div>
 
-    <!-- NAV INFERIOR (solo móvil) -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#013573] flex justify-around items-center h-16 shadow-inner z-50 rounded-t-2xl">
-        <a href="/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/map_icon.png' %}" title="Mapa" class="w-6 h-6 mb-1"></a>
-        <a href="/reservas/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/reservation_icon.png' %}" title="Reservas" class="w-6 h-6 mb-1"></a>
-        <a href="/settings/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/settings_icon.png' %}" title="Configuración" class="w-6 h-6 mb-1"></a>
-        <a href="/help/" class="flex flex-col items-center text-white"><img src="{% static 'images/base/help_icon.png' %}" title="Ayuda" class="w-6 h-6 mb-1"></a>
-    </div>
+    <!-- JavaScript -->
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{% static 'service-worker.js' %}")
+                .then(reg => console.log("Service Worker registrado:", reg))
+                .catch(err => console.error("Fallo al registrar Service Worker:", err));
+        }
 
+        // Enhanced Navigation
+        document.addEventListener('DOMContentLoaded', function () {
+            // Set active navigation state
+            const currentPath = window.location.pathname;
+            const navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
+
+            navItems.forEach(item => {
+                const href = item.getAttribute('href');
+                if (href === currentPath || (currentPath === '/' && href === '/')) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Loading states for navigation
+            navItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (href && href !== '#') {
+                        showLoading();
+                        // Hide loading after 3 seconds max
+                        setTimeout(hideLoading, 3000);
+                    }
+                });
+            });
+
+            // Smooth scroll behavior
+            document.documentElement.style.scrollBehavior = 'smooth';
+
+            // Page transition effects
+            document.body.style.opacity = '0';
+            document.body.style.transform = 'translateY(20px)';
+            document.body.style.transition = 'all 0.6s ease-out';
+
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+                document.body.style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        // Loading functions
+        function showLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function hideLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Hide loading on page load
+        window.addEventListener('load', hideLoading);
+
+        // Page visibility API for better UX
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'visible') {
+                // Page became visible, refresh any time-sensitive content
+                console.log('Page is now visible');
+            }
+        });
+
+        // Enhanced touch interactions for mobile
+        if ('ontouchstart' in window) {
+            document.addEventListener('touchstart', function () { }, { passive: true });
+        }
+
+        // Keyboard navigation support
+        document.addEventListener('keydown', function (e) {
+            if (e.altKey) {
+                switch (e.key) {
+                    case '1':
+                        e.preventDefault();
+                        window.location.href = '/';
+                        break;
+                    case '2':
+                        e.preventDefault();
+                        window.location.href = '/reservas/';
+                        break;
+                    case '3':
+                        e.preventDefault();
+                        window.location.href = '/settings/';
+                        break;
+                    case '4':
+                        e.preventDefault();
+                        window.location.href = '/help/';
+                        break;
+                }
+            }
+        });
+
+        // Add ripple effect to clickable elements
+        function addRippleEffect() {
+            const buttons = document.querySelectorAll('.nav-item, .mobile-nav-item, button, .btn');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        }
+
+        // Initialize ripple effects
+        addRippleEffect();
+
+        // Performance monitoring
+        if ('PerformanceObserver' in window) {
+            const observer = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    if (entry.entryType === 'navigation') {
+                        console.log('Page load time:', entry.loadEventEnd - entry.loadEventStart, 'ms');
+                    }
+                }
+            });
+            observer.observe({ entryTypes: ['navigation'] });
+        }
+    </script>
+
+    <!-- Additional Styles for Ripple Effect -->
+    <style>
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
 </body>
 </html>

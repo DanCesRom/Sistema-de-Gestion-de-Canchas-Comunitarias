@@ -302,6 +302,7 @@
             opacity: 0;
             transform: translateY(20px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -335,9 +336,9 @@
         border-radius: 3px;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-    }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
 
     /* Floating button pulse effect */
     .floating-btn {
@@ -348,6 +349,7 @@
         0%, 100% {
             transform: scale(1);
         }
+
         50% {
             transform: scale(1.05);
         }
@@ -355,65 +357,65 @@
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add smooth scroll behavior
-    document.documentElement.style.scrollBehavior = 'smooth';
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
 
-    // Animate cards on scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+        // Animate cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-slide-up');
-            }
-        });
-    }, observerOptions);
-
-    // Observe all reservation cards
-    document.querySelectorAll('.group, section').forEach(card => {
-        observer.observe(card);
-    });
-
-    // Add loading states to buttons
-    document.querySelectorAll('a[href]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            if (this.href.includes('/')) {
-                const icon = this.querySelector('i');
-                if (icon && !icon.classList.contains('fa-spinner')) {
-                    const originalClass = icon.className;
-                    icon.className = 'fas fa-spinner fa-spin';
-
-                    // Restore original icon after 3 seconds
-                    setTimeout(() => {
-                        icon.className = originalClass;
-                    }, 3000);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-slide-up');
                 }
-            }
+            });
+        }, observerOptions);
+
+        // Observe all reservation cards
+        document.querySelectorAll('.group, section').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Add loading states to buttons
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', function (e) {
+                if (this.href.includes('/')) {
+                    const icon = this.querySelector('i');
+                    if (icon && !icon.classList.contains('fa-spinner')) {
+                        const originalClass = icon.className;
+                        icon.className = 'fas fa-spinner fa-spin';
+
+                        // Restore original icon after 3 seconds
+                        setTimeout(() => {
+                            icon.className = originalClass;
+                        }, 3000);
+                    }
+                }
+            });
+        });
+
+        // Enhanced floating button
+        const floatingBtn = document.querySelector('.fixed .group');
+        if (floatingBtn) {
+            floatingBtn.addEventListener('mouseenter', function () {
+                this.style.animation = 'none';
+            });
+
+            floatingBtn.addEventListener('mouseleave', function () {
+                this.style.animation = 'pulse 2s infinite';
+            });
+        }
+
+        // Add subtle animations to stats cards
+        const statsCards = document.querySelectorAll('.grid.grid-cols-1.sm\\:grid-cols-3 > div');
+        statsCards.forEach((card, index) => {
+            card.style.animationDelay = ${ index * 0.1 } s;
+            card.classList.add('animate-slide-up');
         });
     });
-
-    // Enhanced floating button
-    const floatingBtn = document.querySelector('.fixed .group');
-    if (floatingBtn) {
-        floatingBtn.addEventListener('mouseenter', function() {
-            this.style.animation = 'none';
-        });
-        
-        floatingBtn.addEventListener('mouseleave', function() {
-            this.style.animation = 'pulse 2s infinite';
-        });
-    }
-
-    // Add subtle animations to stats cards
-    const statsCards = document.querySelectorAll('.grid.grid-cols-1.sm\\:grid-cols-3 > div');
-    statsCards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-        card.classList.add('animate-slide-up');
-    });
-});
 </script>
 {% endblock %}

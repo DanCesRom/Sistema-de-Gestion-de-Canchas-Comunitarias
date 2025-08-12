@@ -6,7 +6,7 @@
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 pb-20 md:pb-6 flex items-center justify-center">
     <div class="w-full max-w-4xl px-4 sm:px-6">
-        
+
         <!-- Success Animation Container -->
         <div class="text-center mb-8">
             <div class="relative inline-flex items-center justify-center">
@@ -24,7 +24,7 @@
                     <div class="confetti confetti-6"></div>
                 </div>
             </div>
-            
+
             <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mt-6 mb-4 animate-fade-in-up">
                 ¡Reserva Confirmada!
             </h1>
@@ -35,7 +35,7 @@
 
         <!-- Main Content Cards -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            
+
             <!-- QR Code Card -->
             <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden animate-slide-in-left">
                 <div class="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-[#013573] to-[#0d47a1]">
@@ -44,26 +44,26 @@
                         <h2 class="text-xl font-bold">Tu Código de Acceso</h2>
                     </div>
                 </div>
-                
+
                 <div class="p-8 text-center">
                     <!-- QR Code -->
                     <div class="bg-white p-6 rounded-xl border-2 border-gray-200 shadow-lg mb-6 inline-block hover:scale-105 transition-transform duration-300">
-                        <img src="data:image/png;base64,{{ qr_base64 }}" 
-                             alt="QR Code" 
+                        <img src="data:image/png;base64,{{ qr_base64 }}"
+                             alt="QR Code"
                              class="w-48 h-48 mx-auto">
                     </div>
-                    
+
                     <!-- 6 Digit Code -->
                     <div class="bg-gray-50 rounded-xl p-6 mb-6">
                         <p class="text-sm text-gray-600 mb-2">Código de 6 dígitos:</p>
                         <div class="text-3xl font-bold text-[#013573] tracking-wider font-mono cursor-pointer hover:bg-gray-100 rounded-lg p-2 transition-colors"
-                             onclick="copyCode()" 
+                             onclick="copyCode()"
                              title="Click para copiar">
                             {{ reservation.code }}
                         </div>
                         <p class="text-xs text-gray-500 mt-2">Click para copiar</p>
                     </div>
-                    
+
                     <!-- Download Button -->
                     <button onclick="downloadQR()"
                             class="w-full flex items-center justify-center py-3 px-6 bg-[#013573] hover:bg-[#012d5a] text-white font-semibold rounded-xl transition-colors">
@@ -81,7 +81,7 @@
                         <h2 class="text-xl font-bold">Detalles de tu Reserva</h2>
                     </div>
                 </div>
-                
+
                 <div class="p-8 space-y-6">
                     <!-- Place Info -->
                     <div class="text-center pb-6 border-b border-gray-200">
@@ -107,7 +107,7 @@
                             <p class="text-gray-700">{{ reservation.date|date:"l" }}</p>
                             <p class="text-lg font-bold text-gray-900">{{ reservation.date|date:"d F Y" }}</p>
                         </div>
-                        
+
                         <div class="text-center p-4 bg-gray-50 rounded-xl">
                             <i class="fas fa-clock text-[#013573] text-xl mb-2"></i>
                             <h4 class="font-semibold text-gray-900 mb-1">Horario</h4>
@@ -134,7 +134,7 @@
                     <h2 class="text-xl font-bold text-gray-900">Instrucciones Importantes</h2>
                 </div>
             </div>
-            
+
             <div class="p-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-4">
@@ -147,7 +147,7 @@
                                 <p class="text-gray-600 text-sm">Presenta tu QR o código 10 minutos antes de tu horario</p>
                             </div>
                         </div>
-                        
+
                         <div class="flex items-start">
                             <div class="flex-shrink-0 w-8 h-8 bg-[#013573] rounded-full flex items-center justify-center mr-3">
                                 <span class="text-white font-bold text-sm">2</span>
@@ -158,7 +158,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="space-y-4">
                         <div class="flex items-start">
                             <div class="flex-shrink-0 w-8 h-8 bg-[#de2932] rounded-full flex items-center justify-center mr-3">
@@ -169,7 +169,7 @@
                                 <p class="text-gray-600 text-sm">Las cancelaciones deben hacerse con 24 horas de anticipación</p>
                             </div>
                         </div>
-                        
+
                         <div class="flex items-start">
                             <div class="flex-shrink-0 w-8 h-8 bg-[#de2932] rounded-full flex items-center justify-center mr-3">
                                 <span class="text-white font-bold text-sm">4</span>
@@ -191,13 +191,13 @@
                 <i class="fas fa-eye mr-2"></i>
                 Ver Detalle
             </a>
-            
+
             <a href="/reservas/"
                class="flex items-center justify-center py-4 px-6 bg-[#de2932] hover:bg-[#c41e25] text-white font-semibold rounded-xl transition-all duration-200 hover:scale-105">
                 <i class="fas fa-list mr-2"></i>
                 Mis Reservas
             </a>
-            
+
             <a href="/"
                class="flex items-center justify-center py-4 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all duration-200 hover:scale-105">
                 <i class="fas fa-home mr-2"></i>
@@ -217,18 +217,54 @@
         animation: confetti-fall 3s ease-out infinite;
     }
 
-    .confetti-1 { background: #ff6b6b; top: -10px; left: 10px; animation-delay: 0s; }
-    .confetti-2 { background: #4ecdc4; top: -15px; right: 10px; animation-delay: 0.5s; }
-    .confetti-3 { background: #45b7d1; top: -20px; left: 50%; animation-delay: 1s; }
-    .confetti-4 { background: #f9ca24; top: -10px; right: 30px; animation-delay: 1.5s; }
-    .confetti-5 { background: #6c5ce7; top: -25px; left: 30px; animation-delay: 2s; }
-    .confetti-6 { background: #a29bfe; top: -15px; right: 50%; animation-delay: 2.5s; }
+    .confetti-1 {
+        background: #ff6b6b;
+        top: -10px;
+        left: 10px;
+        animation-delay: 0s;
+    }
+
+    .confetti-2 {
+        background: #4ecdc4;
+        top: -15px;
+        right: 10px;
+        animation-delay: 0.5s;
+    }
+
+    .confetti-3 {
+        background: #45b7d1;
+        top: -20px;
+        left: 50%;
+        animation-delay: 1s;
+    }
+
+    .confetti-4 {
+        background: #f9ca24;
+        top: -10px;
+        right: 30px;
+        animation-delay: 1.5s;
+    }
+
+    .confetti-5 {
+        background: #6c5ce7;
+        top: -25px;
+        left: 30px;
+        animation-delay: 2s;
+    }
+
+    .confetti-6 {
+        background: #a29bfe;
+        top: -15px;
+        right: 50%;
+        animation-delay: 2.5s;
+    }
 
     @keyframes confetti-fall {
         0% {
             opacity: 1;
             transform: translateY(0) rotate(0deg);
         }
+
         100% {
             opacity: 0;
             transform: translateY(300px) rotate(720deg);
@@ -241,10 +277,12 @@
             transform: scale(0);
             opacity: 0;
         }
+
         50% {
             transform: scale(1.2);
             opacity: 1;
         }
+
         100% {
             transform: scale(1);
             opacity: 1;
@@ -255,9 +293,11 @@
         0% {
             transform: scale(0);
         }
+
         50% {
             transform: scale(1.3);
         }
+
         100% {
             transform: scale(1);
         }
@@ -268,6 +308,7 @@
             opacity: 0;
             transform: translateY(30px);
         }
+
         100% {
             opacity: 1;
             transform: translateY(0);
@@ -279,6 +320,7 @@
             opacity: 0;
             transform: translateX(-50px);
         }
+
         100% {
             opacity: 1;
             transform: translateX(0);
@@ -290,6 +332,7 @@
             opacity: 0;
             transform: translateX(50px);
         }
+
         100% {
             opacity: 1;
             transform: translateX(0);
@@ -351,7 +394,7 @@ function fallbackCopyTextToClipboard(text) {
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    
+
     try {
         const successful = document.execCommand('copy');
         if (successful) {
@@ -362,7 +405,7 @@ function fallbackCopyTextToClipboard(text) {
     } catch (err) {
         showNotification('Error al copiar código', 'error');
     }
-    
+
     document.body.removeChild(textArea);
 }
 
@@ -372,20 +415,20 @@ function downloadQR() {
     if (qrImage) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        
+
         canvas.width = qrImage.naturalWidth || 400;
         canvas.height = qrImage.naturalHeight || 400;
-        
+
         ctx.drawImage(qrImage, 0, 0);
-        
+
         const link = document.createElement('a');
         link.download = 'reserva-qr-{{ reservation.id }}.png';
         link.href = canvas.toDataURL();
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         showNotification('¡QR descargado exitosamente!', 'success');
     }
 }
@@ -396,13 +439,13 @@ function showNotification(message, type) {
     notification.className = 'fixed top-4 right-4 z-50 px-6 py-3 rounded-lg text-white font-medium transition-all duration-300 transform translate-x-full';
     notification.className += type === 'success' ? ' bg-green-500' : ' bg-red-500';
     notification.textContent = message;
-    
+
     document.body.appendChild(notification);
-    
+
     setTimeout(function() {
         notification.classList.remove('translate-x-full');
     }, 100);
-    
+
     setTimeout(function() {
         notification.classList.add('translate-x-full');
         setTimeout(function() {
@@ -417,7 +460,7 @@ function showNotification(message, type) {
 document.addEventListener('DOMContentLoaded', function() {
     // Add celebration sound effect (optional)
     // You could add a subtle success sound here
-    
+
     // Automatically download QR after 2 seconds (optional)
     // setTimeout(downloadQR, 2000);
 });

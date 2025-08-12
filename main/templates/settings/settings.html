@@ -47,13 +47,13 @@
 
     <!-- Main Content -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        
+
         <!-- Profile Card -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-8">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h2 class="text-xl font-bold text-gray-900">Información Personal</h2>
             </div>
-            
+
             <div class="p-6">
                 <!-- Profile Header -->
                 <div class="flex items-center space-x-6 mb-6 pb-6 border-b border-gray-200">
@@ -117,9 +117,9 @@
                                 <i class="fas fa-birthday-cake text-[#013573] mr-3"></i>
                                 <span class="text-gray-900">
                                     {% if profile.dob %}
-                                        {{ profile.dob|date:"d/m/Y" }}
+                                    {{ profile.dob|date:"d/m/Y" }}
                                     {% else %}
-                                        No disponible
+                                    No disponible
                                     {% endif %}
                                 </span>
                             </div>
@@ -131,13 +131,13 @@
                                 <i class="fas fa-venus-mars text-[#013573] mr-3"></i>
                                 <span class="text-gray-900">
                                     {% if profile.gender == 'M' %}
-                                        Masculino
+                                    Masculino
                                     {% elif profile.gender == 'F' %}
-                                        Femenino
+                                    Femenino
                                     {% elif profile.gender == 'O' %}
-                                        Otro
+                                    Otro
                                     {% else %}
-                                        Prefiero no decir
+                                    Prefiero no decir
                                     {% endif %}
                                 </span>
                             </div>
@@ -157,7 +157,7 @@
 
         <!-- Actions Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            
+
             <!-- Security Card -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200">
                 <div class="px-6 py-4 border-b border-gray-200">
@@ -263,9 +263,9 @@
                         </div>
                         <h4 class="text-2xl font-bold text-gray-900">
                             {% if user.last_login %}
-                                {{ user.last_login|date:"d/m/Y" }}
+                            {{ user.last_login|date:"d/m/Y" }}
                             {% else %}
-                                Hoy
+                            Hoy
                             {% endif %}
                         </h4>
                         <p class="text-gray-600">Última actividad</p>
@@ -357,6 +357,7 @@
             opacity: 0;
             transform: translateY(-10px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -368,6 +369,7 @@
             opacity: 0;
             transform: scale(0.9);
         }
+
         to {
             opacity: 1;
             transform: scale(1);
@@ -384,50 +386,50 @@
 </style>
 
 <script>
-function showDeleteModal() {
-    document.getElementById('deleteModal').classList.remove('hidden');
-    document.getElementById('deleteModal').classList.add('flex');
-    document.body.style.overflow = 'hidden';
-}
+    function showDeleteModal() {
+        document.getElementById('deleteModal').classList.remove('hidden');
+        document.getElementById('deleteModal').classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
 
-function closeModal(event) {
-    if (event && event.target !== event.currentTarget) return;
-    document.getElementById('deleteModal').classList.add('hidden');
-    document.getElementById('deleteModal').classList.remove('flex');
-    document.body.style.overflow = '';
-}
+    function closeModal(event) {
+        if (event && event.target !== event.currentTarget) return;
+        document.getElementById('deleteModal').classList.add('hidden');
+        document.getElementById('deleteModal').classList.remove('flex');
+        document.body.style.overflow = '';
+    }
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Auto-hide success messages
-    const messages = document.querySelectorAll('.animate-fade-in');
-    messages.forEach(message => {
-        setTimeout(() => {
-            message.style.animation = 'fadeOut 0.5s ease-out forwards';
-            setTimeout(() => message.remove(), 500);
-        }, 5000);
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+        // Auto-hide success messages
+        const messages = document.querySelectorAll('.animate-fade-in');
+        messages.forEach(message => {
+            setTimeout(() => {
+                message.style.animation = 'fadeOut 0.5s ease-out forwards';
+                setTimeout(() => message.remove(), 500);
+            }, 5000);
+        });
 
-    // Close modal with Escape key
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
-    });
-
-    // Add loading states to links
-    document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach(link => {
-        link.addEventListener('click', function() {
-            const icon = this.querySelector('i');
-            if (icon && !icon.classList.contains('fa-spinner')) {
-                const originalClass = icon.className;
-                icon.className = 'fas fa-spinner fa-spin';
-                
-                setTimeout(() => {
-                    icon.className = originalClass;
-                }, 2000);
+        // Close modal with Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeModal();
             }
         });
+
+        // Add loading states to links
+        document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach(link => {
+            link.addEventListener('click', function () {
+                const icon = this.querySelector('i');
+                if (icon && !icon.classList.contains('fa-spinner')) {
+                    const originalClass = icon.className;
+                    icon.className = 'fas fa-spinner fa-spin';
+
+                    setTimeout(() => {
+                        icon.className = originalClass;
+                    }, 2000);
+                }
+            });
+        });
     });
-});
 </script>
 {% endblock %}

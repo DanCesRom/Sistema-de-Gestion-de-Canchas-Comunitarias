@@ -20,7 +20,7 @@
                         <p class="text-gray-600">Selecciona fecha y horario para tu reserva</p>
                     </div>
                 </div>
-                <a href="/" 
+                <a href="/"
                    class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
                     <i class="fas fa-arrow-left mr-2"></i>
                     Volver al Mapa
@@ -44,7 +44,7 @@
     <!-- Main Content -->
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
+
             <!-- Calendar Section -->
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -56,14 +56,14 @@
                                 <h2 class="text-xl font-bold text-gray-900">Seleccionar Fecha y Horario</h2>
                             </div>
                             <div class="flex items-center space-x-4">
-                                <button onclick="changeDay(-1)" 
+                                <button onclick="changeDay(-1)"
                                         class="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
                                     <i class="fas fa-chevron-left text-gray-600"></i>
                                 </button>
                                 <span id="selected-day" class="text-lg font-semibold text-gray-900 min-w-64 text-center">
                                     {{ date|date:"l, d F Y" }}
                                 </span>
-                                <button onclick="changeDay(1)" 
+                                <button onclick="changeDay(1)"
                                         class="p-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
                                     <i class="fas fa-chevron-right text-gray-600"></i>
                                 </button>
@@ -72,8 +72,8 @@
                     </div>
 
                     <!-- Time Slots -->
-                    <div class="p-8">                        
-                        <div id="time-blocks" 
+                    <div class="p-8">
+                        <div id="time-blocks"
                              class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4"
                              data-open-time="{{ open_time }}"
                              data-close-time="{{ close_time }}"
@@ -90,7 +90,7 @@
                                     <p class="text-gray-600" id="selection-text">Selecciona un horario</p>
                                 </div>
                                 <div class="flex space-x-3">
-                                    <button onclick="clearSelection()" 
+                                    <button onclick="clearSelection()"
                                             class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                                         <i class="fas fa-times mr-2"></i>
                                         Limpiar
@@ -109,7 +109,7 @@
 
             <!-- Sidebar -->
             <div class="lg:col-span-1 space-y-6">
-                
+
                 <!-- Place Information -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200">
                     <div class="px-6 py-4 border-b border-gray-200">
@@ -125,21 +125,21 @@
                             <span class="text-gray-700">{{ place.sport_type }}</span>
                         </div>
                         {% endif %}
-                        
+
                         {% if place.open_time and place.close_time %}
                         <div class="flex items-center">
                             <i class="fas fa-clock text-[#013573] mr-3"></i>
                             <span class="text-gray-700">{{ place.open_time|time:"H:i" }} - {{ place.close_time|time:"H:i" }}</span>
                         </div>
                         {% endif %}
-                        
+
                         {% if place.capacity %}
                         <div class="flex items-center">
                             <i class="fas fa-users text-[#013573] mr-3"></i>
                             <span class="text-gray-700">Capacidad: {{ place.capacity }} personas</span>
                         </div>
                         {% endif %}
-                        
+
                         {% if place.description %}
                         <div class="pt-4 border-t border-gray-200">
                             <p class="text-gray-600 text-sm leading-relaxed">{{ place.description|truncatewords:25 }}</p>
@@ -186,12 +186,12 @@
 
                 <!-- Quick Actions -->
                 <div class="space-y-3">
-                    <a href="/reservas/" 
+                    <a href="/reservas/"
                        class="w-full flex items-center justify-center py-3 px-4 bg-[#de2932] hover:bg-[#c41e25] text-white rounded-lg transition-colors font-medium">
                         <i class="fas fa-list mr-2"></i>
                         Mis Reservas
                     </a>
-                    <a href="/help/" 
+                    <a href="/help/"
                        class="w-full flex items-center justify-center py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors font-medium">
                         <i class="fas fa-question-circle mr-2"></i>
                         ¿Cómo funciona?
@@ -220,34 +220,34 @@
         background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
     }
 
-    .time-block.available:hover {
-        border-color: #013573;
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(1, 53, 115, 0.15);
-    }
+        .time-block.available:hover {
+            border-color: #013573;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(1, 53, 115, 0.15);
+        }
 
-    .time-block.selected {
-        background: linear-gradient(135deg, #013573 0%, #0d47a1 100%);
-        color: white;
-        border-color: #013573;
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(1, 53, 115, 0.3);
-    }
+        .time-block.selected {
+            background: linear-gradient(135deg, #013573 0%, #0d47a1 100%);
+            color: white;
+            border-color: #013573;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(1, 53, 115, 0.3);
+        }
 
-    .time-block.reserved {
-        background: linear-gradient(135deg, #de2932 0%, #c41e25 100%);
-        color: white;
-        border-color: #de2932;
-        cursor: not-allowed;
-    }
+        .time-block.reserved {
+            background: linear-gradient(135deg, #de2932 0%, #c41e25 100%);
+            color: white;
+            border-color: #de2932;
+            cursor: not-allowed;
+        }
 
-    .time-block.unavailable {
-        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-        color: #9ca3af;
-        border-color: #d1d5db;
-        cursor: not-allowed;
-    }
+        .time-block.unavailable {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #9ca3af;
+            border-color: #d1d5db;
+            cursor: not-allowed;
+        }
 
     /* Loading animation */
     .loading {
@@ -255,24 +255,29 @@
         color: transparent;
     }
 
-    .loading::after {
-        content: '';
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        top: 50%;
-        left: 50%;
-        margin-left: -10px;
-        margin-top: -10px;
-        border: 2px solid transparent;
-        border-top-color: #ffffff;
-        border-radius: 50%;
-        animation: spin 1s ease 0s infinite normal;
-    }
+        .loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 1s ease 0s infinite normal;
+        }
 
     @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
     }
 </style>
 
@@ -293,20 +298,20 @@ function generateTimeBlocks() {
     const openTime = container.dataset.openTime;
     const closeTime = container.dataset.closeTime;
     const reservedBlocks = JSON.parse(container.dataset.reserved || '[]');
-    
+
     container.innerHTML = '';
-    
+
     // Generate hourly blocks
     const start = parseInt(openTime.split(':')[0]);
     const end = parseInt(closeTime.split(':')[0]);
-    
+
     for (let hour = start; hour < end; hour++) {
         const timeString = String(hour).padStart(2, '0') + ':00';
         const block = document.createElement('div');
         block.className = 'time-block available';
         block.textContent = timeString;
         block.dataset.time = timeString;
-        
+
         // Check if reserved
         if (reservedBlocks.includes(timeString)) {
             block.className = 'time-block reserved';
@@ -314,7 +319,7 @@ function generateTimeBlocks() {
         } else {
             block.addEventListener('click', () => toggleTimeBlock(block));
         }
-        
+
         container.appendChild(block);
     }
 }
@@ -324,9 +329,9 @@ function toggleTimeBlock(block) {
     if (block.classList.contains('reserved') || block.classList.contains('unavailable')) {
         return;
     }
-    
+
     const time = block.dataset.time;
-    
+
     if (block.classList.contains('selected')) {
         // Deselect
         block.classList.remove('selected');
@@ -338,10 +343,10 @@ function toggleTimeBlock(block) {
         block.classList.add('selected');
         selectedBlocks.push(time);
     }
-    
+
     // Sort selected blocks
     selectedBlocks.sort();
-    
+
     updateSelectionInfo();
 }
 
@@ -349,26 +354,26 @@ function toggleTimeBlock(block) {
 function updateSelectionInfo() {
     const selectionInfo = document.getElementById('selection-info');
     const selectionText = document.getElementById('selection-text');
-    
+
     if (selectedBlocks.length === 0) {
         selectionInfo.classList.add('hidden');
         return;
     }
-    
+
     selectionInfo.classList.remove('hidden');
-    
+
     if (selectedBlocks.length === 1) {
-        selectionText.textContent = `${selectedBlocks[0]} - ${addHour(selectedBlocks[0])}`;
+        selectionText.textContent = ${selectedBlocks[0]} - ${addHour(selectedBlocks[0])};
     } else {
         const startTime = selectedBlocks[0];
         const endTime = addHour(selectedBlocks[selectedBlocks.length - 1]);
-        selectionText.textContent = `${startTime} - ${endTime} (${selectedBlocks.length} hora${selectedBlocks.length > 1 ? 's' : ''})`;
+        selectionText.textContent = ${startTime} - ${endTime} (${selectedBlocks.length} hora${selectedBlocks.length > 1 ? 's' : ''});
     }
-    
+
     // Update form fields
     const startTimeInput = document.getElementById('start_time');
     const endTimeInput = document.getElementById('end_time');
-    
+
     startTimeInput.value = selectedBlocks[0];
     endTimeInput.value = addHour(selectedBlocks[selectedBlocks.length - 1]);
 }
@@ -402,29 +407,29 @@ function submitReservation() {
 function changeDay(direction) {
     const currentDateObj = new Date(currentDate);
     currentDateObj.setDate(currentDateObj.getDate() + direction);
-    
+
     // Prevent past dates
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (currentDateObj < today) {
         return;
     }
-    
+
     // Update current date
     currentDate = currentDateObj.toISOString().split('T')[0];
-    
+
     // Update form date
     document.getElementById('form-date').value = currentDate;
-    
+
     // Update display
-    const options = { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+    const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
     };
     document.getElementById('selected-day').textContent = currentDateObj.toLocaleDateString('es-ES', options);
-    
+
     // Clear selection and reload time blocks
     clearSelection();
     generateTimeBlocks();

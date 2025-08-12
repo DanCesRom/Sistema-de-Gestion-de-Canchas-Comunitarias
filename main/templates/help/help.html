@@ -5,14 +5,14 @@
 
 {% block content %}
 <div class="min-h-screen bg-gray-50 pb-20 md:pb-6">
-    
+
     <!-- Header Section -->
     <div class="bg-white border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
             <div class="text-center">
                 <div class="flex justify-center mb-6">
                     <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg">
-                        <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}" 
+                        <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}"
                              alt="Ministerio de Deportes"
                              class="h-14 object-contain" />
                     </div>
@@ -36,9 +36,9 @@
                 </div>
                 <h2 class="text-lg font-bold text-gray-900">Buscar Ayuda</h2>
             </div>
-            
+
             <div class="relative">
-                <input type="search" 
+                <input type="search"
                        id="helpSearch"
                        placeholder="Buscar temas de ayuda, preguntas frecuentes..."
                        class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#013573] focus:border-transparent">
@@ -50,7 +50,7 @@
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            
+
             <!-- Sidebar -->
             <div class="lg:col-span-1">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-6">
@@ -82,7 +82,7 @@
 
             <!-- Main Content -->
             <div class="lg:col-span-3 space-y-8">
-                
+
                 <!-- FAQ Section -->
                 <section id="faq" class="bg-white rounded-xl shadow-sm border border-gray-200">
                     <div class="px-6 py-4 border-b border-gray-200">
@@ -94,10 +94,10 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="p-6">
                         <div class="space-y-4">
-                            
+
                             <!-- FAQ Item 1 -->
                             <div class="border border-gray-200 rounded-lg">
                                 <button class="faq-toggle w-full px-4 py-4 bg-gray-50 hover:bg-gray-100 text-left flex items-center justify-between transition-colors"
@@ -110,7 +110,7 @@
                                 </button>
                                 <div class="faq-content hidden px-4 py-4 bg-white border-t border-gray-200">
                                     <p class="text-gray-700 leading-relaxed mb-3">
-                                        Para restablecer tu contraseña, ve a la página de configuración de tu cuenta y haz clic en 
+                                        Para restablecer tu contraseña, ve a la página de configuración de tu cuenta y haz clic en
                                         "Cambiar Contraseña". También puedes usar el enlace "¿Olvidaste tu contraseña?" en la página de inicio de sesión.
                                     </p>
                                     <div class="bg-gray-50 rounded-lg p-3">
@@ -134,7 +134,7 @@
                                 </button>
                                 <div class="faq-content hidden px-4 py-4 bg-white border-t border-gray-200">
                                     <p class="text-gray-700 leading-relaxed mb-3">
-                                        Puedes ver todas tus reservas en la sección "Mis Reservas" del menú principal. 
+                                        Puedes ver todas tus reservas en la sección "Mis Reservas" del menú principal.
                                         Allí encontrarás tus reservas activas, expiradas y el historial completo.
                                     </p>
                                     <a href="/reservas/" class="inline-flex items-center px-4 py-2 bg-[#013573] text-white rounded-lg text-sm hover:bg-[#012d5a] transition-colors">
@@ -156,7 +156,7 @@
                                 </button>
                                 <div class="faq-content hidden px-4 py-4 bg-white border-t border-gray-200">
                                     <p class="text-gray-700 leading-relaxed mb-3">
-                                        Sí, utilizamos encriptación de extremo a extremo y verificación en dos pasos para proteger tu información. 
+                                        Sí, utilizamos encriptación de extremo a extremo y verificación en dos pasos para proteger tu información.
                                         Tus datos personales nunca se comparten con terceros sin tu consentimiento.
                                     </p>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -184,7 +184,7 @@
                                 </button>
                                 <div class="faq-content hidden px-4 py-4 bg-white border-t border-gray-200">
                                     <p class="text-gray-700 leading-relaxed mb-3">
-                                        Para cancelar una reserva, ve a "Mis Reservas", selecciona la reserva que deseas cancelar y 
+                                        Para cancelar una reserva, ve a "Mis Reservas", selecciona la reserva que deseas cancelar y
                                         haz clic en "Cancelar". Recuerda que puedes cancelar hasta 24 horas antes de la fecha programada.
                                     </p>
                                     <div class="bg-gray-50 rounded-lg p-3">
@@ -208,7 +208,7 @@
                                 </button>
                                 <div class="faq-content hidden px-4 py-4 bg-white border-t border-gray-200">
                                     <p class="text-gray-700 leading-relaxed mb-3">
-                                        Sí, nuestra plataforma está optimizada para dispositivos móviles. Puedes acceder desde cualquier 
+                                        Sí, nuestra plataforma está optimizada para dispositivos móviles. Puedes acceder desde cualquier
                                         navegador web en tu teléfono o tablet con la misma funcionalidad completa.
                                     </p>
                                     <div class="flex items-center text-gray-600 text-sm">
@@ -232,7 +232,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
@@ -247,7 +247,7 @@
                                     Ir a configuración →
                                 </a>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
                                 <div class="flex items-center mb-3">
                                     <i class="fas fa-key text-[#de2932] mr-3"></i>
@@ -275,7 +275,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="p-6">
                         <div class="bg-gray-50 rounded-lg p-4 mb-6">
                             <h4 class="font-semibold text-gray-900 mb-3">Cómo hacer una reserva:</h4>
@@ -287,7 +287,7 @@
                                 <li>5. Recibe tu código QR de confirmación</li>
                             </ol>
                         </div>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="border border-gray-200 rounded-lg p-4">
                                 <h4 class="font-semibold text-gray-900 mb-2 flex items-center">
@@ -295,18 +295,18 @@
                                     Horarios disponibles
                                 </h4>
                                 <p class="text-gray-700 text-sm">
-                                    La mayoría de canchas están disponibles de 6:00 AM a 10:00 PM. 
+                                    La mayoría de canchas están disponibles de 6:00 AM a 10:00 PM.
                                     Verifica los horarios específicos en cada ubicación.
                                 </p>
                             </div>
-                            
+
                             <div class="border border-gray-200 rounded-lg p-4">
                                 <h4 class="font-semibold text-gray-900 mb-2 flex items-center">
                                     <i class="fas fa-qrcode text-[#013573] mr-2"></i>
                                     Código QR
                                 </h4>
                                 <p class="text-gray-700 text-sm">
-                                    Después de confirmar tu reserva, recibirás un código QR único 
+                                    Después de confirmar tu reserva, recibirás un código QR único
                                     que deberás presentar al momento de usar la cancha.
                                 </p>
                             </div>
@@ -325,7 +325,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="p-6">
                         <div class="bg-gray-50 rounded-lg p-4 mb-6">
                             <h4 class="font-semibold text-gray-900 mb-3">Problemas comunes y soluciones:</h4>
@@ -353,7 +353,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="bg-gray-50 rounded-lg p-4">
                             <h4 class="font-semibold text-gray-900 mb-2">¿Necesitas más ayuda?</h4>
                             <p class="text-gray-700 text-sm mb-3">
@@ -378,14 +378,14 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            
+
                             <!-- Contact Methods -->
                             <div class="space-y-4">
                                 <h4 class="font-semibold text-gray-900 mb-4">Métodos de contacto:</h4>
-                                
+
                                 <div class="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-200">
                                     <div class="p-2 bg-white rounded-lg mr-4">
                                         <i class="fas fa-envelope text-[#de2932]"></i>
@@ -397,7 +397,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-200">
                                     <div class="p-2 bg-white rounded-lg mr-4">
                                         <i class="fas fa-phone text-[#de2932]"></i>
@@ -409,7 +409,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-center p-4 bg-gray-50 rounded-lg border border-gray-200">
                                     <div class="p-2 bg-white rounded-lg mr-4">
                                         <i class="fas fa-comments text-[#013573]"></i>
@@ -420,11 +420,11 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Response Times -->
                             <div class="space-y-4">
                                 <h4 class="font-semibold text-gray-900 mb-4">Tiempos de respuesta:</h4>
-                                
+
                                 <div class="space-y-3">
                                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                                         <span class="text-gray-700">Chat en vivo</span>
@@ -439,7 +439,7 @@
                                         <span class="text-[#013573] font-medium">Inmediato</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
                                     <div class="flex items-start">
                                         <i class="fas fa-clock text-[#de2932] mr-3 mt-1"></i>
@@ -464,8 +464,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
         <div class="text-center">
             <div class="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-sm border border-gray-200 mb-4">
-                <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}" 
-                     alt="Logo" 
+                <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}"
+                     alt="Logo"
                      class="h-8 w-auto mr-3">
                 <div class="text-left">
                     <p class="text-gray-900 font-semibold text-sm">Ministerio de Deportes</p>
@@ -483,120 +483,120 @@
     html {
         scroll-behavior: smooth;
     }
-    
+
     .faq-content {
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease-out;
     }
-    
-    .faq-content.open {
-        max-height: 500px;
-        transition: max-height 0.3s ease-in;
-    }
+
+        .faq-content.open {
+            max-height: 500px;
+            transition: max-height 0.3s ease-in;
+        }
 </style>
 
 <script>
-// FAQ Toggle functionality
-function toggleFAQ(button) {
-    const content = button.nextElementSibling;
-    const icon = button.querySelector('.fa-chevron-down');
-    
-    // Close all other FAQs
-    document.querySelectorAll('.faq-content').forEach(item => {
-        if (item !== content) {
-            item.classList.remove('open');
-            item.classList.add('hidden');
-        }
-    });
-    
-    document.querySelectorAll('.faq-toggle .fa-chevron-down').forEach(item => {
-        if (item !== icon) {
-            item.style.transform = 'rotate(0deg)';
-        }
-    });
-    
-    // Toggle current FAQ
-    if (content.classList.contains('hidden')) {
-        content.classList.remove('hidden');
-        setTimeout(() => content.classList.add('open'), 10);
-        icon.style.transform = 'rotate(180deg)';
-    } else {
-        content.classList.remove('open');
-        icon.style.transform = 'rotate(0deg)';
-        setTimeout(() => content.classList.add('hidden'), 300);
-    }
-}
+    // FAQ Toggle functionality
+    function toggleFAQ(button) {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('.fa-chevron-down');
 
-// Search functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('helpSearch');
-    
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const query = this.value.trim().toLowerCase();
-            
-            if (query.length > 0) {
-                highlightRelevantSections(query);
-            } else {
-                clearHighlights();
+        // Close all other FAQs
+        document.querySelectorAll('.faq-content').forEach(item => {
+            if (item !== content) {
+                item.classList.remove('open');
+                item.classList.add('hidden');
             }
         });
-    }
-    
-    // Smooth scroll for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-                
-                // Add temporary highlight
-                target.style.boxShadow = '0 0 20px rgba(1, 53, 115, 0.2)';
-                setTimeout(() => {
-                    target.style.boxShadow = '';
-                }, 2000);
+
+        document.querySelectorAll('.faq-toggle .fa-chevron-down').forEach(item => {
+            if (item !== icon) {
+                item.style.transform = 'rotate(0deg)';
             }
         });
-    });
-});
 
-function highlightRelevantSections(query) {
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        const text = section.textContent.toLowerCase();
-        if (text.includes(query)) {
-            section.style.border = '2px solid #013573';
-            section.style.backgroundColor = '#f8fafc';
+        // Toggle current FAQ
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            setTimeout(() => content.classList.add('open'), 10);
+            icon.style.transform = 'rotate(180deg)';
         } else {
+            content.classList.remove('open');
+            icon.style.transform = 'rotate(0deg)';
+            setTimeout(() => content.classList.add('hidden'), 300);
+        }
+    }
+
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('helpSearch');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                const query = this.value.trim().toLowerCase();
+
+                if (query.length > 0) {
+                    highlightRelevantSections(query);
+                } else {
+                    clearHighlights();
+                }
+            });
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                    // Add temporary highlight
+                    target.style.boxShadow = '0 0 20px rgba(1, 53, 115, 0.2)';
+                    setTimeout(() => {
+                        target.style.boxShadow = '';
+                    }, 2000);
+                }
+            });
+        });
+    });
+
+    function highlightRelevantSections(query) {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            const text = section.textContent.toLowerCase();
+            if (text.includes(query)) {
+                section.style.border = '2px solid #013573';
+                section.style.backgroundColor = '#f8fafc';
+            } else {
+                section.style.border = '';
+                section.style.backgroundColor = '';
+            }
+        });
+    }
+
+    function clearHighlights() {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
             section.style.border = '';
             section.style.backgroundColor = '';
-        }
-    });
-}
+        });
+    }
 
-function clearHighlights() {
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        section.style.border = '';
-        section.style.backgroundColor = '';
-    });
-}
+    // Add loading states to contact links
+    document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach(link => {
+        link.addEventListener('click', function () {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>' + this.textContent;
 
-// Add loading states to contact links
-document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach(link => {
-    link.addEventListener('click', function() {
-        const originalText = this.innerHTML;
-        this.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i>' + this.textContent;
-        
-        setTimeout(() => {
-            this.innerHTML = originalText;
-        }, 2000);
+            setTimeout(() => {
+                this.innerHTML = originalText;
+            }, 2000);
+        });
     });
-});
 </script>
 {% endblock %}

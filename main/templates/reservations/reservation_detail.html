@@ -20,7 +20,7 @@
                         <p class="text-gray-600 text-sm">Información completa de tu reserva</p>
                     </div>
                 </div>
-                <a href="{% url 'reservations_list' %}" 
+                <a href="{% url 'reservations_list' %}"
                    class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
                     <i class="fas fa-arrow-left mr-2"></i>
                     Volver
@@ -32,7 +32,7 @@
     <!-- Main Content -->
     <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            
+
             <!-- QR Code Section -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200">
                 <div class="px-6 py-4 border-b border-gray-200">
@@ -41,25 +41,25 @@
                         <h2 class="text-xl font-bold text-gray-900">Código de Acceso</h2>
                     </div>
                 </div>
-                
+
                 <div class="p-8 text-center">
                     <!-- QR Code -->
                     <div class="bg-white p-6 rounded-xl border-2 border-gray-200 shadow-sm mb-6 inline-block qr-container">
-                        <img src="data:image/png;base64,{{ qr_base64 }}" 
-                             alt="QR Code" 
+                        <img src="data:image/png;base64,{{ qr_base64 }}"
+                             alt="QR Code"
                              class="w-48 h-48 mx-auto">
                     </div>
-                    
+
                     <!-- 6 Digit Code -->
                     <div class="bg-gray-50 rounded-xl p-6 mb-6">
                         <p class="text-sm text-gray-600 mb-2">Código de 6 dígitos:</p>
-                        <div class="text-3xl font-bold text-[#013573] tracking-wider reservation-code cursor-pointer" 
-                             onclick="copyCode()" 
+                        <div class="text-3xl font-bold text-[#013573] tracking-wider reservation-code cursor-pointer"
+                             onclick="copyCode()"
                              title="Click para copiar">
                             {{ reservation.code }}
                         </div>
                     </div>
-                    
+
                     <!-- Instructions -->
                     <div class="bg-gray-50 rounded-lg p-4">
                         <h4 class="font-semibold text-gray-900 mb-2">Instrucciones:</h4>
@@ -93,7 +93,7 @@
                         {% endif %}
                     </div>
                 </div>
-                
+
                 <div class="p-6 space-y-6">
                     <!-- Field Information -->
                     <div class="bg-gray-50 rounded-lg p-4">
@@ -131,7 +131,7 @@
                                 {{ reservation.date|date:"l, d F Y" }}
                             </p>
                         </div>
-                        
+
                         <div class="bg-gray-50 rounded-lg p-4">
                             <div class="flex items-center mb-2">
                                 <i class="fas fa-clock text-[#013573] mr-2"></i>
@@ -196,13 +196,13 @@
                 <i class="fas fa-list mr-2"></i>
                 Mis Reservas
             </a>
-            
+
             <a href="/"
                class="flex items-center justify-center py-3 px-6 bg-[#de2932] hover:bg-[#c41e25] text-white font-semibold rounded-xl transition-colors">
                 <i class="fas fa-map mr-2"></i>
                 Nueva Reserva
             </a>
-            
+
             <button onclick="downloadQR()"
                     class="flex items-center justify-center py-3 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors">
                 <i class="fas fa-download mr-2"></i>
@@ -243,11 +243,11 @@
         letter-spacing: 0.2em;
     }
 
-    .reservation-code:hover {
-        background-color: #f3f4f6;
-        border-radius: 8px;
-        padding: 4px 8px;
-    }
+        .reservation-code:hover {
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            padding: 4px 8px;
+        }
 </style>
 
 <script>
@@ -257,24 +257,24 @@ function downloadQR() {
     if (qrImage) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        
+
         // Set canvas size
         canvas.width = qrImage.naturalWidth || 400;
         canvas.height = qrImage.naturalHeight || 400;
-        
+
         // Draw QR code on canvas
         ctx.drawImage(qrImage, 0, 0);
-        
+
         // Create download link
         const link = document.createElement('a');
         link.download = 'reserva-qr-{{ reservation.id }}.png';
         link.href = canvas.toDataURL();
-        
+
         // Trigger download
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         // Show success message
         showNotification('QR descargado exitosamente', 'success');
     }
@@ -301,7 +301,7 @@ function fallbackCopyTextToClipboard(text) {
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    
+
     try {
         const successful = document.execCommand('copy');
         if (successful) {
@@ -312,7 +312,7 @@ function fallbackCopyTextToClipboard(text) {
     } catch (err) {
         showNotification('Error al copiar código', 'error');
     }
-    
+
     document.body.removeChild(textArea);
 }
 
@@ -322,14 +322,14 @@ function showNotification(message, type) {
     notification.className = 'fixed top-4 right-4 z-50 px-6 py-3 rounded-lg text-white font-medium transition-all duration-300 transform translate-x-full';
     notification.className += type === 'success' ? ' bg-green-500' : ' bg-red-500';
     notification.textContent = message;
-    
+
     document.body.appendChild(notification);
-    
+
     // Animate in
     setTimeout(function() {
         notification.classList.remove('translate-x-full');
     }, 100);
-    
+
     // Animate out and remove
     setTimeout(function() {
         notification.classList.add('translate-x-full');
