@@ -32,7 +32,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
       "127.0.0.1",
       ".pythonanywhere.com",
-      "tucancha.com.do",
+      "www.tucancha.com.do",
       ]
 
 # Application references
@@ -148,7 +148,7 @@ X_FRAME_OPTIONS = 'DENY'
 SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
-
+SECURE_SSL_REDIRECT = True
 
 # Session security
 SESSION_COOKIE_SECURE = True
