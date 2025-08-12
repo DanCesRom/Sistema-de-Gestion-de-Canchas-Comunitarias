@@ -56,13 +56,4 @@
     </div>
 
 </body>
-
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register("{% static 'service-worker.js' %}")
-            .then(reg => console.log("Service Worker registrado:", reg))
-            .catch(err => console.error("Fallo al registrar Service Worker:", err));
-    }
-</script>
-
 </html>
