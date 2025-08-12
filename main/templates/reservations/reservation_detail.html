@@ -1,21 +1,353 @@
 {% extends "base/base.html" %}
 {% load static %}
+
+{% block title %}Detalle de Reserva | Reserva de Canchas{% endblock %}
+
 {% block content %}
+<div class="min-h-screen bg-gray-50 pb-20 md:pb-6">
 
+    <!-- Header Section -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-gray-200">
+                        <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}"
+                             alt="Logo" class="h-8 object-contain" />
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Detalle de Reserva</h1>
+                        <p class="text-gray-600 text-sm">Información completa de tu reserva</p>
+                    </div>
+                </div>
+                <a href="{% url 'reservations_list' %}" 
+                   class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Volver
+                </a>
+            </div>
+        </div>
+    </div>
 
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- QR Code Section -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-qrcode text-[#013573] mr-3"></i>
+                        <h2 class="text-xl font-bold text-gray-900">Código de Acceso</h2>
+                    </div>
+                </div>
+                
+                <div class="p-8 text-center">
+                    <!-- QR Code -->
+                    <div class="bg-white p-6 rounded-xl border-2 border-gray-200 shadow-sm mb-6 inline-block qr-container">
+                        <img src="data:image/png;base64,{{ qr_base64 }}" 
+                             alt="QR Code" 
+                             class="w-48 h-48 mx-auto">
+                    </div>
+                    
+                    <!-- 6 Digit Code -->
+                    <div class="bg-gray-50 rounded-xl p-6 mb-6">
+                        <p class="text-sm text-gray-600 mb-2">Código de 6 dígitos:</p>
+                        <div class="text-3xl font-bold text-[#013573] tracking-wider reservation-code cursor-pointer" 
+                             onclick="copyCode()" 
+                             title="Click para copiar">
+                            {{ reservation.code }}
+                        </div>
+                    </div>
+                    
+                    <!-- Instructions -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2">Instrucciones:</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Presenta este QR al llegar a la cancha</li>
+                            <li>• O proporciona el código de 6 dígitos</li>
+                            <li>• Llega 10 minutos antes de tu horario</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-<div class="reservation-detail">
-    <h2>Detalle de Reserva</h2>
+            <!-- Reservation Details Section -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar-check text-[#de2932] mr-3"></i>
+                            <h2 class="text-xl font-bold text-gray-900">Información de la Reserva</h2>
+                        </div>
+                        {% if reservation.confirmed %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Confirmada
+                        </span>
+                        {% else %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            <i class="fas fa-clock mr-1"></i>
+                            Pendiente
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="p-6 space-y-6">
+                    <!-- Field Information -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="p-3 bg-gray-100 rounded-lg">
+                                <i class="fas fa-map-marker-alt text-[#de2932] text-lg"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                                    {{ reservation.place.name }}
+                                </h3>
+                                {% if reservation.place.sport_type %}
+                                <p class="text-sm text-gray-600 mb-2">
+                                    <i class="fas fa-futbol mr-1"></i>
+                                    {{ reservation.place.sport_type }}
+                                </p>
+                                {% endif %}
+                                {% if reservation.place.description %}
+                                <p class="text-sm text-gray-600">
+                                    {{ reservation.place.description|truncatewords:20 }}
+                                </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
 
-    <p><strong>Lugar:</strong> {{ reservation.place.name }}</p>
-    <p><strong>Fecha:</strong> {{ reservation.date|date:"l, d F Y" }}</p>
+                    <!-- Date & Time Information -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-calendar-alt text-[#013573] mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">Fecha</h4>
+                            </div>
+                            <p class="text-lg text-gray-900">
+                                {{ reservation.date|date:"l, d F Y" }}
+                            </p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-clock text-[#013573] mr-2"></i>
+                                <h4 class="font-semibold text-gray-900">Horario</h4>
+                            </div>
+                            <p class="text-lg text-gray-900">
+                                {{ reservation.start_time|time:"H:i" }} - {{ reservation.end_time|time:"H:i" }}
+                            </p>
+                        </div>
+                    </div>
 
-    <p><strong>Horario:</strong> {{ reservation.start_time|time:"H:i" }} a {{ reservation.end_time|time:"H:i" }}</p>
-    <h3>Codigo QR</h3>
-    <img src="data:image/png;base64,{{ qr_base64 }}" alt="QR Code" width="200">
+                    <!-- Additional Information -->
+                    <div class="border-t border-gray-200 pt-6">
+                        <h4 class="font-semibold text-gray-900 mb-4">Información Adicional</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">ID de Reserva:</span>
+                                <span class="font-medium text-gray-900">#{{ reservation.id }}</span>
+                            </div>
+                            {% if reservation.qr_uuid %}
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">UUID:</span>
+                                <span class="font-mono text-gray-900 text-xs">{{ reservation.qr_uuid|slice:":8" }}...</span>
+                            </div>
+                            {% endif %}
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">Reservado el:</span>
+                                <span class="font-medium text-gray-900">{{ reservation.created_at|date:"d/m/Y H:i" }}</span>
+                            </div>
+                        </div>
+                    </div>
 
-    <p><strong>Codigo de 6 digitos:</strong> <span style="font-size: 20px;">{{ reservation.code }}</span></p>
-    <a href="{% url 'reservations_list' %}">Volver a mis reservas</a>
+                    <!-- Field Operating Hours -->
+                    {% if reservation.place.open_time and reservation.place.close_time %}
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-900 mb-2 flex items-center">
+                            <i class="fas fa-business-time text-[#013573] mr-2"></i>
+                            Horarios de la Cancha
+                        </h4>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Horario de operación:</span>
+                            <span class="font-medium text-gray-900">
+                                {{ reservation.place.open_time|time:"H:i" }} - {{ reservation.place.close_time|time:"H:i" }}
+                            </span>
+                        </div>
+                        {% if reservation.place.open_days %}
+                        <div class="flex items-center justify-between text-sm mt-1">
+                            <span class="text-gray-600">Días disponibles:</span>
+                            <span class="font-medium text-gray-900">{{ reservation.place.open_days }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <a href="{% url 'reservations_list' %}"
+               class="flex items-center justify-center py-3 px-6 bg-[#013573] hover:bg-[#012d5a] text-white font-semibold rounded-xl transition-colors">
+                <i class="fas fa-list mr-2"></i>
+                Mis Reservas
+            </a>
+            
+            <a href="/"
+               class="flex items-center justify-center py-3 px-6 bg-[#de2932] hover:bg-[#c41e25] text-white font-semibold rounded-xl transition-colors">
+                <i class="fas fa-map mr-2"></i>
+                Nueva Reserva
+            </a>
+            
+            <button onclick="downloadQR()"
+                    class="flex items-center justify-center py-3 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors">
+                <i class="fas fa-download mr-2"></i>
+                Descargar QR
+            </button>
+        </div>
+
+        <!-- Important Notice -->
+        <div class="mt-8 bg-gray-50 border border-gray-200 rounded-xl p-6">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-triangle text-[#de2932] text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Información Importante</h3>
+                    <ul class="text-gray-700 space-y-1 text-sm">
+                        <li>• Presenta tu QR o código al personal de la cancha</li>
+                        <li>• Llega 10 minutos antes de tu horario reservado</li>
+                        <li>• Las cancelaciones deben hacerse con 24 horas de anticipación</li>
+                        <li>• Conserva este código hasta completar tu reserva</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<style>
+    /* QR Code hover effect */
+    .qr-container:hover {
+        transform: scale(1.02);
+        transition: transform 0.2s ease;
+    }
+
+    /* Code styling */
+    .reservation-code {
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.2em;
+    }
+
+    .reservation-code:hover {
+        background-color: #f3f4f6;
+        border-radius: 8px;
+        padding: 4px 8px;
+    }
+</style>
+
+<script>
+// Download QR Code functionality
+function downloadQR() {
+    const qrImage = document.querySelector('img[alt="QR Code"]');
+    if (qrImage) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        canvas.width = qrImage.naturalWidth || 400;
+        canvas.height = qrImage.naturalHeight || 400;
+        
+        // Draw QR code on canvas
+        ctx.drawImage(qrImage, 0, 0);
+        
+        // Create download link
+        const link = document.createElement('a');
+        link.download = 'reserva-qr-{{ reservation.id }}.png';
+        link.href = canvas.toDataURL();
+        
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Show success message
+        showNotification('QR descargado exitosamente', 'success');
+    }
+}
+
+// Copy code to clipboard
+function copyCode() {
+    const code = '{{ reservation.code }}';
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(code).then(function() {
+            showNotification('Código copiado al portapapeles', 'success');
+        }).catch(function() {
+            fallbackCopyTextToClipboard(code);
+        });
+    } else {
+        fallbackCopyTextToClipboard(code);
+    }
+}
+
+// Fallback copy function
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showNotification('Código copiado al portapapeles', 'success');
+        } else {
+            showNotification('Error al copiar código', 'error');
+        }
+    } catch (err) {
+        showNotification('Error al copiar código', 'error');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+// Show notification
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = 'fixed top-4 right-4 z-50 px-6 py-3 rounded-lg text-white font-medium transition-all duration-300 transform translate-x-full';
+    notification.className += type === 'success' ? ' bg-green-500' : ' bg-red-500';
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(function() {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Animate out and remove
+    setTimeout(function() {
+        notification.classList.add('translate-x-full');
+        setTimeout(function() {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Add click handler and animations on load
+document.addEventListener('DOMContentLoaded', function() {
+    // Add QR hover effect
+    const qrImg = document.querySelector('img[alt="QR Code"]');
+    if (qrImg && qrImg.parentElement) {
+        qrImg.parentElement.classList.add('qr-container');
+    }
+});
+</script>
 {% endblock %}

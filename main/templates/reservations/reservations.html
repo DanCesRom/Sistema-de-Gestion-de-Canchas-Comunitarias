@@ -8,17 +8,19 @@
 
     <!-- Header Section -->
     <div class="bg-white border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
             <div class="text-center">
-                <div class="flex justify-center mb-4">
-                    <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}"
-                         alt="Ministerio de Deportes"
-                         class="h-16 sm:h-20 object-contain" />
+                <div class="flex justify-center mb-6">
+                    <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg border border-gray-200">
+                        <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}"
+                             alt="Ministerio de Deportes"
+                             class="h-14 object-contain" />
+                    </div>
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">
                     Mis Reservas
                 </h1>
-                <p class="text-gray-600 text-sm sm:text-base max-w-2xl mx-auto">
+                <p class="text-gray-600 max-w-2xl mx-auto">
                     Gestiona todas tus reservas de canchas deportivas en un solo lugar
                 </p>
             </div>
@@ -26,12 +28,12 @@
     </div>
 
     <!-- Quick Stats -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                 <div class="flex items-center">
-                    <div class="p-3 bg-blue-100 rounded-lg">
-                        <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
+                    <div class="p-3 bg-[#013573] bg-opacity-10 rounded-lg">
+                        <i class="fas fa-calendar-check text-[#013573] text-xl"></i>
                     </div>
                     <div class="ml-4">
                         <h3 class="text-2xl font-bold text-gray-900">{{ active_reservations|length }}</h3>
@@ -40,10 +42,10 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                 <div class="flex items-center">
-                    <div class="p-3 bg-amber-100 rounded-lg">
-                        <i class="fas fa-clock text-amber-600 text-xl"></i>
+                    <div class="p-3 bg-[#de2932] bg-opacity-10 rounded-lg">
+                        <i class="fas fa-clock text-[#de2932] text-xl"></i>
                     </div>
                     <div class="ml-4">
                         <h3 class="text-2xl font-bold text-gray-900">{{ expired_reservations|length }}</h3>
@@ -52,10 +54,10 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
                 <div class="flex items-center">
-                    <div class="p-3 bg-green-100 rounded-lg">
-                        <i class="fas fa-history text-green-600 text-xl"></i>
+                    <div class="p-3 bg-gray-100 rounded-lg">
+                        <i class="fas fa-history text-gray-600 text-xl"></i>
                     </div>
                     <div class="ml-4">
                         <h3 class="text-2xl font-bold text-gray-900">{{ past_reservations|length }}</h3>
@@ -70,52 +72,50 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
         <!-- Active Reservations -->
+        {% if active_reservations %}
         <section class="mb-12">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white">
+                <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <div class="p-2 bg-blue-100 rounded-lg mr-3">
-                                <i class="fas fa-calendar-check text-blue-600"></i>
-                            </div>
+                            <i class="fas fa-calendar-check text-[#013573] mr-3"></i>
                             <div>
                                 <h2 class="text-xl font-bold text-gray-900">Reservas Activas</h2>
                                 <p class="text-gray-600 text-sm">Tus próximas reservas confirmadas</p>
                             </div>
                         </div>
-                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                        <span class="bg-[#013573] bg-opacity-10 text-[#013573] text-xs font-medium px-3 py-1 rounded-full">
                             {{ active_reservations|length }} activa{{ active_reservations|length|pluralize:"s" }}
                         </span>
                     </div>
                 </div>
 
                 <div class="p-6">
-                    {% if active_reservations %}
                     <div class="grid gap-4">
                         {% for r in active_reservations %}
-                        <div class="group border border-gray-200 rounded-lg p-4 hover:shadow-md hover:border-blue-300 transition-all duration-200 bg-gradient-to-r from-white to-blue-50/30">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between">
+                        <div class="group border border-gray-200 rounded-lg p-4 hover:shadow-md hover:border-[#013573] transition-all duration-200 bg-gradient-to-r from-white to-blue-50/30">
+                            <div class="flex flex-col lg:flex-row lg:items-center justify-between">
                                 <div class="flex-1">
-                                    <div class="flex items-start space-x-3">
-                                        <div class="p-2 bg-blue-100 rounded-lg mt-1">
-                                            <i class="fas fa-map-marker-alt text-blue-600 text-sm"></i>
+                                    <div class="flex items-start space-x-4">
+                                        <div class="p-3 bg-[#013573] bg-opacity-10 rounded-lg group-hover:bg-[#013573] group-hover:bg-opacity-20 transition-colors">
+                                            <i class="fas fa-map-marker-alt text-[#013573] text-lg"></i>
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-[#013573] transition-colors">
                                                 {{ r.place.name }}
                                             </h3>
-                                            <div class="mt-2 space-y-1">
+                                            <div class="mt-2 space-y-2">
                                                 <div class="flex items-center text-gray-600">
-                                                    <i class="fas fa-calendar-alt text-xs mr-2 w-4"></i>
+                                                    <i class="fas fa-calendar-alt text-xs mr-3 w-4"></i>
                                                     <span class="text-sm">{{ r.date|date:"l, d \d\e F \d\e Y" }}</span>
                                                 </div>
                                                 <div class="flex items-center text-gray-600">
-                                                    <i class="fas fa-clock text-xs mr-2 w-4"></i>
+                                                    <i class="fas fa-clock text-xs mr-3 w-4"></i>
                                                     <span class="text-sm">{{ r.start_time|time:"H:i" }} - {{ r.end_time|time:"H:i" }}</span>
                                                 </div>
                                                 {% if r.place.sport_type %}
                                                 <div class="flex items-center text-gray-600">
-                                                    <i class="fas fa-futbol text-xs mr-2 w-4"></i>
+                                                    <i class="fas fa-futbol text-xs mr-3 w-4"></i>
                                                     <span class="text-sm">{{ r.place.sport_type }}</span>
                                                 </div>
                                                 {% endif %}
@@ -123,63 +123,49 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-4 sm:mt-0 sm:ml-6 flex flex-col sm:items-end space-y-2">
+                                <div class="mt-4 lg:mt-0 lg:ml-6 flex flex-col lg:items-end space-y-3">
                                     <div class="flex items-center">
                                         {% if r.confirmed %}
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                             <i class="fas fa-check-circle mr-1"></i>
                                             Confirmada
                                         </span>
                                         {% else %}
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                             <i class="fas fa-clock mr-1"></i>
                                             Pendiente
                                         </span>
                                         {% endif %}
                                     </div>
                                     <a href="{% url 'reservation_detail' r.id %}"
-                                       class="inline-flex items-center px-4 py-2 border border-blue-300 text-blue-700 bg-blue-50 rounded-lg text-sm font-medium hover:bg-blue-100 hover:border-blue-400 transition-all duration-200 group-hover:scale-105">
-                                        <i class="fas fa-eye mr-2"></i>
-                                        Ver Detalles
+                                       class="inline-flex items-center px-4 py-2 bg-[#013573] hover:bg-[#012d5a] text-white rounded-lg text-sm font-medium transition-colors group-hover:scale-105">
+                                        <i class="fas fa-qrcode mr-2"></i>
+                                        Ver QR
                                     </a>
                                 </div>
                             </div>
                         </div>
                         {% endfor %}
                     </div>
-                    {% else %}
-                    <div class="text-center py-12">
-                        <div class="mx-auto w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                            <i class="fas fa-calendar-plus text-blue-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">No tienes reservas activas</h3>
-                        <p class="text-gray-600 mb-6">¡Explora nuestras canchas disponibles y haz tu primera reserva!</p>
-                        <a href="/" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-200 transform hover:scale-105">
-                            <i class="fas fa-map mr-2"></i>
-                            Explorar Canchas
-                        </a>
-                    </div>
-                    {% endif %}
                 </div>
             </div>
         </section>
+        {% endif %}
 
         <!-- Expired Reservations -->
         {% if expired_reservations %}
         <section class="mb-12">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-amber-50 to-white">
+                <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <div class="p-2 bg-amber-100 rounded-lg mr-3">
-                                <i class="fas fa-clock text-amber-600"></i>
-                            </div>
+                            <i class="fas fa-clock text-[#de2932] mr-3"></i>
                             <div>
                                 <h2 class="text-xl font-bold text-gray-900">Reservas Expiradas</h2>
                                 <p class="text-gray-600 text-sm">Reservas que han vencido recientemente</p>
                             </div>
                         </div>
-                        <span class="bg-amber-100 text-amber-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                        <span class="bg-[#de2932] bg-opacity-10 text-[#de2932] text-xs font-medium px-3 py-1 rounded-full">
                             {{ expired_reservations|length }} expirada{{ expired_reservations|length|pluralize:"s" }}
                         </span>
                     </div>
@@ -188,30 +174,30 @@
                 <div class="p-6">
                     <div class="grid gap-4">
                         {% for r in expired_reservations %}
-                        <div class="border border-gray-200 rounded-lg p-4 bg-gradient-to-r from-white to-amber-50/30">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between">
+                        <div class="border border-gray-200 rounded-lg p-4 bg-gradient-to-r from-white to-red-50/30">
+                            <div class="flex flex-col lg:flex-row lg:items-center justify-between">
                                 <div class="flex-1">
-                                    <div class="flex items-start space-x-3">
-                                        <div class="p-2 bg-amber-100 rounded-lg mt-1">
-                                            <i class="fas fa-map-marker-alt text-amber-600 text-sm"></i>
+                                    <div class="flex items-start space-x-4">
+                                        <div class="p-3 bg-[#de2932] bg-opacity-10 rounded-lg">
+                                            <i class="fas fa-map-marker-alt text-[#de2932] text-lg"></i>
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <h3 class="text-lg font-semibold text-gray-700">{{ r.place.name }}</h3>
                                             <div class="mt-2 space-y-1">
                                                 <div class="flex items-center text-gray-500">
-                                                    <i class="fas fa-calendar-alt text-xs mr-2 w-4"></i>
+                                                    <i class="fas fa-calendar-alt text-xs mr-3 w-4"></i>
                                                     <span class="text-sm">{{ r.date|date:"l, d \d\e F \d\e Y" }}</span>
                                                 </div>
                                                 <div class="flex items-center text-gray-500">
-                                                    <i class="fas fa-clock text-xs mr-2 w-4"></i>
+                                                    <i class="fas fa-clock text-xs mr-3 w-4"></i>
                                                     <span class="text-sm">{{ r.start_time|time:"H:i" }} - {{ r.end_time|time:"H:i" }}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-4 sm:mt-0 sm:ml-6">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                <div class="mt-4 lg:mt-0 lg:ml-6">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                         <i class="fas fa-exclamation-triangle mr-1"></i>
                                         Expirada
                                     </span>
@@ -229,18 +215,16 @@
         {% if past_reservations %}
         <section class="mb-12">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-green-50 to-white">
+                <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <div class="p-2 bg-green-100 rounded-lg mr-3">
-                                <i class="fas fa-history text-green-600"></i>
-                            </div>
+                            <i class="fas fa-history text-gray-600 mr-3"></i>
                             <div>
                                 <h2 class="text-xl font-bold text-gray-900">Historial de Reservas</h2>
                                 <p class="text-gray-600 text-sm">Tus reservas completadas anteriormente</p>
                             </div>
                         </div>
-                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                        <span class="bg-gray-100 text-gray-600 text-xs font-medium px-3 py-1 rounded-full">
                             {{ past_reservations|length }} completada{{ past_reservations|length|pluralize:"s" }}
                         </span>
                     </div>
@@ -249,10 +233,10 @@
                 <div class="p-6">
                     <div class="space-y-3">
                         {% for r in past_reservations %}
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
-                            <div class="flex items-center space-x-3">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-colors">
+                            <div class="flex items-center space-x-4">
                                 <div class="p-2 bg-green-100 rounded-lg">
-                                    <i class="fas fa-check-circle text-green-600 text-sm"></i>
+                                    <i class="fas fa-check-circle text-green-600"></i>
                                 </div>
                                 <div>
                                     <h4 class="font-medium text-gray-900">{{ r.place.name }}</h4>
@@ -261,7 +245,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <span class="text-xs text-gray-500">
+                            <span class="text-xs text-gray-500 bg-white px-2 py-1 rounded">
                                 <i class="fas fa-calendar-check mr-1"></i>
                                 Completada
                             </span>
@@ -272,48 +256,63 @@
             </div>
         </section>
         {% endif %}
+
+        <!-- Empty State -->
+        {% if not active_reservations and not expired_reservations and not past_reservations %}
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12">
+            <div class="text-center">
+                <div class="mx-auto w-24 h-24 bg-[#013573] bg-opacity-10 rounded-full flex items-center justify-center mb-8">
+                    <i class="fas fa-calendar-alt text-[#013573] text-3xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">¡Comienza a reservar!</h2>
+                <p class="text-gray-600 mb-8 text-lg max-w-md mx-auto">
+                    Aún no tienes reservas. Explora nuestras canchas disponibles y reserva la que más te guste.
+                </p>
+                <div class="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
+                    <a href="/"
+                       class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-[#013573] hover:bg-[#012d5a] text-white font-semibold rounded-xl transition-colors">
+                        <i class="fas fa-map mr-2"></i>
+                        Ver Mapa de Canchas
+                    </a>
+                    <a href="/help/"
+                       class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 font-semibold rounded-xl transition-colors">
+                        <i class="fas fa-question-circle mr-2"></i>
+                        ¿Cómo funciona?
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 
     <!-- Floating Action Button -->
     <div class="fixed bottom-20 md:bottom-6 right-6 z-40">
         <a href="/"
-           class="group bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-full shadow-lg hover:shadow-xl w-14 h-14 flex items-center justify-center text-xl font-bold transition-all duration-300 transform hover:scale-110"
+           class="group bg-[#de2932] hover:bg-[#c41e25] text-white rounded-full shadow-lg hover:shadow-xl w-14 h-14 flex items-center justify-center text-xl font-bold transition-all duration-300 transform hover:scale-110"
            title="Nueva Reserva">
             <i class="fas fa-plus group-hover:rotate-90 transition-transform duration-300"></i>
         </a>
     </div>
-
-    <!-- Empty State for All Sections -->
-    {% if not active_reservations and not expired_reservations and not past_reservations %}
-    <div class="max-w-2xl mx-auto px-4 sm:px-6 py-12">
-        <div class="text-center">
-            <div class="mx-auto w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center mb-8">
-                <i class="fas fa-calendar-alt text-blue-600 text-4xl"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">¡Comienza a reservar!</h2>
-            <p class="text-gray-600 mb-8 text-lg">
-                Aún no tienes reservas. Explora nuestras canchas disponibles y reserva la que más te guste.
-            </p>
-            <div class="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
-                <a href="/"
-                   class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-200 transform hover:scale-105">
-                    <i class="fas fa-map mr-2"></i>
-                    Ver Mapa de Canchas
-                </a>
-                <a href="/help/"
-                   class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200">
-                    <i class="fas fa-question-circle mr-2"></i>
-                    ¿Cómo funciona?
-                </a>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
 </div>
 
 <style>
-    /* Additional styles for smooth animations */
+    /* Custom animations */
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.6s ease-out;
+    }
+
+    /* Enhanced hover effects */
     .group:hover .group-hover\:scale-105 {
         transform: scale(1.05);
     }
@@ -322,7 +321,7 @@
         color: #2563eb;
     }
 
-    /* Custom scrollbar for better UX */
+    /* Custom scrollbar */
     ::-webkit-scrollbar {
         width: 6px;
     }
@@ -336,12 +335,27 @@
         border-radius: 3px;
     }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+    ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+
+    /* Floating button pulse effect */
+    .floating-btn {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
         }
+        50% {
+            transform: scale(1.05);
+        }
+    }
 </style>
 
-<script>document.addEventListener('DOMContentLoaded', function() {
+<script>
+document.addEventListener('DOMContentLoaded', function() {
     // Add smooth scroll behavior
     document.documentElement.style.scrollBehavior = 'smooth';
 
@@ -354,13 +368,13 @@
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.animation = 'slideUp 0.6s ease-out forwards';
+                entry.target.classList.add('animate-slide-up');
             }
         });
     }, observerOptions);
 
     // Observe all reservation cards
-    document.querySelectorAll('.group').forEach(card => {
+    document.querySelectorAll('.group, section').forEach(card => {
         observer.observe(card);
     });
 
@@ -381,21 +395,25 @@
             }
         });
     });
-});
 
-// Add slideUp animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    // Enhanced floating button
+    const floatingBtn = document.querySelector('.fixed .group');
+    if (floatingBtn) {
+        floatingBtn.addEventListener('mouseenter', function() {
+            this.style.animation = 'none';
+        });
+        
+        floatingBtn.addEventListener('mouseleave', function() {
+            this.style.animation = 'pulse 2s infinite';
+        });
     }
-`;
-document.head.appendChild(style);</script>
+
+    // Add subtle animations to stats cards
+    const statsCards = document.querySelectorAll('.grid.grid-cols-1.sm\\:grid-cols-3 > div');
+    statsCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.classList.add('animate-slide-up');
+    });
+});
+</script>
 {% endblock %}
