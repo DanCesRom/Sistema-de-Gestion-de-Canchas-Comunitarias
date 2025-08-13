@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}Reserva | Sistema de Canchas Deportivas{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'icons/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/base/menu_buttons.css' %}">
     <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,7 +14,6 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Reserva">
     <link rel="apple-touch-icon" href="{% static 'icons/apple-touch-icon.png' %}">
-    <link rel="stylesheet" href="{% static 'css/base/menu_buttons.css' %}">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -43,7 +43,7 @@
         </div>
 
         <!-- Navigation Items -->
-        <div class="flex flex-col space-y-6 flex-1 justify-center" style="position: relative;">
+        <div class="flex flex-col space-y-6 flex-1 justify-center" style="position: fixed;">
             <a href="/"
                class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
                data-tooltip="Mapa de Canchas"
