@@ -118,7 +118,7 @@ body {
 
     .nav-item::before {
         content: '';
-        position: absolute;
+        position: fixed;
         top: 50%;
         left: 50%;
         width: 0;
@@ -156,7 +156,7 @@ body {
 
     .mobile-nav-item::after {
         content: '';
-        position: absolute;
+        position: fixed;
         top: -2px;
         left: 50%;
         width: 0;
@@ -206,7 +206,7 @@ body {
     .floating-shapes::before,
     .floating-shapes::after {
         content: '';
-        position: absolute;
+        position: fixed;
         border-radius: 50%;
         background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.05));
         animation: float 8s ease-in-out infinite;
@@ -261,12 +261,12 @@ body {
 
 /* Tooltip Styles */
 .tooltip {
-    position: relative;
+    position: fixed;
 }
 
     .tooltip::after {
         content: attr(data-tooltip);
-        position: absolute;
+        position: fixed;
         left: 100%;
         top: 50%;
         transform: translateY(-50%);
@@ -285,7 +285,7 @@ body {
 
     .tooltip::before {
         content: '';
-        position: absolute;
+        position: fixed;
         left: 100%;
         top: 50%;
         transform: translateY(-50%);
