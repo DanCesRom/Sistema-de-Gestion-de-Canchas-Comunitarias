@@ -346,57 +346,39 @@
     <!-- Floating Background Shapes -->
     <div class="floating-shapes"></div>
 
-    <!-- Enhanced Sidebar (Desktop) -->
-    <nav class="hidden md:fixed top-0 left-0 h-screen w-20 flex-col items-center sidebar py-8 z-50 rounded-r-3xl animate-slide-in-left" style="display:flex; flex-direction:column; position:fixed"">
-        <!-- Logo/Brand -->
-        <div class="mb-8 p-3 bg-white rounded-2xl animate-pulse-glow shadow-lg" style="position: relative;">
-            <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}"
-                 alt="Logo"
-                 class="w-8 h-8 object-contain">
-        </div>
+<nav class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center sidebar py-8 z-50 rounded-r-3xl animate-slide-in-left">
+    <!-- Logo/Brand -->
+    <div class="mb-8 p-3 bg-white rounded-2xl animate-pulse-glow shadow-lg">
+        <img src="/static/images/login_register/MinisterioDeportes.14c38072ca71.webp" alt="Logo" class="w-8 h-8 object-contain">
+    </div>
 
-        <!-- Navigation Items -->
-        <div class="flex flex-col space-y-6 flex-1 justify-center" style="position: relative;">
-            <a href="/"
-               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
-               data-tooltip="Mapa de Canchas"
-               style="position: relative;">
-                <i class="fas fa-map-marked-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
-            </a>
+    <!-- Navigation Items -->
+    <div class="flex flex-col space-y-6 flex-1 justify-center">
+        <a href="/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Mapa de Canchas">
+            <i class="fas fa-map-marked-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
+        </a>
 
-            <a href="/reservas/"
-               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
-               data-tooltip="Mis Reservas"
-               style="position: relative;">
-                <i class="fas fa-calendar-check text-white text-lg group-hover:scale-110 transition-transform"></i>
-            </a>
+        <a href="/reservas/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Mis Reservas">
+            <i class="fas fa-calendar-check text-white text-lg group-hover:scale-110 transition-transform"></i>
+        </a>
 
-            <a href="/settings/"
-               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
-               data-tooltip="Configuración"
-               style="position: relative;">
-                <i class="fas fa-cog text-white text-lg group-hover:scale-110 transition-transform"></i>
-            </a>
+        <a href="/settings/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Configuración">
+            <i class="fas fa-cog text-white text-lg group-hover:scale-110 transition-transform"></i>
+        </a>
 
-            <a href="/help/"
-               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
-               data-tooltip="Centro de Ayuda"
-               style="position: relative;">
-                <i class="fas fa-question-circle text-white text-lg group-hover:scale-110 transition-transform"></i>
-            </a>
-        </div>
+        <a href="/help/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Centro de Ayuda">
+            <i class="fas fa-question-circle text-white text-lg group-hover:scale-110 transition-transform"></i>
+        </a>
+    </div>
 
-        <!-- Logout Section -->
-        <div class="mt-auto" style="position: relative;">
-            <a href="{% url 'logout' %}"
-               class="tooltip p-3 rounded-2xl bg-red-500 bg-opacity-20 hover:bg-red-500 hover:bg-opacity-30 cursor-pointer transition-all duration-300 group"
-               data-tooltip="Cerrar Sesión"
-               onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')"
-               style="position: relative;">
-                <i class="fas fa-sign-out-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
-            </a>
-        </div>
-    </nav>
+    <!-- Logout Section -->
+    <div class="mt-auto">
+        <a href="/accounts/logout/" class="tooltip p-3 rounded-2xl bg-red-500 bg-opacity-20 hover:bg-red-500 hover:bg-opacity-30 cursor-pointer transition-all duration-300 group" data-tooltip="Cerrar Sesión" onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
+            <i class="fas fa-sign-out-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
+        </a>
+    </div>
+</nav>
+
 
     <!-- Main Content Area -->
     <div class="flex-1 md:ml-20 transition-all duration-500 ease-in-out content-area">
@@ -487,7 +469,6 @@
             if (overlay) {
                 overlay.classList.remove('hidden');
                 overlay.classList.add('flex');
-                document.body.style.overflow = 'hidden';
             }
         }
 
@@ -496,7 +477,6 @@
             if (overlay) {
                 overlay.classList.add('hidden');
                 overlay.classList.remove('flex');
-                document.body.style.overflow = '';
             }
         }
 
