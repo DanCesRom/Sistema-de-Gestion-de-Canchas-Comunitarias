@@ -1,124 +1,12 @@
-/* ----------------- TOP BAR ------------------- */
-body {
-    font-family: 'Inter', sans-serif;
-}
-
-/* Custom Gradients and Colors */
-.bg-primary-gradient {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
-}
-
-.bg-nav-gradient {
-    background: linear-gradient(135deg, #013573 0%, #0d47a1 25%, #1565c0 50%, #1976d2 75%, #2196f3 100%);
-}
-
-.bg-floating-gradient {
-    background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, rgba(147, 197, 253, 0.05) 50%, transparent 70%);
-}
-
-/* Glass Effect */
-.glass-effect {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.glass-nav {
-    background: rgba(1, 53, 115, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Advanced Animations */
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-
-    33% {
-        transform: translateY(-10px) rotate(1deg);
-    }
-
-    66% {
-        transform: translateY(5px) rotate(-1deg);
-    }
-}
-
-@keyframes pulse-glow {
-    0%, 100% {
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-    }
-
-    50% {
-        box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
-    }
-}
-
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInUp {
-    from {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.animate-float {
-    animation: float 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
-}
-
-.animate-slide-in-left {
-    animation: slideInLeft 0.6s ease-out;
-}
-
-.animate-slide-in-up {
-    animation: slideInUp 0.6s ease-out;
-}
-
-.animate-scale-in {
-    animation: scaleIn 0.4s ease-out;
-}
-
 /* Navigation Hover Effects */
 .nav-item {
-    position: relative;
+    position: relative; /* antes fixed en ::before, ahora relativo aquí */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
     .nav-item::before {
         content: '';
-        position: fixed;
+        position: absolute; /* cambiado de fixed */
         top: 50%;
         left: 50%;
         width: 0;
@@ -146,7 +34,7 @@ body {
 
 /* Mobile Navigation */
 .mobile-nav-item {
-    position: fixed;
+    position: relative; /* cambiado de fixed */
     transition: all 0.3s ease;
 }
 
@@ -156,7 +44,7 @@ body {
 
     .mobile-nav-item::after {
         content: '';
-        position: fixed;
+        position: absolute; /* cambiado de fixed */
         top: -2px;
         left: 50%;
         width: 0;
@@ -171,29 +59,9 @@ body {
         width: 30px;
     }
 
-/* Loading Animation */
-.loading-spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top: 2px solid white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
 /* Floating Background Elements */
 .floating-shapes {
-    position: fixed;
+    position: absolute; /* cambiado de fixed */
     top: 0;
     left: 0;
     width: 100%;
@@ -206,7 +74,7 @@ body {
     .floating-shapes::before,
     .floating-shapes::after {
         content: '';
-        position: fixed;
+        position: absolute; /* cambiado de fixed */
         border-radius: 50%;
         background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.05));
         animation: float 8s ease-in-out infinite;
@@ -228,45 +96,14 @@ body {
         animation-delay: -4s;
     }
 
-/* Sidebar Improvements */
-.sidebar {
-    background: linear-gradient(145deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    position: fixed
-}
-
-/* Content Area */
-.content-area {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    min-height: 100vh;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #64748b 0%, #475569 100%);
-    border-radius: 4px;
-}
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(180deg, #475569 0%, #334155 100%);
-    }
-
 /* Tooltip Styles */
 .tooltip {
-    position: fixed;
+    position: absolute; /* cambiado de fixed */
 }
 
     .tooltip::after {
         content: attr(data-tooltip);
-        position: fixed;
+        position: absolute; /* cambiado de fixed */
         left: 100%;
         top: 50%;
         transform: translateY(-50%);
@@ -285,7 +122,7 @@ body {
 
     .tooltip::before {
         content: '';
-        position: fixed;
+        position: absolute; /* cambiado de fixed */
         left: 100%;
         top: 50%;
         transform: translateY(-50%);
@@ -302,11 +139,3 @@ body {
         opacity: 1;
         visibility: visible;
     }
-
-/* Responsive Design Improvements */
-@media (max-width: 768px) {
-    .mobile-nav {
-        background: linear-gradient(135deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
-        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
-    }
-}
