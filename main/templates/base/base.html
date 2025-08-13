@@ -528,30 +528,6 @@
             document.addEventListener('touchstart', function () { }, { passive: true });
         }
 
-        // Keyboard navigation support
-        document.addEventListener('keydown', function (e) {
-            if (e.altKey) {
-                switch (e.key) {
-                    case '1':
-                        e.preventDefault();
-                        window.location.href = '/';
-                        break;
-                    case '2':
-                        e.preventDefault();
-                        window.location.href = '/reservas/';
-                        break;
-                    case '3':
-                        e.preventDefault();
-                        window.location.href = '/settings/';
-                        break;
-                    case '4':
-                        e.preventDefault();
-                        window.location.href = '/help/';
-                        break;
-                }
-            }
-        });
-
         // Add ripple effect to clickable elements
         function addRippleEffect() {
             const buttons = document.querySelectorAll('.nav-item, .mobile-nav-item, button, .btn');
