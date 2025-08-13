@@ -105,7 +105,7 @@ def account_recovery(request):
                 email_template_name = "user/password-reset-email.txt"
                 c = {
                     "email": user.email,
-                    'domain': '127.0.0.1:8000',
+                    'domain': 'https://www.tucancha.com.do',
                     'site_name': 'Reservation App',
                     "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                     "token": default_token_generator.make_token(user),
