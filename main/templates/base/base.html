@@ -347,7 +347,7 @@
     <div class="floating-shapes"></div>
 
     <!-- Enhanced Sidebar (Desktop) -->
-    <nav class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center sidebar py-8 z-50 rounded-r-3xl animate-slide-in-left" style="position: fixed !important;">
+    <nav class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center sidebar py-8 z-50 rounded-r-3xl animate-slide-in-left" style="display:flex; flex-direction:column; position:fixed"">
         <!-- Logo/Brand -->
         <div class="mb-8 p-3 bg-white rounded-2xl animate-pulse-glow shadow-lg" style="position: relative;">
             <img src="{% static 'images/login_register/MinisterioDeportes.webp' %}"
@@ -407,7 +407,7 @@
     </div>
 
     <!-- Enhanced Mobile Navigation -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 mobile-nav flex justify-around items-center h-20 z-50 rounded-t-3xl animate-slide-in-up" style="display:flex; flex-direction:column; position:fixed">
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 mobile-nav flex justify-around items-center h-20 z-50 rounded-t-3xl animate-slide-in-up" style="position: fixed !important;">
         <!-- Background Glass Effect -->
         <div class="absolute inset-0 glass-nav rounded-t-3xl"></div>
 
