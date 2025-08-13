@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}Restablecer Contraseña | Reserva de Canchas{% endblock %}
+{% block title %}Restablecer Clave| Reserva de Canchas{% endblock %}
 
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -27,7 +27,7 @@
         <!-- Formulario de recuperacion -->
         <form method="post" class="space-y-4">
             {% csrf_token %}
-            <input type="email" name="email" placeholder="Correo electrónico" required
+            <input type="email" name="email" placeholder="Correo electronico" required
                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#013573]">
             <button type="submit"
                     class="w-full py-3 px-4 bg-[#013573] hover:bg-[#0d47a1] text-white font-semibold rounded-xl transition-colors">
