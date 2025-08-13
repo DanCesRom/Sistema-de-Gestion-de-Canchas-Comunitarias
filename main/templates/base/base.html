@@ -139,7 +139,7 @@
 
         /* Navigation Hover Effects */
         .nav-item {
-            position: relative;
+            position: fixed;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -173,7 +173,7 @@
 
         /* Mobile Navigation */
         .mobile-nav-item {
-            position: relative;
+            position: fixed;
             transition: all 0.3s ease;
         }
 
@@ -257,14 +257,19 @@
 
         /* Sidebar Improvements */
         .sidebar {
+            position: fixed; /* Stays pinned to the screen */
+            top: 0; /* Top of the viewport */
+            left: 0; /* Left of the viewport */
+            height: 100vh; /* Full height of viewport */
+            width: 200px; /* Adjust to your design */
             background: linear-gradient(145deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            z-index: 1000; /* Keep above other elements */
         }
 
         /* Content Area */
         .content-area {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            min-height: 100vh;
+            margin-left: 200px; /* Same as sidebar width */
         }
 
         /* Custom Scrollbar */
