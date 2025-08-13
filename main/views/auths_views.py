@@ -105,7 +105,6 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 
-
 def account_recovery(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -115,14 +114,19 @@ def account_recovery(request):
             return render(request, 'user/account_recovery.html')
         
         try:
-            EmailValidator()(email)  # Validate email format
+            EmailValidator()(email)
         except ValidationError:
             messages.error(request, 'Invalid email format.')
             return render(request, 'user/account_recovery.html')
 
+        # Validate email settings
+        if not settings.EMAIL_HOST_USER or not settings.DEFAULT_FROM_EMAIL:
+            messages.error(request, 'Email configuration error. Contact support.')
+            return render(request, 'user/account_recovery.html')
+
         # Query for user (assuming email is unique)
         try:
-            user = User.objects.get(email=email)  # Use get() instead of filter()
+            user = User.objects.get(email=email)
         except User.DoesNotExist:
             messages.error(request, 'No user is associated with this email.')
             return render(request, 'user/account_recovery.html')
@@ -136,16 +140,17 @@ def account_recovery(request):
             email_template_name = "user/password-reset-email.txt"
             c = {
                 "email": user.email,
-                'domain': 'www.tucancha.com.do',  # Remove protocol from domain
+                'domain': 'www.tucancha.com.do',
                 'site_name': 'Reservation App',
                 "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                 "token": default_token_generator.make_token(user),
-                'protocol': 'http',  # Match the domain's protocol
+                'protocol': 'https',
             }
             email_content = render_to_string(email_template_name, c)
 
-            # Debug: Log the email details
+            # Debug: Log email details
             print(f"Sending email to: {user.email}")
+            print(f"From: {settings.DEFAULT_FROM_EMAIL}")
             print(f"Subject: {subject}")
             print(f"Email content: {email_content}")
 
@@ -155,11 +160,11 @@ def account_recovery(request):
                 email_content,
                 settings.DEFAULT_FROM_EMAIL,
                 [user.email],
-                fail_silently=False,  # Ensure errors are raised
+                fail_silently=False,
             )
             messages.success(request, 'Check your email for the password reset link.')
         except Exception as e:
-            print(f"Error sending email: {str(e)}")  # Log error for debugging
+            print(f"Error sending email: {str(e)}")
             messages.error(request, f'Failed to send recovery email: {str(e)}')
             return render(request, 'user/account_recovery.html')
 
