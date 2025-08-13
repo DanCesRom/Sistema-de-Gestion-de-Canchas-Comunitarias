@@ -1,3 +1,5 @@
+# proyecto_reservas/middleware.py
+
 from django.shortcuts import redirect
 
 class WwwRedirectMiddleware:
@@ -7,7 +9,6 @@ class WwwRedirectMiddleware:
     def __call__(self, request):
         host = request.get_host()
         if host == "tucancha.com.do":
-            # Permanent redirect to www version
             new_url = f"https://www.tucancha.com.do{request.get_full_path()}"
             return redirect(new_url, permanent=True)
         return self.get_response(request)
