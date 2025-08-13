@@ -120,7 +120,7 @@ def account_recovery(request):
             context = {
                 "email": user.email,
                 "domain": "www.tucancha.com.do",
-                "site_name": "Reservation App",
+                "site_name": "Tucancha RD",
                 "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                 "token": default_token_generator.make_token(user),
                 "protocol": "https",
