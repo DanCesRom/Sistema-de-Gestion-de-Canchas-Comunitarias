@@ -363,8 +363,9 @@ function updateSelectionInfo() {
     selectionInfo.classList.remove('hidden');
 
     if (selectedBlocks.length === 1) {
-        selectionText.textContent = ${selectedBlocks[0]} - ${addHour(selectedBlocks[0])};
-    } else {
+        selectionText.textContent = `${selectedBlocks[0]} - ${addHour(selectedBlocks[0])}`;
+    }
+    else {
         const startTime = selectedBlocks[0];
         const endTime = addHour(selectedBlocks[selectedBlocks.length - 1]);
         selectionText.textContent = ${startTime} - ${endTime} (${selectedBlocks.length} hora${selectedBlocks.length > 1 ? 's' : ''});
