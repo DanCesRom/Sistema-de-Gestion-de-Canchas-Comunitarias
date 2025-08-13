@@ -1,23 +1,20 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render, redirect
-from django.contrib.auth import SESSION_KEY, authenticate, login
-from django.contrib.auth.models import User
-from main.models import UserProfile
-from django.contrib import messages
-
-from django.contrib.auth import logout
-
-from django.utils.http import urlsafe_base64_decode
+from django.http import HttpResponse
+from django.contrib.auth import SESSION_KEY, authenticate, login, logout
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
 from django.template.loader import render_to_string
 from django.conf import settings
-from django.utils.http import urlsafe_base64_encode
-from django.core.mail import send_mail
-from django.utils.encoding import force_bytes
-
-
-from django.shortcuts import redirect
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from main.models import UserProfile
 
 def custom_404_view(request, exception):
     if request.user.is_authenticated:
@@ -48,7 +45,7 @@ def login_register_view(request):
                 profile = user.userprofile
                 return redirect('home')
             else:
-                messages.error(request, 'Invalid credentials or user not found')
+                messages.error(request, 'El usuario no existe o la clave esta incorrecta')
 
         elif 'register' in request.POST:
             try:
@@ -92,86 +89,60 @@ def logout_view(request):
     return redirect('login')  # or wherever you want to send them
 
 
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib import messages
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.core.validators import EmailValidator
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
-
 def account_recovery(request):
     if request.method == "POST":
         email = request.POST.get('email')
-        # Validate email input
+
         if not email:
-            messages.error(request, 'Please provide an email address.')
+            messages.error(request, 'Por Favor Escribir un correo.')
             return render(request, 'user/account_recovery.html')
-        
+
         try:
             EmailValidator()(email)
         except ValidationError:
-            messages.error(request, 'Invalid email format.')
+            messages.error(request, 'Formato de correo incorrecto o no permitido.')
             return render(request, 'user/account_recovery.html')
 
-        # Validate email settings
-        if not settings.EMAIL_HOST_USER or not settings.DEFAULT_FROM_EMAIL:
-                        # Debug: Log email details
-            print(f"Sending email to: {user.email}")
-            print(f"From: {settings.DEFAULT_FROM_EMAIL}")
-            print(f"Subject: {subject}")
-            print(f"Email content: {email_content}")
-
-            messages.error(request, 'Email configuration error. Contact support.')
-            return render(request, 'user/account_recovery.html')
-
-        # Query for user (assuming email is unique)
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            messages.error(request, 'No user is associated with this email.')
+            messages.error(request, 'No hay ningun usuario asociado a este correo')
             return render(request, 'user/account_recovery.html')
         except User.MultipleObjectsReturned:
-            messages.error(request, 'Multiple users found with this email. Contact support.')
+            messages.error(request, 'Multiples Usuarios fueron encontrados con este correo. Favor Contactar Soporte')
+            return render(request, 'user/account_recovery.html')
+
+        # Ensure email settings exist AFTER user retrieval
+        if not settings.EMAIL_HOST_USER or not settings.DEFAULT_FROM_EMAIL:
+            messages.error(request, 'No se pudo mandar un correo de restablecimiento. Contacta con Soporte.')
             return render(request, 'user/account_recovery.html')
 
         try:
-            # Prepare email content
-            subject = "Password Reset Request"
+            subject = "Solicitud de cambio de clave"
             email_template_name = "user/password-reset-email.txt"
-            c = {
+            context = {
                 "email": user.email,
-                'domain': 'www.tucancha.com.do',
-                'site_name': 'Reservation App',
+                "domain": "www.tucancha.com.do",
+                "site_name": "Reservation App",
                 "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                 "token": default_token_generator.make_token(user),
-                'protocol': 'https',
+                "protocol": "https",
             }
-            email_content = render_to_string(email_template_name, c)
+            text_content = render_to_string("user/password-reset-email.txt", context)
+            html_content = render_to_string("user/password-reset-email.html", context)
 
-            # Debug: Log email details
-            print(f"Sending email to: {user.email}")
-            print(f"From: {settings.DEFAULT_FROM_EMAIL}")
-            print(f"Subject: {subject}")
-            print(f"Email content: {email_content}")
-
-            # Send email
-            send_mail(
+            email_msg = EmailMultiAlternatives(
                 subject,
-                email_content,
+                text_content,
                 settings.DEFAULT_FROM_EMAIL,
-                [user.email],
-                fail_silently=False,
+                [user.email]
             )
-            messages.success(request, 'Check your email for the password reset link.')
+
+            email_msg.attach_alternative(html_content, "text/html")
+            email_msg.send()
         except Exception as e:
             print(f"Error sending email: {str(e)}")
-            messages.error(request, f'Failed to send recovery email: {str(e)}')
+            messages.error(request, f'Error al enviar el correo de recuperacion: {str(e)}')
             return render(request, 'user/account_recovery.html')
 
     return render(request, 'user/account_recovery.html')
