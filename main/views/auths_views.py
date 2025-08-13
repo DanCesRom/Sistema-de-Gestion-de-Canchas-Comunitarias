@@ -92,28 +92,75 @@ def logout_view(request):
     return redirect('login')  # or wherever you want to send them
 
 
-
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
 
 
 def account_recovery(request):
     if request.method == "POST":
         email = request.POST.get('email')
-        associated_users = User.objects.filter(email=email)
-        if associated_users.exists():
-            for user in associated_users:
-                subject = "Password Reset Request"
-                email_template_name = "user/password-reset-email.txt"
-                c = {
-                    "email": user.email,
-                    'domain': 'https://www.tucancha.com.do',
-                    'site_name': 'Reservation App',
-                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                    "token": default_token_generator.make_token(user),
-                    'protocol': 'http',
-                }
-                email_content = render_to_string(email_template_name, c)
-                send_mail(subject, email_content, settings.DEFAULT_FROM_EMAIL, [user.email])
-            messages.success(request, 'Check your email for the password reset link.')
-        else:
+        # Validate email input
+        if not email:
+            messages.error(request, 'Please provide an email address.')
+            return render(request, 'user/account_recovery.html')
+        
+        try:
+            EmailValidator()(email)  # Validate email format
+        except ValidationError:
+            messages.error(request, 'Invalid email format.')
+            return render(request, 'user/account_recovery.html')
+
+        # Query for user (assuming email is unique)
+        try:
+            user = User.objects.get(email=email)  # Use get() instead of filter()
+        except User.DoesNotExist:
             messages.error(request, 'No user is associated with this email.')
+            return render(request, 'user/account_recovery.html')
+        except User.MultipleObjectsReturned:
+            messages.error(request, 'Multiple users found with this email. Contact support.')
+            return render(request, 'user/account_recovery.html')
+
+        try:
+            # Prepare email content
+            subject = "Password Reset Request"
+            email_template_name = "user/password-reset-email.txt"
+            c = {
+                "email": user.email,
+                'domain': 'www.tucancha.com.do',  # Remove protocol from domain
+                'site_name': 'Reservation App',
+                "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                "token": default_token_generator.make_token(user),
+                'protocol': 'https',  # Match the domain's protocol
+            }
+            email_content = render_to_string(email_template_name, c)
+
+            # Debug: Log the email details
+            print(f"Sending email to: {user.email}")
+            print(f"Subject: {subject}")
+            print(f"Email content: {email_content}")
+
+            # Send email
+            send_mail(
+                subject,
+                email_content,
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+                fail_silently=False,  # Ensure errors are raised
+            )
+            messages.success(request, 'Check your email for the password reset link.')
+        except Exception as e:
+            print(f"Error sending email: {str(e)}")  # Log error for debugging
+            messages.error(request, f'Failed to send recovery email: {str(e)}')
+            return render(request, 'user/account_recovery.html')
+
     return render(request, 'user/account_recovery.html')
