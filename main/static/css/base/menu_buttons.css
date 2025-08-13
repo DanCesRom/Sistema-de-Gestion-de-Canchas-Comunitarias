@@ -112,7 +112,7 @@ body {
 
 /* Navigation Hover Effects */
 .nav-item {
-    position: relative; /* antes fixed en ::before, ahora relativo aquí */
+    position: relative; /* antes fixed en ::before, ahora relativo aqui */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
