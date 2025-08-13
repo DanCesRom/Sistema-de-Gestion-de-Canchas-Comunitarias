@@ -140,7 +140,7 @@ def account_recovery(request):
                 'site_name': 'Reservation App',
                 "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                 "token": default_token_generator.make_token(user),
-                'protocol': 'https',  # Match the domain's protocol
+                'protocol': 'http',  # Match the domain's protocol
             }
             email_content = render_to_string(email_template_name, c)
 
