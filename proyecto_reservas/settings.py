@@ -197,7 +197,9 @@ LOGGING = {
 
 from dotenv import load_dotenv
 
-load_dotenv(BASE_DIR / '.env')
+load_dotenv(BASE_DIR, '.env')
+
+#os.path.join(BASE_DIR, 'staticfiles')
 
 #Email Stuff
 
