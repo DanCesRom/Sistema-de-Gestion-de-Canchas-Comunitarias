@@ -199,8 +199,6 @@ from dotenv import load_dotenv
 
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-#os.path.join(BASE_DIR, 'staticfiles')
-
 #Email Stuff
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
