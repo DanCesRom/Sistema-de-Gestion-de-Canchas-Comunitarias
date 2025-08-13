@@ -121,6 +121,12 @@ def account_recovery(request):
 
         # Validate email settings
         if not settings.EMAIL_HOST_USER or not settings.DEFAULT_FROM_EMAIL:
+                        # Debug: Log email details
+            print(f"Sending email to: {user.email}")
+            print(f"From: {settings.DEFAULT_FROM_EMAIL}")
+            print(f"Subject: {subject}")
+            print(f"Email content: {email_content}")
+
             messages.error(request, 'Email configuration error. Contact support.')
             return render(request, 'user/account_recovery.html')
 
