@@ -1,9 +1,8 @@
-/* ----------------- BASE STYLES ------------------- */
 body {
     font-family: 'Inter', sans-serif;
 }
 
-/* ----------------- COLOR GRADIENTS ------------------- */
+/* Custom Gradients and Colors */
 .bg-primary-gradient {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
 }
@@ -16,7 +15,7 @@ body {
     background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, rgba(147, 197, 253, 0.05) 50%, transparent 70%);
 }
 
-/* ----------------- GLASS EFFECTS ------------------- */
+/* Glass Effect */
 .glass-effect {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
@@ -29,55 +28,149 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* ----------------- ANIMATIONS ------------------- */
-@keyframes float { ... }
-@keyframes pulse-glow { ... }
-@keyframes slideInLeft { ... }
-@keyframes slideInUp { ... }
-@keyframes scaleIn { ... }
-@keyframes spin { ... }
+/* Advanced Animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
 
+    33% {
+        transform: translateY(-10px) rotate(1deg);
+    }
 
-
-.animate-float { animation: float 6s ease-in-out infinite; }
-.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
-.animate-slide-in-left { animation: slideInLeft 0.6s ease-out; }
-.animate-slide-in-up { animation: slideInUp 0.6s ease-out; }
-.animate-scale-in { animation: scaleIn 0.4s ease-out; }
-
-/* ----------------- SIDEBAR ------------------- */
-.sidebar {
-    background: linear-gradient(145deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    66% {
+        transform: translateY(5px) rotate(-1deg);
+    }
 }
 
-/* ----------------- CONTENT AREA ------------------- */
-.content-area {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    min-height: 100vh;
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+    }
 }
 
-/* ----------------- NAVIGATION ITEMS (DESKTOP) ------------------- */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-slide-in-left {
+    animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-slide-in-up {
+    animation: slideInUp 0.6s ease-out;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.4s ease-out;
+}
+
+/* Navigation Hover Effects */
 .nav-item {
     position: relative;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.nav-item::before { ... }
-.nav-item:hover::before { ... }
-.nav-item:hover { ... }
-.nav-item.active { ... }
 
-/* ----------------- MOBILE NAVIGATION ------------------- */
+    .nav-item::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+        border-radius: 50%;
+        transition: all 0.4s ease;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+    }
+
+    .nav-item:hover::before {
+        width: 60px;
+        height: 60px;
+    }
+
+    .nav-item:hover {
+        transform: translateY(-2px) scale(1.1);
+    }
+
+    .nav-item.active {
+        background: rgba(255, 255, 255, 0.15);
+        transform: scale(1.05);
+    }
+
+/* Mobile Navigation */
 .mobile-nav-item {
     position: relative;
     transition: all 0.3s ease;
 }
-.mobile-nav-item:hover { ... }
-.mobile-nav-item::after { ... }
-.mobile-nav-item.active::after { ... }
 
+    .mobile-nav-item:hover {
+        transform: translateY(-3px);
+    }
 
-/* ----------------- LOADING SPINNER ------------------- */
+    .mobile-nav-item::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: 50%;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .mobile-nav-item.active::after {
+        width: 30px;
+    }
+
+/* Loading Animation */
 .loading-spinner {
     width: 20px;
     height: 20px;
@@ -87,34 +180,128 @@ body {
     animation: spin 1s linear infinite;
 }
 
-/* ----------------- FLOATING BACKGROUND SHAPES ------------------- */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Floating Background Elements */
 .floating-shapes {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     z-index: -1;
     pointer-events: none;
 }
-.floating-shapes::before,
-.floating-shapes::after { ... }
 
-
-/* ----------------- SCROLLBAR ------------------- */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { ... }
-::-webkit-scrollbar-thumb { ... }
-::-webkit-scrollbar-thumb:hover { ... }
+    .floating-shapes::before,
+    .floating-shapes::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.05));
+        animation: float 8s ease-in-out infinite;
     }
 
-/* ----------------- TOOLTIP ------------------- */
-.tooltip { position: relative; }
-.tooltip::after { ... }
-.tooltip::before { ... }
-.tooltip:hover::after,
-.tooltip:hover::before { ... }
+    .floating-shapes::before {
+        width: 300px;
+        height: 300px;
+        top: 10%;
+        right: 10%;
+        animation-delay: -2s;
+    }
 
-/* ----------------- RESPONSIVE ------------------- */
+    .floating-shapes::after {
+        width: 200px;
+        height: 200px;
+        bottom: 10%;
+        left: 10%;
+        animation-delay: -4s;
+    }
+
+/* Sidebar Improvements */
+.sidebar {
+    background: linear-gradient(145deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Content Area */
+.content-area {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    min-height: 100vh;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #64748b 0%, #475569 100%);
+    border-radius: 4px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #475569 0%, #334155 100%);
+    }
+
+/* Tooltip Styles */
+.tooltip {
+    position: relative;
+}
+
+    .tooltip::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 15px;
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        border-radius: 8px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+
+    .tooltip::before {
+        content: '';
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 9px;
+        border: 6px solid transparent;
+        border-right-color: rgba(0, 0, 0, 0.9);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .tooltip:hover::after,
+    .tooltip:hover::before {
+        opacity: 1;
+        visibility: visible;
+    }
+
+/* Responsive Design Improvements */
 @media (max-width: 768px) {
     .mobile-nav {
         background: linear-gradient(135deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
