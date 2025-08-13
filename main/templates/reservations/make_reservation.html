@@ -368,7 +368,7 @@ function updateSelectionInfo() {
     else {
         const startTime = selectedBlocks[0];
         const endTime = addHour(selectedBlocks[selectedBlocks.length - 1]);
-        selectionText.textContent = ${startTime} - ${endTime} (${selectedBlocks.length} hora${selectedBlocks.length > 1 ? 's' : ''});
+        selectionText.textContent = ${ startTime } - `${endTime} ${selectedBlocks.length} hora ${selectedBlocks.length > 1 ? 's' : ''}`;
     }
 
     // Update form fields
