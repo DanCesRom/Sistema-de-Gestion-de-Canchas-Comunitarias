@@ -87,7 +87,7 @@
         @keyframes slideInLeft {
             from {
                 opacity: 0;
-                transform: translateX(-50px);
+                transform: translateX(-100%);
             }
 
             to {
@@ -128,12 +128,12 @@
             animation: pulse-glow 3s ease-in-out infinite;
         }
 
-        .animate-slide-in-left {
-            animation: slideInLeft 0.6s ease-out;
+        .slide-in {
+            animation: slideInLeft 0.6s ease-out forwards;
         }
 
         .animate-slide-in-up {
-            animation: slideInUp 0.6s ease-out;
+            animation: slideInUp 0.6s ease-out forwards;
         }
 
         .animate-scale-in {
@@ -258,17 +258,20 @@
                 animation-delay: -4s;
             }
 
-        /* Sidebar Improvements */
+        /* Sidebar fixed and full height */
         .sidebar {
-            background: linear-gradient(145deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            position: fixed; /* Ensure fixed positioning */
+            position: fixed;
             top: 0;
             left: 0;
-            height: 100vh; /* Full viewport height */
-            width: 5rem; /* Matches w-20 (80px) */
-            z-index: 50; /* Ensure sidebar stays above other content */
-            overflow: hidden; /* Prevent internal scrolling */
+            height: 100vh;
+            width: 80px; /* adjust as needed */
+            background: linear-gradient(145deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 2rem;
+            border-radius: 0 24px 24px 0;
         }
 
         /* Ensure content area respects sidebar */
@@ -358,15 +361,14 @@
     <!-- Floating Background Shapes -->
     <div class="floating-shapes"></div>
 
-    <!-- Sidebar -->
-    <nav class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center sidebar py-8 z-50 rounded-r-3xl animate-slide-in-left">
+    <nav class="hidden md:flex sidebar fixed top-0 left-0 h-screen w-20 flex-col items-center py-8 z-50 rounded-r-3xl slide-in">
         <!-- Logo/Brand -->
         <div class="mb-8 p-3 bg-white rounded-2xl animate-pulse-glow shadow-lg">
             <img src="/static/images/login_register/MinisterioDeportes.14c38072ca71.webp" alt="Logo" class="w-8 h-8 object-contain">
         </div>
 
         <!-- Navigation Items -->
-        <div class="flex flex-col space-y-6 flex-1 justify-center">
+        <div class="flex flex-col space-y-6 flex-1">
             <a href="/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Mapa de Canchas">
                 <i class="fas fa-map-marked-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
             </a>
