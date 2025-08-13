@@ -26,65 +26,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        /* Sidebar Improvements */
+        .sidebar {
+            position: fixed; /* pinned to viewport */
+            top: 0;
+            left: 0;
+            width: 80px; /* adjust as needed */
+            height: 100vh; /* full viewport height */
+            background: linear-gradient(145deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 2rem; /* py-8 equivalent */
+            border-radius: 0 24px 24px 0; /* rounded-r-3xl */
         }
 
-        /* Custom Gradients and Colors */
-        .bg-primary-gradient {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
-        }
-
-        .bg-nav-gradient {
-            background: linear-gradient(135deg, #013573 0%, #0d47a1 25%, #1565c0 50%, #1976d2 75%, #2196f3 100%);
-        }
-
-        .bg-floating-gradient {
-            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, rgba(147, 197, 253, 0.05) 50%, transparent 70%);
-        }
-
-        /* Glass Effect */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .glass-nav {
-            background: rgba(1, 53, 115, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Advanced Animations */
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px) rotate(0deg);
-            }
-
-            33% {
-                transform: translateY(-10px) rotate(1deg);
-            }
-
-            66% {
-                transform: translateY(5px) rotate(-1deg);
-            }
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-            }
-
-            50% {
-                box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
-            }
-        }
-
+        /* Slide in animation once on page load */
         @keyframes slideInLeft {
             from {
                 opacity: 0;
-                transform: translateX(-50px);
+                transform: translateX(-100%);
             }
 
             to {
@@ -93,241 +56,63 @@
             }
         }
 
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .sidebar-animate {
+            animation: slideInLeft 0.6s ease-out forwards; /* stays in final position */
         }
 
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .animate-pulse-glow {
-            animation: pulse-glow 3s ease-in-out infinite;
-        }
-
-        .animate-slide-in-left {
-            animation: slideInLeft 0.6s ease-out forwards; /* keeps final position */
-        }
-
-        .animate-slide-in-up {
-            animation: slideInUp 0.6s ease-out forwards; /* keeps final position */
-        }
-
-        .animate-scale-in {
-            animation: scaleIn 0.4s ease-out;
-        }
-
-        /* Navigation Hover Effects */
+        /* Nav items */
         .nav-item {
-            position: fixed;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-            .nav-item::before {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 0;
-                height: 0;
-                background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-                border-radius: 50%;
-                transition: all 0.4s ease;
-                transform: translate(-50%, -50%);
-                z-index: -1;
-            }
-
-            .nav-item:hover::before {
-                width: 60px;
-                height: 60px;
-            }
-
-            .nav-item:hover {
-                transform: translateY(-2px) scale(1.1);
-            }
-
-            .nav-item.active {
-                background: rgba(255, 255, 255, 0.15);
-                transform: scale(1.05);
-            }
-
-        /* Mobile Navigation */
-        .mobile-nav-item {
-            position: fixed;
-            transition: all 0.3s ease;
-        }
-
-            .mobile-nav-item:hover {
-                transform: translateY(-3px);
-            }
-
-            .mobile-nav-item::after {
-                content: '';
-                position: absolute;
-                top: -2px;
-                left: 50%;
-                width: 0;
-                height: 3px;
-                background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-                border-radius: 2px;
-                transition: all 0.3s ease;
-                transform: translateX(-50%);
-            }
-
-            .mobile-nav-item.active::after {
-                width: 30px;
-            }
-
-        /* Loading Animation */
-        .loading-spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Floating Background Elements */
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-            .floating-shapes::before,
-            .floating-shapes::after {
-                content: '';
-                position: absolute;
-                border-radius: 50%;
-                background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.05));
-                animation: float 8s ease-in-out infinite;
-            }
-
-            .floating-shapes::before {
-                width: 300px;
-                height: 300px;
-                top: 10%;
-                right: 10%;
-                animation-delay: -2s;
-            }
-
-            .floating-shapes::after {
-                width: 200px;
-                height: 200px;
-                bottom: 10%;
-                left: 10%;
-                animation-delay: -4s;
-            }
-
-        /* Sidebar Improvements */
-        .sidebar {
-            position: fixed; /* Stays pinned to the screen */
-            top: 0; /* Top of the viewport */
-            left: 0; /* Left of the viewport */
-            height: 100vh; /* Full height of viewport */
-            width: 200px; /* Adjust to your design */
-            background: linear-gradient(145deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            z-index: 1000; /* Keep above other elements */
-        }
-
-        /* Content Area */
-        .content-area {
-            margin-left: 200px; /* Same as sidebar width */
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #64748b 0%, #475569 100%);
-            border-radius: 4px;
-        }
-
-            ::-webkit-scrollbar-thumb:hover {
-                background: linear-gradient(180deg, #475569 0%, #334155 100%);
-            }
-
-        /* Tooltip Styles */
-        .tooltip {
+            display: flex;
+            justify-content: center;
+            padding: 0.75rem; /* p-3 */
+            border-radius: 16px; /* rounded-2xl */
+            transition: all 0.3s ease;
             position: relative;
         }
 
-            .tooltip::after {
-                content: attr(data-tooltip);
-                position: absolute;
-                left: 100%;
-                top: 50%;
-                transform: translateY(-50%);
-                margin-left: 15px;
-                padding: 8px 12px;
-                background: rgba(0, 0, 0, 0.9);
-                color: white;
-                border-radius: 8px;
-                font-size: 12px;
-                white-space: nowrap;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                z-index: 1000;
+            .nav-item:hover {
+                transform: scale(1.1);
+                background: rgba(255,255,255,0.2);
             }
 
-            .tooltip::before {
-                content: '';
-                position: absolute;
-                left: 100%;
-                top: 50%;
-                transform: translateY(-50%);
-                margin-left: 9px;
-                border: 6px solid transparent;
-                border-right-color: rgba(0, 0, 0, 0.9);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
+            .nav-item.active {
+                transform: scale(1.05);
+                background: rgba(255,255,255,0.15);
             }
 
-            .tooltip:hover::after,
-            .tooltip:hover::before {
-                opacity: 1;
-                visibility: visible;
-            }
+        /* Tooltip */
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 15px;
+            padding: 8px 12px;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
 
-        /* Responsive Design Improvements */
-        @media (max-width: 768px) {
-            .mobile-nav {
-                background: linear-gradient(135deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
-                box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
-            }
+        .tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Logout button at bottom */
+        .sidebar .logout {
+            margin-top: auto;
+            margin-bottom: 2rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
     </style>
 
@@ -339,41 +124,30 @@
     <!-- Floating Background Shapes -->
     <div class="floating-shapes"></div>
 
-    <nav class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center sidebar py-8 z-50 rounded-r-3xl animate-slide-in-left">
+    <nav class="hidden md:flex sidebar sidebar-animate">
         <!-- Navigation Items -->
         <div class="flex flex-col space-y-6 flex-1 justify-center">
-            <a href="/"
-               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
-               data-tooltip="Mapa de Canchas">
-                <i class="fas fa-map-marked-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
+            <a href="/" class="nav-item tooltip" data-tooltip="Mapa de Canchas">
+                <i class="fas fa-map-marked-alt text-white text-lg"></i>
             </a>
 
-            <a href="/reservas/"
-               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
-               data-tooltip="Mis Reservas">
-                <i class="fas fa-calendar-check text-white text-lg group-hover:scale-110 transition-transform"></i>
+            <a href="/reservas/" class="nav-item tooltip active" data-tooltip="Mis Reservas">
+                <i class="fas fa-calendar-check text-white text-lg"></i>
             </a>
 
-            <a href="/settings/"
-               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
-               data-tooltip="Configuración">
-                <i class="fas fa-cog text-white text-lg group-hover:scale-110 transition-transform"></i>
+            <a href="/settings/" class="nav-item tooltip" data-tooltip="Configuración">
+                <i class="fas fa-cog text-white text-lg"></i>
             </a>
 
-            <a href="/help/"
-               class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group"
-               data-tooltip="Centro de Ayuda">
-                <i class="fas fa-question-circle text-white text-lg group-hover:scale-110 transition-transform"></i>
+            <a href="/help/" class="nav-item tooltip" data-tooltip="Centro de Ayuda">
+                <i class="fas fa-question-circle text-white text-lg"></i>
             </a>
         </div>
 
         <!-- Logout Section -->
-        <div class="mt-auto">
-            <a href="{% url 'logout' %}"
-               class="tooltip p-3 rounded-2xl bg-red-500 bg-opacity-20 hover:bg-red-500 hover:bg-opacity-30 cursor-pointer transition-all duration-300 group"
-               data-tooltip="Cerrar Sesión"
-               onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
-                <i class="fas fa-sign-out-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
+        <div class="logout">
+            <a href="/accounts/logout/" class="tooltip" data-tooltip="Cerrar Sesión" onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
+                <i class="fas fa-sign-out-alt text-white text-lg"></i>
             </a>
         </div>
     </nav>
