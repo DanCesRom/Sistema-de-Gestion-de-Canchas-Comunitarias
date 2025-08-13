@@ -18,9 +18,6 @@ from main.models import UserProfile
 
 def custom_404_view(request, exception):
     if request.user.is_authenticated:
-        if request.user.is_staff:
-            return redirect('/dashboard/')
-        else:
             return redirect('/')
     else:
         return redirect('/login/')
@@ -142,7 +139,7 @@ def account_recovery(request):
             email_msg.send()
         except Exception as e:
             print(f"Error sending email: {str(e)}")
-            messages.error(request, f'Error al enviar el correo de recuperacion: {str(e)}')
+            messages.error(request, f'Error al enviar el correo de recuperacion: {str(e)}. Favor Contactar Soporte')
             return render(request, 'user/account_recovery.html')
 
     return render(request, 'user/account_recovery.html')

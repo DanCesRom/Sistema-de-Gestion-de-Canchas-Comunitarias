@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from django.urls import path, include
-from . import views
+from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth_views
 from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.static import static
+
+from . import views
 from .views import auths_views, reservations_views, settings_views, help_views, home_views
 
 
@@ -17,15 +18,22 @@ urlpatterns = [
     #Password reset user views
     path('user/account-recovery/', views.auths_views.account_recovery, name='account-recovery'),
 
-    #Password reset URLs Email
+    # Form para ingresar nueva clave
     path('user/password-reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
-        template_name='user/password_reset_confirm.html'
-    ), name='password_reset_confirm'),
+            template_name='user/password_reset_confirm.html',
+            success_url=reverse_lazy('password_reset_complete')  # <-- aquí redirige a tu template custom
+        ),
+        name='password_reset_confirm'
+    ),
 
-    #Password Reset Sussess Confirmation
-    path('user/password-reset/complete/', auth_views.PasswordResetCompleteView.as_view(
-        template_name='user/password_reset_complete.html'
-    ), name='password_reset_complete'),
+    # Pagina de confirmacion de exito
+    path(
+        'user/password-reset/complete/',
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name='user/password_reset_complete.html'
+        ),
+        name='password_reset_complete'
+    ),
 
 
 
