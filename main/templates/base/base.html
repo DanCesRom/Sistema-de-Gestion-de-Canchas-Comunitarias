@@ -26,8 +26,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* Ensure body doesn't interfere with fixed positioning */
         body {
             font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            position: relative; /* Ensure body doesn't override fixed elements */
         }
 
         /* Custom Gradients and Colors */
@@ -259,12 +262,21 @@
         .sidebar {
             background: linear-gradient(145deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: fixed; /* Ensure fixed positioning */
+            top: 0;
+            left: 0;
+            height: 100vh; /* Full viewport height */
+            width: 5rem; /* Matches w-20 (80px) */
+            z-index: 50; /* Ensure sidebar stays above other content */
+            overflow: hidden; /* Prevent internal scrolling */
         }
 
-        /* Content Area */
+        /* Ensure content area respects sidebar */
         .content-area {
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             min-height: 100vh;
+            margin-left: 5rem; /* Matches sidebar width to prevent overlap */
+            width: calc(100% - 5rem); /* Adjust content width */
         }
 
         /* Custom Scrollbar */
@@ -329,13 +341,12 @@
                 visibility: visible;
             }
 
-        /* Responsive Design Improvements */
+        /* For smaller screens, hide sidebar margin */
         @media (max-width: 768px) {
-            .mobile-nav {
-                background: linear-gradient(135deg, #013573 0%, #0d47a1 50%, #1565c0 100%);
-                box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+            .content-area {
+                margin-left: 0; /* Remove margin on mobile since sidebar is hidden */
+                width: 100%; /* Full width on mobile */
             }
-        }
     </style>
 
     {% block extra_head %}{% endblock %}
@@ -346,38 +357,39 @@
     <!-- Floating Background Shapes -->
     <div class="floating-shapes"></div>
 
-<nav class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center sidebar py-8 z-50 rounded-r-3xl animate-slide-in-left">
-    <!-- Logo/Brand -->
-    <div class="mb-8 p-3 bg-white rounded-2xl animate-pulse-glow shadow-lg">
-        <img src="/static/images/login_register/MinisterioDeportes.14c38072ca71.webp" alt="Logo" class="w-8 h-8 object-contain">
-    </div>
+    <!-- Sidebar -->
+    <nav class="hidden md:flex fixed top-0 left-0 h-screen w-20 flex-col items-center sidebar py-8 z-50 rounded-r-3xl animate-slide-in-left">
+        <!-- Logo/Brand -->
+        <div class="mb-8 p-3 bg-white rounded-2xl animate-pulse-glow shadow-lg">
+            <img src="/static/images/login_register/MinisterioDeportes.14c38072ca71.webp" alt="Logo" class="w-8 h-8 object-contain">
+        </div>
 
-    <!-- Navigation Items -->
-    <div class="flex flex-col space-y-6 flex-1 justify-center">
-        <a href="/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Mapa de Canchas">
-            <i class="fas fa-map-marked-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
-        </a>
+        <!-- Navigation Items -->
+        <div class="flex flex-col space-y-6 flex-1 justify-center">
+            <a href="/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Mapa de Canchas">
+                <i class="fas fa-map-marked-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
+            </a>
 
-        <a href="/reservas/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Mis Reservas">
-            <i class="fas fa-calendar-check text-white text-lg group-hover:scale-110 transition-transform"></i>
-        </a>
+            <a href="/reservas/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Mis Reservas">
+                <i class="fas fa-calendar-check text-white text-lg group-hover:scale-110 transition-transform"></i>
+            </a>
 
-        <a href="/settings/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Configuración">
-            <i class="fas fa-cog text-white text-lg group-hover:scale-110 transition-transform"></i>
-        </a>
+            <a href="/settings/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Configuración">
+                <i class="fas fa-cog text-white text-lg group-hover:scale-110 transition-transform"></i>
+            </a>
 
-        <a href="/help/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Centro de Ayuda">
-            <i class="fas fa-question-circle text-white text-lg group-hover:scale-110 transition-transform"></i>
-        </a>
-    </div>
+            <a href="/help/" class="nav-item tooltip p-3 rounded-2xl hover:bg-white hover:bg-opacity-20 transition-all duration-300 group" data-tooltip="Centro de Ayuda">
+                <i class="fas fa-question-circle text-white text-lg group-hover:scale-110 transition-transform"></i>
+            </a>
+        </div>
 
-    <!-- Logout Section -->
-    <div class="mt-auto">
-        <a href="/accounts/logout/" class="tooltip p-3 rounded-2xl bg-red-500 bg-opacity-20 hover:bg-red-500 hover:bg-opacity-30 cursor-pointer transition-all duration-300 group" data-tooltip="Cerrar Sesión" onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
-            <i class="fas fa-sign-out-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
-        </a>
-    </div>
-</nav>
+        <!-- Logout Section -->
+        <div class="mt-auto">
+            <a href="/accounts/logout/" class="tooltip p-3 rounded-2xl bg-red-500 bg-opacity-20 hover:bg-red-500 hover:bg-opacity-30 cursor-pointer transition-all duration-300 group" data-tooltip="Cerrar Sesión" onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
+                <i class="fas fa-sign-out-alt text-white text-lg group-hover:scale-110 transition-transform"></i>
+            </a>
+        </div>
+    </nav>
 
 
     <!-- Main Content Area -->
