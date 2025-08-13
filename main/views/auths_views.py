@@ -137,7 +137,7 @@ def account_recovery(request):
 
             email_msg.attach_alternative(html_content, "text/html")
             email_msg.send()
-            messages.success(request,'Si tu correo es valido, recibiras un enlace en el para restablecer tu clave en breve.')
+            messages.success(request,'Si tu correo es valido, recibiras un enlace para restablecer tu clave en breve.')
         except Exception as e:
             print(f"Error sending email: {str(e)}")
             messages.error(request, f'Error al enviar el correo de recuperacion: {str(e)}. Favor Contactar Soporte')
