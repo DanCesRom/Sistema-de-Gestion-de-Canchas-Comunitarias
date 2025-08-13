@@ -460,13 +460,6 @@
             const currentPath = window.location.pathname;
             const navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
 
-            navItems.forEach(item => {
-                const href = item.getAttribute('href');
-                if (href === currentPath || (currentPath === '/' && href === '/')) {
-                    item.classList.add('active');
-                }
-            });
-
             // Loading states for navigation
             navItems.forEach(item => {
                 item.addEventListener('click', function (e) {
@@ -515,14 +508,6 @@
         // Hide loading on page load
         window.addEventListener('load', hideLoading);
 
-        // Page visibility API for better UX
-        document.addEventListener('visibilitychange', function () {
-            if (document.visibilityState === 'visible') {
-                // Page became visible, refresh any time-sensitive content
-                console.log('Page is now visible');
-            }
-        });
-
         // Enhanced touch interactions for mobile
         if ('ontouchstart' in window) {
             document.addEventListener('touchstart', function () { }, { passive: true });
@@ -530,7 +515,7 @@
 
         // Add ripple effect to clickable elements
         function addRippleEffect() {
-            const buttons = document.querySelectorAll('.nav-item, .mobile-nav-item, button, .btn');
+            const buttons = document.querySelectorAll('button, .btn');
 
             buttons.forEach(button => {
                 button.addEventListener('click', function (e) {
@@ -553,40 +538,6 @@
                 });
             });
         }
-
-        // Initialize ripple effects
-        addRippleEffect();
-
-        // Performance monitoring
-        if ('PerformanceObserver' in window) {
-            const observer = new PerformanceObserver((list) => {
-                for (const entry of list.getEntries()) {
-                    if (entry.entryType === 'navigation') {
-                        console.log('Page load time:', entry.loadEventEnd - entry.loadEventStart, 'ms');
-                    }
-                }
-            });
-            observer.observe({ entryTypes: ['navigation'] });
-        }
     </script>
-
-    <!-- Additional Styles for Ripple Effect -->
-    <style>
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-            pointer-events: none;
-        }
-
-        @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-    </style>
 </body>
 </html>
