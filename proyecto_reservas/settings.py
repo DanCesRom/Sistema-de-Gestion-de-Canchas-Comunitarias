@@ -212,4 +212,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # Make the session expire after 2 weeks (in seconds)
 SESSION_COOKIE_AGE = 600 #10 minutos aqui ahora mismo
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Security
 ENCRYPTION_KEY = os.getenv('ENCRYPTION_KEY')
