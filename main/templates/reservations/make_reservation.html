@@ -405,35 +405,15 @@ function submitReservation() {
 }
 
 // Change day function
-function changeDay(direction) {
-    const currentDateObj = new Date(currentDate);
-    currentDateObj.setDate(currentDateObj.getDate() + direction);
-
-    // Prevent past dates
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (currentDateObj < today) {
-        return;
-    }
-
-    // Update current date
-    currentDate = currentDateObj.toISOString().split('T')[0];
-
-    // Update form date
-    document.getElementById('form-date').value = currentDate;
-
-    // Update display
-    const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    };
-    document.getElementById('selected-day').textContent = currentDateObj.toLocaleDateString('es-ES', options);
-
-    // Clear selection and reload time blocks
-    clearSelection();
-    generateTimeBlocks();
+function changeDay(offset) {
+    const current = document.getElementById('selected-day').innerText;
+    const newDate = new Date(current);
+    newDate.setDate(newDate.getDate() + offset);
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, '0');
+    const day = String(newDate.getDate()).padStart(2, '0');
+    window.location.href = '?date=' + year + '-' + month + '-' + day;
 }
+
 </script>
 {% endblock %}
